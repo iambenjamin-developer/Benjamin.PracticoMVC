@@ -1,5 +1,6 @@
 ﻿mostrarTabla();
 
+rellenarComboBox("Roles", "Listar","cboRoles");
 
 function mostrarTabla() {
 
@@ -93,6 +94,33 @@ function mostrarTabla() {
 
 }
 
+
+function rellenarComboBox(controlador, jsonAccion, stringID) {
+
+    var ruta = "/";
+    ruta += controlador + "/";
+    ruta += jsonAccion + "/";
+
+
+    $.get(ruta, function (data) {
+
+        //string q representa las etiquetas html
+        var contenido = "<option value='0'>--Seleccione--</option>";
+
+        for (var i = 0; i < data.length; i++) {
+
+            contenido += "<option value='" + data[i].Id + "'>";
+            contenido += data[i].Descripcion;
+            contenido += "</option>";
+        }
+
+        //transformar la cadena en html e insertar dentro del id del combo box
+        document.getElementById(stringID).innerHTML = contenido;
+
+
+    });
+
+}
 
 function convertirBooleanToString(cadenaBoolean) {
 

@@ -8,8 +8,7 @@ namespace Benjamin.PracticoMVC.Entidades
 {
     public class Roles
     {
-
-        public int Id { get; set; }
-        public int Descripcion { get; set; }
+        public string Id { get; set; }
+        public string Descripcion { get; set; }
     }
 }
