@@ -138,7 +138,6 @@ function convertirBooleanToString(cadenaBoolean) {
 
 }
 
-
 function parsearFecha(fecha) {
 
 
@@ -161,14 +160,21 @@ function abrirModal(id) {
     //Si el ID es cero usamos el modal para agregar
     if (id == 0) {
 
+        document.getElementById("tituloModal").innerHTML = "Agregar Producto";
+
         limpiarDatos();
+
 
         //chkEstado predefinirlo activo
         document.getElementById("chkEstado").checked = true;
 
 
+
+
     }//Si el ID distinto de cero usamos el modal para editar
     else {
+
+        document.getElementById("tituloModal").innerHTML = "Editar Producto";
 
         obtenerRegistro("Usuarios", "Detalle", id);
     }
@@ -206,7 +212,6 @@ function limpiarComboBoxes() {
 }
 
 
-
 function obtenerRegistro(controlador, jsonAccion, id) {
 
     //ruta = /Controlador/Accion/?id=parametro
@@ -230,3 +235,86 @@ function obtenerRegistro(controlador, jsonAccion, id) {
 
     });
 }
+
+
+function guardar() {
+
+
+    var frm = new FormData();
+
+    //colocar en una variable el valor de cada elemento
+    var id = document.getElementById("txtID").value;
+    var usuario = document.getElementById("txtUsuario").value;
+    var idRol = document.getElementById("cboRoles").value;
+    var nombres = document.getElementById("txtNombres").value;
+    var apellidos = document.getElementById("txtApellidos").value;
+    var estado = document.getElementById("chkEstado").checked;
+
+
+    console.log(id);
+    console.log(usuario);
+    console.log(idRol);
+    console.log(nombres);
+    console.log(apellidos);
+    console.log(estado);
+
+
+    //relacionar el valor de cada elemento con la clase que le corresponde
+    frm.append("Id", id);
+    frm.append("Usuario", usuario);
+    frm.append("IdRol", idRol);
+    frm.append("Nombre", nombres);
+    frm.append("Apellido", apellidos);
+    frm.append("Activo", estado);
+
+
+
+
+
+    alertify.confirm("¿Desea Guardar cambios?", function (e) {
+        if (e) {
+            //after clicking OK
+
+            $.ajax({
+                type: "POST",
+                url: "/Usuarios/Guardar/",
+                data: frm,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data != 0) {
+
+                        mostrarTabla();
+
+                        if (id == 0)
+                            alertify.success('Agregado exitosamente!');
+                        else
+                            alertify.success('Editado exitosamente!');
+
+
+                        document.getElementById("btnCancelar").click();
+
+
+                    } else {
+                        alertify.error('Error');
+                    }
+
+                }
+
+            })
+
+
+
+
+
+
+
+           //else de alertify despues de evento cancel 
+        } else {
+            //after clicking Cancel          
+        }
+    });// fin alertify
+
+          
+}
+

@@ -128,6 +128,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\alertify.min.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\datatables.min.css" />
     <Content Include="Content\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
@@ -166,6 +167,7 @@
     <Content Include="Images\productos\sr-fantastico.png" />
     <Content Include="Images\productos\superman.png" />
     <Content Include="Images\productos\wolverine.png" />
+    <Content Include="Scripts\alertify.min.js" />
     <Content Include="Scripts\all.min.js" />
     <Content Include="Scripts\Custom\abmData.js" />
     <Content Include="Scripts\Custom\docenteScript.js" />

@@ -36,5 +36,31 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return View();
         }
 
+
+        public int Guardar(Entidades.Usuarios obj)
+        {
+
+            //si el ID es cero agregar
+            if (obj.Id == 0)
+            {
+                AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
+
+                metodos.Crear(obj);
+
+
+            }
+            else // si el ID es distinto de cero editar
+            {
+                Entidades.Usuarios objEditar = new Entidades.Usuarios();
+
+
+
+            }
+
+            return 1;
+        }
+
+
+
     }
 }
