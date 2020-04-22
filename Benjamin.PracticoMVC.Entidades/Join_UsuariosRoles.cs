@@ -18,6 +18,8 @@ namespace Benjamin.PracticoMVC.Entidades
 
         public string APELLIDOS { get; set; }
 
+        public DateTime FECHA_ALTA { get; set; }
+        
         public string ESTADO { get; set; }
 
     }

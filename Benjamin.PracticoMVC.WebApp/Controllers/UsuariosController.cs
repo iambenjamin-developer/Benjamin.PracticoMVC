@@ -19,6 +19,17 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         }
 
 
+
+        public JsonResult Detalle(int id)
+        {
+            AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
+
+            Entidades.Usuarios userSeleccionado = metodos.Detalle(id);
+
+            return Json(userSeleccionado, JsonRequestBehavior.AllowGet);
+        }
+
+
         public ActionResult ABM()
         {
 

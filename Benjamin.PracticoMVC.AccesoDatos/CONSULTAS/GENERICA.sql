@@ -1,7 +1,10 @@
-﻿SELECT
+﻿            
+SELECT
+id,
 Usuario,
+IdRol,
 Nombre,
 Apellido,
-IdRol,
 Activo
 FROM Usuarios
+WHERE Id = 2

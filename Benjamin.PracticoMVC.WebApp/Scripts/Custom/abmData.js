@@ -107,7 +107,7 @@ function parsearFechaNullVacio(fecha) {
 
     } else {
 
-        return "";
+        return "No Aplica";
     }
 
 

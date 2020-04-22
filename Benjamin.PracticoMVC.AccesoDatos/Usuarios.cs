@@ -30,6 +30,7 @@ Usuario AS USUARIO,
 Roles.Descripcion AS ROL, 
 Nombre AS NOMBRES, 
 Apellido AS APELLIDOS, 
+FechaCreacion AS FECHA_ALTA,
 Activo AS ESTADO
 FROM Usuarios
 INNER JOIN Roles ON 
@@ -44,6 +45,7 @@ Usuarios.IdRol = Roles.Id
             consultaSQL.Append("Roles.Descripcion AS ROL, ");
             consultaSQL.Append("Nombre AS NOMBRES, ");
             consultaSQL.Append("Apellido AS APELLIDOS, ");
+            consultaSQL.Append("FechaCreacion AS FECHA_ALTA, ");
             consultaSQL.Append("Activo AS ESTADO ");
             consultaSQL.Append("FROM Usuarios ");
             consultaSQL.Append("INNER JOIN Roles ON  ");
@@ -58,6 +60,25 @@ Usuarios.IdRol = Roles.Id
             return listaUsuariosRoles;
         }
 
+        public Entidades.Usuarios Detalle(int id)
+        {
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("SELECT ");
+            consultaSQL.Append("Id, IdRol, Usuario, Nombre, Apellido, Password, PasswordSalt, FechaCreacion, Activo ");
+            consultaSQL.Append("FROM Usuarios ");
+            consultaSQL.Append("WHERE Id = @idParametro ");
+
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                var objUsuario = connection.QuerySingleOrDefault<Entidades.Usuarios>(consultaSQL.ToString(), new { idParametro = id });
+
+
+                return objUsuario;
+            }
+
+        }
 
 
 
@@ -82,10 +103,6 @@ Usuarios.IdRol = Roles.Id
             throw new NotImplementedException();
         }
 
-        public Entidades.Usuarios Detalles(object id)
-        {
-            throw new NotImplementedException();
-        }
 
         public void Editar(Entidades.Usuarios objEntidad)
         {

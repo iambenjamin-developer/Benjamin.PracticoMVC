@@ -12,7 +12,7 @@ namespace Benjamin.PracticoMVC.AccesoDatos
         List<Entidad> Listar();
 
         //Detalles del Objeto
-        Entidad Detalles(object id);
+        Entidad Detalle(object id);
 
         //Crear Objeto - Insertar en tabla
         void Crear(Entidad objEntidad);
