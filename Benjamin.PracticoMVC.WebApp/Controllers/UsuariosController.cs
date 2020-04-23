@@ -51,7 +51,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             }
             else // si el ID es distinto de cero editar
             {
-                Entidades.Usuarios objEditar = new Entidades.Usuarios();
+                AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
 
 
@@ -61,6 +61,34 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         }
 
 
+        public ActionResult Login() {
+
+
+
+            return View();
+        }
+
+
+
+        public ActionResult CambiarClave()
+        {
+            ClaveBlanqueada("bcorrea");
+
+            return View();
+        }
+
+
+        public int ClaveBlanqueada(string usuario)
+        {
+            //AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
+
+            //int claveEnBlanco = metodos.VerificarPasswordBlanqueada(usuario);
+
+            //return claveEnBlanco;
+
+
+            return 1;
+        }
 
     }
 }

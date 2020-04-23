@@ -1,10 +1,8 @@
-﻿            
-SELECT
-id,
-Usuario,
-IdRol,
-Nombre,
-Apellido,
-Activo
-FROM Usuarios
-WHERE Id = 2
+﻿SELECT PasswordSalt FROM Usuarios
+WHERE Usuario LIKE 'bcorrea'
+
+/*            
+SELECT COUNT(*) FROM Usuarios
+WHERE Usuario LIKE 'bcorrea'
+AND (Password IS NULL OR Password LIKE '')
+*/

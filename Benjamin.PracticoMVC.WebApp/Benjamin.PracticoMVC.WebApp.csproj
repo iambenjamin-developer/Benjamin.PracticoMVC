@@ -121,6 +121,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -130,6 +131,7 @@
   <ItemGroup>
     <Content Include="Content\alertify.min.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Custom\login.css" />
     <Content Include="Content\datatables.min.css" />
     <Content Include="Content\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
     <Content Include="Content\images\ui-bg_glass_100_e4f1fb_1x400.png" />
@@ -149,7 +151,9 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Images\iconos\bombilla.svg" />
     <Content Include="Images\iconos\bootstrap-solid.svg" />
+    <Content Include="Images\iconos\bulb.ico" />
     <Content Include="Images\productos\aquaman.png" />
     <Content Include="Images\productos\batman.png" />
     <Content Include="Images\productos\capitan-america.png" />
@@ -167,11 +171,14 @@
     <Content Include="Images\productos\sr-fantastico.png" />
     <Content Include="Images\productos\superman.png" />
     <Content Include="Images\productos\wolverine.png" />
+    <Content Include="Images\wallpaper.jpg" />
     <Content Include="Scripts\alertify.min.js" />
     <Content Include="Scripts\all.min.js" />
     <Content Include="Scripts\Custom\abmData.js" />
+    <Content Include="Scripts\Custom\cambiarClave.js" />
     <Content Include="Scripts\Custom\docenteScript.js" />
     <Content Include="Scripts\Custom\llenarTagsHtml.js" />
+    <Content Include="Scripts\Custom\login.js" />
     <Content Include="Scripts\Custom\rubrosScript.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\Custom\usuariosScript.js" />
@@ -200,6 +207,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Roles\" />
+    <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -208,6 +216,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.min.css.map" />
     <None Include="packages.config" />
+    <Content Include="Views\Usuarios\CambiarClave.cshtml" />
+    <Content Include="Views\Usuarios\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Benjamin.PracticoMVC.AccesoDatos\Benjamin.PracticoMVC.AccesoDatos.csproj">

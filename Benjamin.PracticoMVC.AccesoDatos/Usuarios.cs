@@ -82,11 +82,13 @@ Usuarios.IdRol = Roles.Id
 
         public void Crear(Entidades.Usuarios objEntidad)
         {
+
             //INSERT INTO Usuarios(IdRol, Usuario, Nombre, Apellido, Password, PasswordSalt, FechaCreacion, Activo)
             //VALUES('CLI', 'drodriguez', 'David', 'Rodriguez', 'password', 'passwordSalt', GETDATE(), 0);
 
             //cuando creamos el usuario, la contraseña es la misma que el nombre de usuario. 
-            // En el primer logueo le pedira el cambio de la misma
+            // En el primer logueo si la contraseña es igual al usuario le pedira el cambio de la misma
+
             objEntidad.Password = objEntidad.Usuario;
 
             //generamos password salt para guardar en la base
@@ -94,6 +96,8 @@ Usuarios.IdRol = Roles.Id
 
             //generamos Password hash ya encriptada, para que solo el usuario sepa la password
             objEntidad.Password = GenerarPasswordHash(objEntidad.Password, objEntidad.PasswordSalt);
+
+
 
 
             StringBuilder consultaSQL = new StringBuilder();
@@ -205,8 +209,101 @@ Usuarios.IdRol = Roles.Id
             }
         }
 
+        public bool VerificarUsuarioExistente(string usuario)
+        {
+            /*
+             
+SELECT COUNT(*) FROM USUARIOS
+WHERE Usuario LIKE 'bcorrea'
+
+             */
+
+            int contador;
+
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("SELECT COUNT(*) FROM USUARIOS ");
+            consultaSQL.Append("WHERE Usuario LIKE @parametroUsuario ");
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                contador = connection.ExecuteScalar<int>(consultaSQL.ToString(), new { parametroUsuario = usuario });
+            }
+
+            if (contador == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public string ObtenerPasswordSaltPorUsuario(string usuario)
+        {
+            /*
+
+    SELECT PasswordSalt FROM Usuarios
+    WHERE Usuario LIKE 'bcorrea'
+
+                 */
+
+            string passwordSalt = string.Empty;
+
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("SELECT PasswordSalt FROM Usuarios ");
+            consultaSQL.Append("WHERE Usuario LIKE @parametroUsuario ");
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                passwordSalt = connection.ExecuteScalar<string>(consultaSQL.ToString(), new { parametroUsuario = usuario });
+            }
+
+            return passwordSalt;
+
+        }
+
+        public bool VerificarPasswordBlanqueada(string usuario)
+        {
+            /*
+SELECT COUNT(*) FROM Usuarios
+WHERE Usuario LIKE 'bcorrea'
+AND Password LIKE 'bcorrea(cifrada)'
+                         */
+
+            int contador;
+
+            string  passwordSalt, passwordCifrada;
+
+            passwordSalt = ObtenerPasswordSaltPorUsuario(usuario);
+            passwordCifrada = GenerarPasswordHash(usuario, passwordSalt);
+
+            StringBuilder consultaSQL = new StringBuilder();
 
 
+            // si la clave(ya cifrada) es igual el nombre de usuario, se deberá actualizar clave
+            consultaSQL.Append("SELECT COUNT(*) FROM Usuarios ");
+            consultaSQL.Append("WHERE Usuario LIKE @parametroUsuario ");
+            consultaSQL.Append("AND Password LIKE @parametroClave ");
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                contador = connection.ExecuteScalar<int>(consultaSQL.ToString(), new { parametroUsuario = usuario, parametroClave = passwordCifrada});
+            }
+
+            if (contador == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
 
 
 
@@ -235,7 +332,7 @@ Usuarios.IdRol = Roles.Id
             throw new NotImplementedException();
         }
 
-        
+
         public void Desechar()
         {
             throw new NotImplementedException();

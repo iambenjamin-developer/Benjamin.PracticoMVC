@@ -1,0 +1,100 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+<!doctype html>
+<html lang="es">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="~/Images/iconos/bulb.ico">
+
+    <!-- Bootstrap CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/Content/alertify.min.css" rel="stylesheet" />
+    <link href="~/Content/Custom/login.css" rel="stylesheet" />
+    <title>IdeasTech</title>
+
+</head>
+<body>
+
+
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6 offset-md-3">
+                        <span class="anchor" id="formLogin"></span>
+
+                        <!-- form card login with validation feedback -->
+                        <div class="card card-outline-secondary badge-dark">
+                            <div class="card-header" >
+                                <h3 class="mb-0" style="position:center;text-align:center">
+
+    
+                                    <img src="~/Images/iconos/bombilla.svg" style="width:8rem;height:8rem;display:block;margin:auto;"/>
+                                    
+                                    <b style="font-family:Verdana, Geneva, Tahoma, sans-serif;"> IdeasTech </b>
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <form class="form" role="form" autocomplete="off" id="loginForm" novalidate="" method="POST">
+                                    <div class="form-group">
+                                        <label for="uname1">Usuario</label>
+                                        <input type="text" class="form-control" id="txtUsuario" required="">
+                                        <div class="invalid-feedback">Por favor ingrese su usuario</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Clave</label>
+                                        <input type="password" class="form-control" id="txtClave" required="" autocomplete="new-password">
+                                        <div class="invalid-feedback">Por favor ingrese su clave</div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success btn-lg float-right" id="btnLogin">Iniciar Sesión</button>
+                                </form>
+                            </div>
+                            <!--/card-body-->
+                        </div>
+                        <!-- /form card login -->
+
+                    </div>
+
+
+
+                </div>
+                <!--/row-->
+
+                <br><br><br><br>
+
+            </div>
+            <!--/col-->
+        </div>
+
+
+    </div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <!-- bootstrap.bundle incluye a Popper -->
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+
+    <script src="~/Scripts/alertify.min.js"></script>
+
+    <script src="~/Scripts/Custom/login.js"></script>
+</body>
+</html>
+
+
+
+
+
