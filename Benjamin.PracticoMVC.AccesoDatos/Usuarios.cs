@@ -89,7 +89,9 @@ Usuarios.IdRol = Roles.Id
             //cuando creamos el usuario, la contraseña es la misma que el nombre de usuario. 
             // En el primer logueo si la contraseña es igual al usuario le pedira el cambio de la misma
 
-            objEntidad.Password = objEntidad.Usuario;
+           // objEntidad.Password = objEntidad.Usuario;
+
+            objEntidad.Password = "verga";
 
             //generamos password salt para guardar en la base
             objEntidad.PasswordSalt = GenerarPasswordSalt(objEntidad.Password);
@@ -306,13 +308,46 @@ AND Password LIKE 'bcorrea(cifrada)'
         }
 
 
-        public bool ValidarLogin(string usuario, string clave)
+        public Entidades.Usuarios ObtenerUsuarioPorUsername(string usuario)
         {
 
-            string user = "bcorrea";
-            string pass = "1234";
+            StringBuilder consultaSQL = new StringBuilder();
 
-            if (usuario == user && clave == pass)
+            consultaSQL.Append("SELECT ");
+            consultaSQL.Append("Id, IdRol, Usuario, Nombre, Apellido, Password, PasswordSalt, FechaCreacion, Activo ");
+            consultaSQL.Append("FROM Usuarios ");
+            consultaSQL.Append("WHERE Usuario = @usuarioParametro ");
+
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                var objUsuario = connection.QuerySingleOrDefault<Entidades.Usuarios>(consultaSQL.ToString(), new { usuarioParametro = usuario });
+
+
+                return objUsuario;
+            }
+
+        }
+
+        public bool ValidarLogin(string usuario, string clave)
+        {
+            Entidades.Usuarios datosUsuario = ObtenerUsuarioPorUsername(usuario);
+
+            if (datosUsuario == null)
+            {
+                return false;
+            }
+            if (datosUsuario.Usuario == null || datosUsuario.Password == null || datosUsuario.PasswordSalt == null || clave == null)
+            { return false; }
+
+            string passwordSalt = ObtenerPasswordSaltPorUsuario(usuario);
+            string passwordHash = GenerarPasswordHash(clave, passwordSalt);
+
+            clave = passwordHash;
+
+
+
+            if (datosUsuario.Usuario == usuario && datosUsuario.Password == clave)
             {
                 return true;
             }

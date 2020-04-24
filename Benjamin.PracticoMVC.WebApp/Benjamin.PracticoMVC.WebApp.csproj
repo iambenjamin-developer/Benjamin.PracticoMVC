@@ -221,7 +221,7 @@
     <Content Include="Views\Usuarios\CambiarClave.cshtml" />
     <Content Include="Views\Usuarios\Login.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
-    <Content Include="Views\Usuarios\Login2.cshtml" />
+    <Content Include="Views\Usuarios\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Benjamin.PracticoMVC.AccesoDatos\Benjamin.PracticoMVC.AccesoDatos.csproj">

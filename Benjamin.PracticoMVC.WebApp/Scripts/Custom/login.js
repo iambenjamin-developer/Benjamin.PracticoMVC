@@ -23,16 +23,30 @@
             contentType: false,
             processData: false,
             success: function (data) {
-                if (data == 1) {
 
+                if (data == 1) {
+                    //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor1
                     alertify.success("Bienvenido " + usuario + "!");
 
                     location.href = '/Usuarios/ABM/';
 
+                } else if (data == 2) {
+                    //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor2
+                    alertify.success("Cambiar clave " + usuario + "!");
+
+                    location.href = '/Usuarios/CambiarClave/';
+
                 } else {
+                    //Declaraciones ejecutadas cuando ninguno de los valores coincide con el valor de la expresión
 
                     alertify.error("Usuario y/o Contraseña Incorrectos");
+
                 }
+
+
+
+
+
 
             }
 

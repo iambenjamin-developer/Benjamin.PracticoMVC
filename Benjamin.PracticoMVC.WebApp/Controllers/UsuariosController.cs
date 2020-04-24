@@ -8,6 +8,13 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 {
     public class UsuariosController : Controller
     {
+        public ActionResult Index()
+        {
+
+            return View();
+        }
+
+
 
         public JsonResult Listar()
         {
@@ -64,13 +71,37 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         public int ValidarLogin(Entidades.Login obj)
         {
 
+            bool usuarioClaveIguales;
+
+            if (obj.USUARIO == obj.CLAVE)
+            {
+                usuarioClaveIguales = true;
+            }
+            else
+            {
+
+                usuarioClaveIguales = false;
+            }
+
             AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
+
 
             if (metodos.ValidarLogin(obj.USUARIO, obj.CLAVE) == true)
             {
-                //si valida retornar 1
-                return 1;
-            }else
+                //si el usuario y la clave son iguales, significa que esta blanqueada
+                //por lo cual hay q redirigirlos a cambiar contraseña
+                if (usuarioClaveIguales == true)
+                {
+                    return 2;
+                }
+                else
+                {// de lo contrario si valida ok, pero son distintos user/pass ingresa normal al sistema
+                    return 1;
+                }
+
+
+            }
+            else
             {
                 return 0;
             }
@@ -86,13 +117,6 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return View();
         }
 
-        public ActionResult Login2()
-        {
-
-
-
-            return View();
-        }
 
 
         public ActionResult CambiarClave()
