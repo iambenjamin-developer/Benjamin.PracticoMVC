@@ -160,7 +160,12 @@ function abrirModal(id) {
     //Si el ID es cero usamos el modal para agregar
     if (id == 0) {
 
-        document.getElementById("tituloModal").innerHTML = "Agregar Producto";
+        //modificar titulo del modal
+        document.getElementById("tituloModal").innerHTML = "Agregar Usuario";
+
+        //ocultar campo de reset clave
+        document.getElementById("divResetClave").style.display = "none";
+
 
         limpiarDatos();
 
@@ -174,7 +179,9 @@ function abrirModal(id) {
     }//Si el ID distinto de cero usamos el modal para editar
     else {
 
-        document.getElementById("tituloModal").innerHTML = "Editar Producto";
+        document.getElementById("tituloModal").innerHTML = "Editar Usuario";
+        //visualizar campo de reset clave
+        document.getElementById("divResetClave").style.display = "block";
 
         obtenerRegistro("Usuarios", "Detalle", id);
     }

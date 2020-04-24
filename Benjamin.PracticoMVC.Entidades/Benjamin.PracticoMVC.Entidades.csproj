@@ -44,6 +44,7 @@
     <Compile Include="Clientes.cs" />
     <Compile Include="DetallesPedidos.cs" />
     <Compile Include="Join_UsuariosRoles.cs" />
+    <Compile Include="Login.cs" />
     <Compile Include="Marcas.cs" />
     <Compile Include="Pedidos.cs" />
     <Compile Include="Productos.cs" />

@@ -1,28 +1,31 @@
-﻿var btnLogin = document.getElementById("btnLogin");
+﻿$(document).ready(function () {
 
-btnLogin.onclick = function () {
 
-    alert("aceptar");
-    alert("cancelar");
+    //SE EJECUTA DESPUES DE HACER CLIC EN EL BOTON INICIAR SESION
+    $("#btnLogin").click(function () {
 
-    //alertify.success(document.getElementById("txtUsuario").value);
-    //alertify.error(document.getElementById("txtClave").value);
- 
- 
-}
+        //debemos compararlos con los valores de la base
+        var usuario = "bcorrea";
+        var clave = "1234";
 
-// validation example for Login form
-$("#btnLogin").click(function (event) {
+        if ($("#txtUsuario").val() == usuario && $("#txtClave").val() == clave) {
 
-    var form = $("#loginForm");
+            alertify.success("Bienvenido " + usuario + "(" + clave + ")");
 
-    if (form[0].checkValidity() === false) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
+            
+            location.href = '/Usuarios/ABM/';
 
-    // if validation passed form
-    // would post to the server here
 
-    form.addClass('was-validated');
+        } else {
+
+            alertify.error("Usuario y/o Contraseña Incorrectos");
+        }
+
+
+
+
+    });
+
+
 });
+

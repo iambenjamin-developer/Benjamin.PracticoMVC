@@ -68,6 +68,13 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return View();
         }
 
+        public ActionResult Login2()
+        {
+
+
+
+            return View();
+        }
 
 
         public ActionResult CambiarClave()

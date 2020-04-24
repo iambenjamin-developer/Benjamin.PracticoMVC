@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,18 +12,14 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         // GET: Test
         public ActionResult Index()
         {
-            AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
-            int contador;
-
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    contador = metodos.VerificarPasswordBlanqueada("tercero");
+            //using (var transaccion = new TransactionScope())
+            //{ 
+            
+            
+            
             //}
-           
-    
-
-            return View();
+                return View();
 
         }
     }
