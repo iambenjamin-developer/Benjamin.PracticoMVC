@@ -61,7 +61,25 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         }
 
 
-        public ActionResult Login() {
+        public int ValidarLogin(Entidades.Login obj)
+        {
+
+            AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
+
+            if (metodos.ValidarLogin(obj.USUARIO, obj.CLAVE) == true)
+            {
+                //si valida retornar 1
+                return 1;
+            }else
+            {
+                return 0;
+            }
+
+        }
+
+
+        public ActionResult Login()
+        {
 
 
 

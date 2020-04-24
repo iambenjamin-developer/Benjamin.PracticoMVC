@@ -4,23 +4,39 @@
     //SE EJECUTA DESPUES DE HACER CLIC EN EL BOTON INICIAR SESION
     $("#btnLogin").click(function () {
 
-        //debemos compararlos con los valores de la base
-        var usuario = "bcorrea";
-        var clave = "1234";
 
-        if ($("#txtUsuario").val() == usuario && $("#txtClave").val() == clave) {
+        var frm = new FormData();
 
-            alertify.success("Bienvenido " + usuario + "(" + clave + ")");
+        //colocar en una variable el valor de cada elemento
+        var usuario = document.getElementById("txtUsuario").value;
+        var clave = document.getElementById("txtClave").value;
 
-            
-            location.href = '/Usuarios/ABM/';
+        //relacionar el valor de cada elemento con la clase que le corresponde
+        frm.append("USUARIO", usuario);
+        frm.append("CLAVE", clave);
 
 
-        } else {
+        $.ajax({
+            type: "POST",
+            url: "/Usuarios/ValidarLogin/",
+            data: frm,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data == 1) {
 
-            alertify.error("Usuario y/o Contraseña Incorrectos");
-        }
+                    alertify.success("Bienvenido " + usuario + "!");
 
+                    location.href = '/Usuarios/ABM/';
+
+                } else {
+
+                    alertify.error("Usuario y/o Contraseña Incorrectos");
+                }
+
+            }
+
+        });
 
 
 
@@ -28,4 +44,7 @@
 
 
 });
+
+
+
 

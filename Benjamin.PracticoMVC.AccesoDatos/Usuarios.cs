@@ -276,7 +276,7 @@ AND Password LIKE 'bcorrea(cifrada)'
 
             int contador;
 
-            string  passwordSalt, passwordCifrada;
+            string passwordSalt, passwordCifrada;
 
             passwordSalt = ObtenerPasswordSaltPorUsuario(usuario);
             passwordCifrada = GenerarPasswordHash(usuario, passwordSalt);
@@ -291,7 +291,7 @@ AND Password LIKE 'bcorrea(cifrada)'
 
             using (var connection = new SqlConnection(cadenaConexion))
             {
-                contador = connection.ExecuteScalar<int>(consultaSQL.ToString(), new { parametroUsuario = usuario, parametroClave = passwordCifrada});
+                contador = connection.ExecuteScalar<int>(consultaSQL.ToString(), new { parametroUsuario = usuario, parametroClave = passwordCifrada });
             }
 
             if (contador == 1)
@@ -306,7 +306,23 @@ AND Password LIKE 'bcorrea(cifrada)'
         }
 
 
+        public bool ValidarLogin(string usuario, string clave)
+        {
 
+            string user = "bcorrea";
+            string pass = "1234";
+
+            if (usuario == user && clave == pass)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
 
 
 
