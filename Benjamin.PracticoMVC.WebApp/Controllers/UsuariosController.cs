@@ -88,6 +88,18 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
             if (metodos.ValidarLogin(obj.USUARIO, obj.CLAVE) == true)
             {
+
+                Entidades.Sesion objSesion = metodos.ObtenerUsuarioSesion(obj.USUARIO);
+
+                //dejar usuario de sesion logueado
+                Session["NOMBRE"] = objSesion.NOMBRE;
+                Session["ROL"] = objSesion.ROL;
+                Session["ID"] = objSesion.ID;
+                Session["USUARIO"] = objSesion.USUARIO;
+
+
+                ViewBag.usuarioSesion = (string)Session["usuarioSesion"];
+
                 //si el usuario y la clave son iguales, significa que esta blanqueada
                 //por lo cual hay q redirigirlos a cambiar contraseña
                 if (usuarioClaveIguales == true)

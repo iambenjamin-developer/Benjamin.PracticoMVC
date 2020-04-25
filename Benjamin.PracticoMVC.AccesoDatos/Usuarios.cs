@@ -89,7 +89,7 @@ Usuarios.IdRol = Roles.Id
             //cuando creamos el usuario, la contraseña es la misma que el nombre de usuario. 
             // En el primer logueo si la contraseña es igual al usuario le pedira el cambio de la misma
 
-           // objEntidad.Password = objEntidad.Usuario;
+            // objEntidad.Password = objEntidad.Usuario;
 
             objEntidad.Password = "verga";
 
@@ -360,7 +360,47 @@ AND Password LIKE 'bcorrea(cifrada)'
         }
 
 
+        public Entidades.Sesion ObtenerUsuarioSesion(string usuario)
+        {
 
+
+            /*
+SELECT  
+Usuarios.Nombre + ' '+ Usuarios.Apellido AS NOMBRE,
+Roles.Descripcion AS ROL, 
+Usuarios.Id AS ID, 
+Usuarios.Usuario AS USUARIO
+FROM Usuarios
+INNER JOIN Roles ON 
+Usuarios.IdRol = Roles.Id
+WHERE Usuarios.Usuario LIKE 'bcorrea'
+             
+             */
+
+            Entidades.Sesion obj = new Entidades.Sesion();
+
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("SELECT ");
+            consultaSQL.Append("Usuarios.Nombre + ' '+ Usuarios.Apellido AS NOMBRE, ");
+            consultaSQL.Append("Roles.Descripcion AS ROL, ");
+            consultaSQL.Append("Usuarios.Id AS ID,  ");
+            consultaSQL.Append("Usuarios.Usuario AS USUARIO ");
+            consultaSQL.Append("FROM Usuarios ");
+            consultaSQL.Append("INNER JOIN Roles ON ");
+            consultaSQL.Append("Usuarios.IdRol = Roles.Id ");
+            consultaSQL.Append("WHERE Usuarios.Usuario LIKE @usuarioParametro ");
+
+
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                obj = connection.QuerySingleOrDefault<Entidades.Sesion>(consultaSQL.ToString(), new { usuarioParametro = usuario });
+
+                return obj;
+            }
+
+        }
 
 
 

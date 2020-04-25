@@ -28,7 +28,7 @@
                     //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor1
                     alertify.success("Bienvenido " + usuario + "!");
 
-                    location.href = '/Usuarios/ABM/';
+                    location.href = '/Usuarios/Index/';
 
                 } else if (data == 2) {
                     //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor2
