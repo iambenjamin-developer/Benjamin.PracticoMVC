@@ -89,9 +89,11 @@ Usuarios.IdRol = Roles.Id
             //cuando creamos el usuario, la contraseña es la misma que el nombre de usuario. 
             // En el primer logueo si la contraseña es igual al usuario le pedira el cambio de la misma
 
-            // objEntidad.Password = objEntidad.Usuario;
+            //Cuando se crea por primera vez el usuario y la contraseña son las mismas asi en el proximo
+            //login pide cambiarla
+            objEntidad.Password = objEntidad.Usuario;
 
-            objEntidad.Password = "verga";
+
 
             //generamos password salt para guardar en la base
             objEntidad.PasswordSalt = GenerarPasswordSalt(objEntidad.Password);
@@ -176,7 +178,7 @@ Usuarios.IdRol = Roles.Id
         }
 
 
-        public void ActualizarPassword(Entidades.Usuarios objUsuario)
+        public int ActualizarPassword(string usuario, string claveActual)
         {
             /*
                UPDATE Usuarios
@@ -184,31 +186,35 @@ Usuarios.IdRol = Roles.Id
                WHERE Usuario LIKE 'mperez';
             */
 
+            int filasAfectadas = 0;
+
             //generamos password salt para guardar en la base
-            objUsuario.PasswordSalt = GenerarPasswordSalt(objUsuario.Password);
+            string passwordSalt = GenerarPasswordSalt(claveActual);
 
             //generamos Password hash ya encriptada, para que solo el usuario sepa la password
-            objUsuario.Password = GenerarPasswordHash(objUsuario.Password, objUsuario.PasswordSalt);
+            string passwordHash = GenerarPasswordHash(claveActual, passwordSalt);
 
 
             StringBuilder consultaSQL = new StringBuilder();
 
             consultaSQL.Append("UPDATE Usuarios ");
-            consultaSQL.Append("SET PasswordSalt = @PasswordSalt, Password = @Password ");
-            consultaSQL.Append("WHERE Usuario LIKE @Usuario ;");
+            consultaSQL.Append("SET PasswordSalt = @passwordSaltParametro, Password = @passwordHashParametro ");
+            consultaSQL.Append("WHERE Usuario LIKE @usuarioParametro ;");
 
             using (var connection = new SqlConnection(cadenaConexion))
             {
-                var filasAfectadas = connection.Execute(consultaSQL.ToString(),
-                    new
-                    {
-                        Usuario = objUsuario.Usuario,
-                        Password = objUsuario.Password,
-                        PasswordSalt = objUsuario.PasswordSalt
-                    });
+                filasAfectadas = connection.Execute(consultaSQL.ToString(),
+                   new
+                   {
+                       passwordSaltParametro = passwordSalt,
+                       passwordHashParametro = passwordHash,
+                       usuarioParametro = usuario
+                   });
 
 
             }
+
+            return filasAfectadas;
         }
 
         public bool VerificarUsuarioExistente(string usuario)

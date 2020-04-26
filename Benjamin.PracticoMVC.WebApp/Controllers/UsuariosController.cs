@@ -10,9 +10,95 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
     {
         public ActionResult Index()
         {
-
             return View();
         }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        public int CodigoLogin(Entidades.Login obj)
+        {
+            bool usuarioClaveIguales;
+
+            if (obj.USUARIO == obj.CLAVE)
+            {
+                usuarioClaveIguales = true;
+            }
+            else
+            {
+
+                usuarioClaveIguales = false;
+            }
+
+            AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
+
+
+            if (metodos.ValidarLogin(obj.USUARIO, obj.CLAVE) == true)
+            {
+
+                Entidades.Sesion objSesion = metodos.ObtenerUsuarioSesion(obj.USUARIO);
+
+                //dejar usuario de sesion logueado
+                Session["NOMBRE"] = objSesion.NOMBRE;
+                Session["ROL"] = objSesion.ROL;
+                Session["ID"] = objSesion.ID;
+                Session["USUARIO"] = objSesion.USUARIO;
+
+
+                //si el usuario y la clave son iguales, significa que esta blanqueada
+                //por lo cual hay q redirigirlos a cambiar contraseña
+                if (usuarioClaveIguales == true)
+                {
+                    return 2;
+                }
+                else
+                {// de lo contrario si valida ok, pero son distintos user/pass ingresa normal al sistema
+                    return 1;
+                }
+
+
+            }
+            else
+            {// si el codigo es cero es que no se pudo concretar el logueo
+                return 0;
+            }
+
+        }
+
+        public ActionResult CambiarClave()
+        {
+            return View();
+        }
+
+        public int CodigoCambiarClave(Entidades.Login obj)
+        {
+
+            obj.USUARIO = Session["USUARIO"].ToString();
+
+            AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
+
+            int codigo = metodos.ActualizarPassword(obj.USUARIO, obj.CLAVE);
+
+            return codigo;
+        }
+
+
+
+        public string IdUsuario()
+        {
+
+            return Session["USUARIO"].ToString();
+        }
+
+
+
+
+
+
+
+
 
 
 
@@ -68,88 +154,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         }
 
 
-        public int ValidarLogin(Entidades.Login obj)
-        {
 
-            bool usuarioClaveIguales;
-
-            if (obj.USUARIO == obj.CLAVE)
-            {
-                usuarioClaveIguales = true;
-            }
-            else
-            {
-
-                usuarioClaveIguales = false;
-            }
-
-            AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
-
-
-            if (metodos.ValidarLogin(obj.USUARIO, obj.CLAVE) == true)
-            {
-
-                Entidades.Sesion objSesion = metodos.ObtenerUsuarioSesion(obj.USUARIO);
-
-                //dejar usuario de sesion logueado
-                Session["NOMBRE"] = objSesion.NOMBRE;
-                Session["ROL"] = objSesion.ROL;
-                Session["ID"] = objSesion.ID;
-                Session["USUARIO"] = objSesion.USUARIO;
-
-
-                ViewBag.usuarioSesion = (string)Session["usuarioSesion"];
-
-                //si el usuario y la clave son iguales, significa que esta blanqueada
-                //por lo cual hay q redirigirlos a cambiar contraseña
-                if (usuarioClaveIguales == true)
-                {
-                    return 2;
-                }
-                else
-                {// de lo contrario si valida ok, pero son distintos user/pass ingresa normal al sistema
-                    return 1;
-                }
-
-
-            }
-            else
-            {
-                return 0;
-            }
-
-        }
-
-
-        public ActionResult Login()
-        {
-
-
-
-            return View();
-        }
-
-
-
-        public ActionResult CambiarClave()
-        {
-            ClaveBlanqueada("bcorrea");
-
-            return View();
-        }
-
-
-        public int ClaveBlanqueada(string usuario)
-        {
-            //AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
-
-            //int claveEnBlanco = metodos.VerificarPasswordBlanqueada(usuario);
-
-            //return claveEnBlanco;
-
-
-            return 1;
-        }
 
     }
 }

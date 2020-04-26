@@ -1,55 +1,76 @@
-﻿// validation example for Login form
-$("#btnLogin").click(function (event) {
-
-    var form = $("#loginForm");
-
-    if (form[0].checkValidity() === false) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-
-    // if validation passed form
-    // would post to the server here
-
-    form.addClass('was-validated');
-});
+﻿$(document).ready(function () {
 
 
+    //SE EJECUTA DESPUES DE HACER CLIC EN EL BOTON GUARDAR
+    $("#btnAceptar").click(function () {
 
-function ocultarMostrarClaveAntigua() {
-    var contenido = "";
-    contenido += "<label for='inputPasswordOld'>Clave Actual</label>";
-    contenido += "<input type='password' class='form-control' id='inputPasswordOld' required=''>";
+       
+        var claveActual = document.getElementById("txtClaveActual").value;
+        var claveNueva = document.getElementById("txtClaveNueva").value;
+        var claverRepetirClaveNueva = document.getElementById("txtRepetirClaveNueva").value;
 
 
 
 
-    var usuario = "";
-    usuario = "bcorrea"
+        console.log(claveActual);
+        console.log(claveNueva);
+        console.log(claverRepetirClaveNueva);
 
-    $.ajax({
-        type: "POST",
-        url: "/Usuarios/ClaveBlanqueada/",
-        data: usuario,
-        contentType: false,
-        processData: false,
-        success: function (claveBlanqueada) {
+        //colocar en una variable el valor de cada elemento
 
-            if (claveBlanqueada == 1) {
-                //Si no tiene clave blanqueada (cero), va a pedir ingresar la contraseña antigua
 
-                document.getElementById("campoClaveAntigua").innerHTML = contenido;
 
-                //Pero si se verifica que tenia un blanqueo de clave (uno)
-                //no se va a pedir que ponga la clava antigua
 
-            } else {
+        var frm = new FormData();
+
+        //relacionar el valor de cada elemento con la clase que le corresponde
+        frm.append("USUARIO", null);
+        frm.append("CLAVE", claveNueva);
+
+
+        $.ajax({
+            type: "POST",
+            url: "/Usuarios/CodigoCambiarClave/",
+            data: frm,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                if (data == 1) {
+                    //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor1
+                    alertify.success("Clave cambiaada!");
+
+                    location.href = '/Usuarios/Index/';
+
+                } else if (data == 2) {
+                    //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor2
+                    //alertify.success("Cambiar clave " + usuario + "!");
+
+                    //location.href = '/Usuarios/CambiarClave/';
+
+                } else {
+                    //Declaraciones ejecutadas cuando ninguno de los valores coincide con el valor de la expresión
+
+                    alertify.error("No se pudo cambiar la clave");
+
+                }
+
+
+
+
 
 
             }
 
-        }
+        });
 
-    })
 
-}
+
+    });
+
+
+});
+
+
+
+

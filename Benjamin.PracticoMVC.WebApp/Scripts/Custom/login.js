@@ -18,7 +18,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/Usuarios/ValidarLogin/",
+            url: "/Usuarios/CodigoLogin/",
             data: frm,
             contentType: false,
             processData: false,
@@ -26,13 +26,10 @@
 
                 if (data == 1) {
                     //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor1
-                    alertify.success("Bienvenido " + usuario + "!");
-
                     location.href = '/Usuarios/Index/';
 
                 } else if (data == 2) {
                     //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor2
-                    alertify.success("Cambiar clave " + usuario + "!");
 
                     location.href = '/Usuarios/CambiarClave/';
 

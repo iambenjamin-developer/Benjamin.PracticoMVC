@@ -1,5 +1,6 @@
 ﻿
 @{
+    
     Layout = null;
 }
 
@@ -57,8 +58,9 @@
         <div class="card-header">
             <h3 class="mb-0" style="position:center;text-align:center">
 
-                <p>Cambiar Clave</p>
-
+                <label>Cambiar Clave - Usuario:</label>
+                <label id="idUsuario">@ViewBag.usuarioLogueado</label>
+              
                 <img src="~/Images/iconos/bombilla.svg" style="width:8rem;height:8rem;display:block;margin:auto;" />
 
                 <b style="font-family:Verdana, Geneva, Tahoma, sans-serif;"> IdeasTech </b>
@@ -115,7 +117,7 @@
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
     <script src="~/Scripts/alertify.min.js"></script>
-    <script src="~/Scripts/Custom/login.js"></script>
+    <script src="~/Scripts/Custom/cambiarClave.js"></script>
 </body>
 </html>
 
