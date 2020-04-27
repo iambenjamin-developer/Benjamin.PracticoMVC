@@ -84,7 +84,18 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return codigo;
         }
 
+        public int ValidarClaveActual(Entidades.Login obj) {
 
+
+            obj.USUARIO = Session["USUARIO"].ToString();
+
+            AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
+
+
+            int codigo = metodos.ValidarClaveActual(obj.USUARIO, obj.CLAVE);
+            //si el codigo da 1 es porque se valida el usuario ok
+            return codigo;
+        }
 
         public string IdUsuario()
         {

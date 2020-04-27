@@ -134,6 +134,12 @@ Usuarios.IdRol = Roles.Id
 
         public static string GenerarPasswordSalt(string password)
         {
+            //para que no de error si es null, se deja una cadena null
+            if (password == null)
+            {
+                password = "(null)";
+            }
+
             string passwordSalt;
 
             // generar un salt de 128-bit usando PRNG seguro
@@ -153,6 +159,13 @@ Usuarios.IdRol = Roles.Id
 
         public static string GenerarPasswordHash(string password, string salt, string hashingAlgorithm = "HMACSHA256")
         {
+            //para que no de error si es null, se deja una cadena null
+            if (password == null || salt == null)
+            {
+                password = "(null)";
+                salt = "(null)";
+            }
+
             byte[] passwordBytes = Encoding.Unicode.GetBytes(password);
             byte[] saltBytes = Convert.FromBase64String(salt);
             var saltyPasswordBytes = new byte[saltBytes.Length + passwordBytes.Length];
@@ -313,6 +326,41 @@ AND Password LIKE 'bcorrea(cifrada)'
 
         }
 
+
+        public int ValidarClaveActual(string usuario, string clave)
+        {
+            /*
+SELECT COUNT(*) FROM Usuarios
+WHERE Usuario LIKE 'bcorrea'
+AND Password LIKE 'bcorrea'
+
+                        */
+
+            int contador = 0;
+
+            string passwordSalt, passwordHash;
+
+            passwordSalt = ObtenerPasswordSaltPorUsuario(usuario);
+            passwordHash = GenerarPasswordHash(clave, passwordSalt);
+
+            StringBuilder consultaSQL = new StringBuilder();
+
+
+            // si la clave(ya cifrada) es igual el nombre de usuario, se deberá actualizar clave
+            consultaSQL.Append("SELECT COUNT(*) FROM Usuarios ");
+            consultaSQL.Append("WHERE Usuario LIKE @parametroUsuario ");
+            consultaSQL.Append("AND Password LIKE  @parametroClave ");
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                return contador = connection.ExecuteScalar<int>(consultaSQL.ToString(), new { parametroUsuario = usuario, parametroClave = passwordHash });
+            }
+
+
+
+
+
+        }
 
         public Entidades.Usuarios ObtenerUsuarioPorUsername(string usuario)
         {

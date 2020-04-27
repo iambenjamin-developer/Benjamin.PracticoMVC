@@ -178,6 +178,7 @@
     <Content Include="Scripts\Custom\otros\abmData.js" />
     <Content Include="Scripts\Custom\cambiarClave.js" />
     <Content Include="Scripts\Custom\otros\docenteScript.js" />
+    <Content Include="Scripts\Custom\otros\HtmlPage1.html" />
     <Content Include="Scripts\Custom\otros\llenarTagsHtml.js" />
     <Content Include="Scripts\Custom\login.js" />
     <Content Include="Scripts\Custom\otros\rubrosScript.js" />
