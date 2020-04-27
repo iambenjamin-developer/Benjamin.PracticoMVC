@@ -6,21 +6,22 @@ function mostrarTabla() {
 
     $.get("/Usuarios/Listar", function (data) {
 
-        var cadenaBoolean = "Activo---";
+        var cadenaBoolean = "";
+
 
         var contenido = "";
 
         contenido += "<table id='tabla-paginacion-usuarios' class='table table-striped'>";
         contenido += "<thead>";
         contenido += "<tr>";
-        contenido += "<th scope='col'>ID <i class='fas fa-sort'></i></th>";
-        contenido += "<th scope='col'>USUARIO <i class='fas fa-sort'></i></th>";
-        contenido += "<th scope='col'>ROL <i class='fas fa-sort'></i></th>";
-        contenido += "<th scope='col'>NOMBRES <i class='fas fa-sort'></i></th>";
-        contenido += "<th scope='col'>APELLIDOS <i class='fas fa-sort'></i></th>";
-        contenido += "<th scope='col'>FECHA DE ALTA <i class='fas fa-sort'></i></th>";
-        contenido += "<th scope='col'>ESTADO <i class='fas fa-sort'></i></th>";
-        contenido += "<th scope='col'>EDITAR</th>";
+        contenido += "<th scope='col'><i class='fas fa-sort'></i>ID</th>";
+        contenido += "<th scope='col'><i class='fas fa-sort'></i>USUARIO</th>";
+        contenido += "<th scope='col'><i class='fas fa-sort'></i>ROL</th>";
+        contenido += "<th scope='col'><i class='fas fa-sort'></i>NOMBRES</th>";
+        contenido += "<th scope='col'><i class='fas fa-sort'></i>APELLIDOS</th>";
+        contenido += "<th scope='col'><i class='fas fa-sort'></i>FECHA_ALTA</th>";
+        contenido += "<th scope='col'><i class='fas fa-sort'></i>ESTADO</th>";
+        contenido += "<th scope='col'>ACCIONES</th>";
         contenido += "</tr>";
         contenido += "</thead>";
         contenido += "<tbody>";
@@ -29,13 +30,15 @@ function mostrarTabla() {
             contenido += "<tr>";
 
             contenido += "<td>&nbsp;&nbsp;" + data[i].ID + "</td>";
+            idUsuario = parseInt(data[i].ID);
             contenido += "<td>&nbsp;&nbsp;" + data[i].USUARIO + "</td>";
             contenido += "<td>&nbsp;&nbsp;" + data[i].ROL + "</td>";
             contenido += "<td>&nbsp;&nbsp;" + data[i].NOMBRES + "</td>";
             contenido += "<td>&nbsp;&nbsp;" + data[i].APELLIDOS + "</td>";
             contenido += "<td>&nbsp;&nbsp;" + parsearFecha(data[i].FECHA_ALTA) + "</td>";
             contenido += "<td>&nbsp;&nbsp;" + convertirBooleanToString(data[i].ESTADO.toString()) + "</td>";
-            contenido += "<td>&nbsp;&nbsp;&nbsp;<button id='btnEditar' class='btn btn-primary' onclick='abrirModal(" + data[i].ID + ")' data-toggle='modal' data-target='#exampleModal'><i class='fas fa-edit'></i></button></td>";
+            contenido += "<td><button id='btnEditar' class='btn btn-primary' onclick='abrirModal(" + idUsuario + ")' data-toggle='modal' data-target='#exampleModal'><i class='fas fa-edit'></i></button>";
+            contenido += "&nbsp;<button id='btnResetClave' class='btn btn-danger' onclick='resetearClave(" + idUsuario + ")' ><i class='fas fa-key'></i></button></td>";
 
             contenido += "</tr>";
         }
@@ -163,8 +166,8 @@ function abrirModal(id) {
         //modificar titulo del modal
         document.getElementById("tituloModal").innerHTML = "Agregar Usuario";
 
-        //ocultar campo de reset clave
-        document.getElementById("divResetClave").style.display = "none";
+        ////ocultar campo de reset clave
+        //document.getElementById("divResetClave").style.display = "none";
 
 
         limpiarDatos();
@@ -180,8 +183,8 @@ function abrirModal(id) {
     else {
 
         document.getElementById("tituloModal").innerHTML = "Editar Usuario";
-        //visualizar campo de reset clave
-        document.getElementById("divResetClave").style.display = "block";
+        ////visualizar campo de reset clave
+        //document.getElementById("divResetClave").style.display = "block";
 
         obtenerRegistro("Usuarios", "Detalle", id);
     }
@@ -316,12 +319,39 @@ function guardar() {
 
 
 
-           //else de alertify despues de evento cancel 
+            //else de alertify despues de evento cancel 
         } else {
             //after clicking Cancel          
         }
     });// fin alertify
 
-          
+
 }
+
+function resetearClave(idUsuario) {
+
+
+
+    /*
+     * @message {String or DOMElement} The dialog contents.
+     * @onok {Function} Invoked when the user clicks OK button.
+     * @oncancel {Function} Invoked when the user clicks Cancel button or closes the dialog.
+     *
+     *  alertify.confirm(message, onok, oncancel);
+     *  
+     * alertify.confirm('titulo','Confirm Message', function(){ alertify.success('Ok') }, function(){ alertify.error('Cancel')});
+     */
+    alertify.confirm('ID Usuario: ' + idUsuario, //titulo
+        '¿Desear resetear la clave?', //mensaje
+        function () { //cuando se presiona OK
+            alertify.success('Clave reseteada con exito')
+        }, 
+        function () { alertify.error('No se realizó el reset clave') }); //cuando se presiona Cancel
+
+
+
+}
+
+
+
 
