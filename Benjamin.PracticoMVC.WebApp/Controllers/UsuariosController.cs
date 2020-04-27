@@ -115,7 +115,16 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         }
 
 
+        public int CodigoResetearClave(int idUsuario)
+        {
+            AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
+            int codigoResetClave = metodos.ResetearClave(idUsuario);
+
+
+            return  codigoResetClave;
+
+        }
 
 
 

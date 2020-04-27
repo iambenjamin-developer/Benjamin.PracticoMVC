@@ -344,9 +344,22 @@ function resetearClave(idUsuario) {
     alertify.confirm('ID Usuario: ' + idUsuario, //titulo
         '¿Desear resetear la clave?', //mensaje
         function () { //cuando se presiona OK
-            alertify.success('Clave reseteada con exito')
+
+            //obtener codigo de reset clave, si es 1 se reseteo correctamente
+            //va a quedar usuario y clave iguales
+            $.get("/Usuarios/CodigoResetearClave/?idUsuario=" + idUsuario, function (data) {
+
+                if (data == 1) {
+                    alertify.success('Clave reseteada con exito');
+                } else {
+                    alertify.error('No se realizó el reset clave');
+                }
+
+            });
+
+           
         }, 
-        function () { alertify.error('No se realizó el reset clave') }); //cuando se presiona Cancel
+        function () {/* alertify.error('No se realizó el reset clave') */}); //cuando se presiona Cancel
 
 
 

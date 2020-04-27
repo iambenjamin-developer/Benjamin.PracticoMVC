@@ -458,7 +458,49 @@ WHERE Usuarios.Usuario LIKE 'bcorrea'
 
 
 
+        public int ResetearClave(int idUsuario)
+        {
+            /* 
+             UPDATE Usuarios
+             SET Password = Usuario
+             WHERE Id = 33
 
+                */
+
+            Entidades.Usuarios obj = Detalle(idUsuario);
+
+            int filasAfectadas = 0;
+
+            //generamos password salt para guardar en la base
+            string passwordSalt = GenerarPasswordSalt(obj.Usuario);
+
+            //generamos Password hash ya encriptada, para que solo el usuario sepa la password
+            string passwordHash = GenerarPasswordHash(obj.Usuario, passwordSalt);
+
+
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("UPDATE Usuarios ");
+            consultaSQL.Append("SET PasswordSalt = @passwordSaltParametro, Password = @passwordHashParametro ");
+            consultaSQL.Append("WHERE Id = @idParametro ;");
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                filasAfectadas = connection.Execute(consultaSQL.ToString(),
+                   new
+                   {
+                       passwordSaltParametro = passwordSalt,
+                       passwordHashParametro = passwordHash,
+                       idParametro = idUsuario
+                   });
+
+
+            }
+
+            return filasAfectadas;
+
+
+        }
 
 
 

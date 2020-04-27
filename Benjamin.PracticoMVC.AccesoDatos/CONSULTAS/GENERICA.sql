@@ -1,8 +1,9 @@
 ﻿           
-SELECT COUNT(*) FROM Usuarios
-WHERE Usuario LIKE 'cyre'
-AND Password LIKE 'o41maLVeR0+Lj36k6GvpMbYobUs/AeWv7rm3DFLEh6M='
 
+                   select
+                   * from Usuarios
+                  
+                   WHERE Id = 33
 
 /*             
 SELECT  
