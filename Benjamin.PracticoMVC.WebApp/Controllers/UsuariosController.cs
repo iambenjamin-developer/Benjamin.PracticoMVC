@@ -84,11 +84,13 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return codigo;
         }
 
-        public int ValidarClaveActual(Entidades.Login obj) {
+        public int ValidarClaveActual(string claveActual) {
 
 
+            Entidades.Login obj = new Entidades.Login();
             obj.USUARIO = Session["USUARIO"].ToString();
 
+            obj.CLAVE = claveActual;
             AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
 

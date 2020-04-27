@@ -10,159 +10,80 @@
         var repetirClaveNueva = document.getElementById("txtRepetirClaveNueva").value;
 
 
+        //validar longitud de claves
+        if (claveActual.length >= 4 && claveNueva.length >= 4 && repetirClaveNueva.length >= 4) {
+
+            //validar si la clave nueva coincide con la q repite
+            if (claveNueva == repetirClaveNueva) {
 
 
-        console.log(claveActual);
-        console.log(claveNueva);
-        console.log(repetirClaveNueva);
+                // se chequea si la clave actual es valida, si es valida cambiar clave sino no
+                $.get("/Usuarios/ValidarClaveActual/?claveActual=" + claveActual, function (data) {
 
 
-        if (validarCampos(claveActual, claveNueva, repetirClaveNueva) == true) {
+                    if (data == 1) {
 
-            var codigo = validarClaveActual(claveActual);
+                        alertify.success("clave actual válida");
 
-           
+                        cambiarClave(claveNueva);
 
-            console.log(codigo);
-
-            if (codigo == 1) {
-
-                console.log("aca llegamos");
-                var frmCambiarClave = new FormData();
-
-                //relacionar el valor de cada elemento con la clase que le corresponde
-                frmCambiarClave.append("USUARIO", null);
-                frmCambiarClave.append("CLAVE", claveNueva);
-
-
-                $.ajax({
-                    type: "POST",
-                    url: "/Usuarios/CodigoCambiarClave/",
-                    data: frmCambiarClave,
-                    contentType: false,
-                    processData: false,
-                    success: function (data) {
-
-                        if (data == 1) {
-                            //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor1
-                            alertify.success("Clave cambiaada!");
-
-                            location.href = '/Usuarios/Index/';
-
-                        } else {
-                            //Declaraciones ejecutadas cuando ninguno de los valores coincide con el valor de la expresión
-
-                            alertify.error("No se pudo cambiar la clave");
-
-                        }
-
-
-
-
-
-
+                    } else {
+                        alertify.error("La clave actual no es válida");
                     }
 
-                });// fin ajax
+
+                });// fin get
+
+            } else {//si las claves no coinciden error
+                alertify.error("Las claves no coinciden");
+            } // fin if chequear claves coincidentes
+
+        } else {//error si no se valida longitud de claves
+            alertify.error("Claves: minimo 4 caracteres");
+        }// fin if chequear longitud de caracteres
+
+    }); // fin btnAceptar clic
+
+}); // fin document ready
 
 
-            }
-
-
-
-
-
-
-        }// fin if
-
-
-
-
-
-    });
-
-
-});
-
-
-function validarCampos(claveActual, claveNueva, repetirClaveNueva) {
-
-    var contarErrores = 0;
-
-
-    // Validate length
-    if (claveActual.length >= 4 && claveNueva.length >= 4 && repetirClaveNueva.length >= 4) {
-
-        if (claveNueva != repetirClaveNueva) {
-            alertify.error("No coinciden las claves");
-            contarErrores += 1;
-        }
-
-
-
-
-
-
-    } else {
-        alertify.error("Claves: minimo 4 caracteres");
-        contarErrores += 1;
-    }
-
-
-
-
-
-
-    //si hay mas de 1 error la validacion da falsa
-    if (contarErrores == 0) {
-
-        return true;
-
-    } else {
-
-        return false;
-    }
-
-}
-
-function validarClaveActual(claveActual) {
-
-    var condicion = false;
+function cambiarClave(claveNueva) {
 
     var frm = new FormData();
 
     //relacionar el valor de cada elemento con la clase que le corresponde
     frm.append("USUARIO", null);
-    frm.append("CLAVE", claveActual);
-
-    console.log(claveActual);
+    frm.append("CLAVE", claveNueva);
 
     $.ajax({
         type: "POST",
-        url: "/Usuarios/ValidarClaveActual/",
+        url: "/Usuarios/CodigoCambiarClave/",
         data: frm,
         contentType: false,
         processData: false,
         success: function (data) {
 
             if (data == 1) {
-                alertify.success("La clave actual es  correcta");
 
-                condicion = true;
+                alertify.success("Clave cambiada!");
+
+                location.href = '/Usuarios/Index/';
 
             } else {
-                alertify.error("La clave actual es incorrecta");
+                //Declaraciones ejecutadas cuando ninguno de los valores coincide con el valor de la expresión
 
-                condicion = false;
-                
+                alertify.error("No se pudo cambiar la clave");
+
             }
+
+
+
+
+
+
         }
+
     });// fin ajax
 
-    console.log("condicion");
-    console.log(condicion);
 
-    return condicion;
 }
-
-
