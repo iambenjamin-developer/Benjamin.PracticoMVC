@@ -8,16 +8,29 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 {
     public class UsuariosController : Controller
     {
+        // pagina principal de Bienvenida
         public ActionResult Index()
         {
             return View();
         }
 
+        //Vista Login
         public ActionResult Login()
         {
             return View();
         }
 
+
+        //Vista Cambiar
+        public ActionResult CambiarClave()
+        {
+            return View();
+        }
+
+
+        //Codigo para chequear si loguea correctamente y ademas
+        //se verifica que si el usuario y la contraseña es la misma
+        //se debe realizar un cambio de clave en el primer login
         public int CodigoLogin(Entidades.Login obj)
         {
             bool usuarioClaveIguales;
@@ -67,24 +80,11 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
         }
 
-        public ActionResult CambiarClave()
+
+       //antes de cambiar la clave chequear si cuando se reingresa la clave actual
+       //esta escrita correctamente
+        public int ValidarClaveActual(string claveActual)
         {
-            return View();
-        }
-
-        public int CodigoCambiarClave(Entidades.Login obj)
-        {
-
-            obj.USUARIO = Session["USUARIO"].ToString();
-
-            AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
-
-            int codigo = metodos.ActualizarPassword(obj.USUARIO, obj.CLAVE);
-
-            return codigo;
-        }
-
-        public int ValidarClaveActual(string claveActual) {
 
 
             Entidades.Login obj = new Entidades.Login();
@@ -99,10 +99,19 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return codigo;
         }
 
-        public string IdUsuario()
+
+        //ya pasando todas las anteriores verificaciones 
+        //se procede a cambiar la clave
+        public int CodigoCambiarClave(Entidades.Login obj)
         {
 
-            return Session["USUARIO"].ToString();
+            obj.USUARIO = Session["USUARIO"].ToString();
+
+            AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
+
+            int codigo = metodos.ActualizarPassword(obj.USUARIO, obj.CLAVE);
+
+            return codigo;
         }
 
 
