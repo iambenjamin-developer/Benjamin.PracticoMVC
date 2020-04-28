@@ -29,6 +29,7 @@
 
                     } else {
                         alertify.error("La clave actual no es válida");
+                        document.getElementById("txtClaveActual").value = "";
                     }
 
 

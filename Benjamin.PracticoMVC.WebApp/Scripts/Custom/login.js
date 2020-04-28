@@ -41,6 +41,7 @@
                         //Declaraciones ejecutadas cuando ninguno de los valores coincide con el valor de la expresión
 
                         alertify.error("Usuario y/o Contraseña Incorrectos");
+                        document.getElementById("txtClave").value = "";
                     }
                 }
             });// fin ajax
