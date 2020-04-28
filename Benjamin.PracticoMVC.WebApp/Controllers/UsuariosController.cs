@@ -81,8 +81,8 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         }
 
 
-       //antes de cambiar la clave chequear si cuando se reingresa la clave actual
-       //esta escrita correctamente
+        //antes de cambiar la clave chequear si cuando se reingresa la clave actual
+        //esta escrita correctamente
         public int ValidarClaveActual(string claveActual)
         {
 
@@ -122,7 +122,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             int codigoResetClave = metodos.ResetearClave(idUsuario);
 
 
-            return  codigoResetClave;
+            return codigoResetClave;
 
         }
 
@@ -177,7 +177,11 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             {
                 AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
-
+                int filasAfectadas = metodos.Editar(obj);
+                //si hay una fila afectada(actualizada) retornamos 2
+                if (filasAfectadas == 1) {
+                    return 2;
+                }
 
             }
 

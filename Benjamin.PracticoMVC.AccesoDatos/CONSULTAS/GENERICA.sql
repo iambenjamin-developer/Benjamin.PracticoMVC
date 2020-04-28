@@ -1,8 +1,6 @@
-﻿           
-SELECT  Id, Nombre
-FROM Marcas
+﻿
+SELECT * FROM Usuarios
 
-  
 
 /*             
 SELECT  

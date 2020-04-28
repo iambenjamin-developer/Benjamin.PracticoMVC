@@ -26,5 +26,19 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return Json(lista, JsonRequestBehavior.AllowGet);
 
         }
+
+
+        //OBTENER EL REGISTRO DEL PRODUCTO POR SU ID
+        public JsonResult Detalle(int id)
+        {
+            AccesoDatos.Productos metodos = new AccesoDatos.Productos();
+
+            Entidades.Productos obj = metodos.Detalle(id);
+
+            return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+
+
     }
 }

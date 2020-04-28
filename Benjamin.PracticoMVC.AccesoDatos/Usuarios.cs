@@ -502,7 +502,47 @@ WHERE Usuarios.Usuario LIKE 'bcorrea'
 
         }
 
+        public int Editar(Entidades.Usuarios obj)
+        {
 
+            /*
+UPDATE Usuarios
+SET IdRol = 'CLI', 
+Nombre = 'VICKY', Apellido = 'JOHNSON',
+Activo = 0
+WHERE ID = 11
+
+            */
+
+
+            int filasAfectadas = 0;
+
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("UPDATE Usuarios ");
+            consultaSQL.Append("SET IdRol = @idRolParametro,  ");
+            consultaSQL.Append("Nombre = @nombreParametro, Apellido = @apellidoParametro, ");
+            consultaSQL.Append("Activo = @activoParametro ");
+            consultaSQL.Append("WHERE ID = @idParametro ");
+           
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                filasAfectadas = connection.Execute(consultaSQL.ToString(),
+                   new
+                   {
+                       idParametro = obj.Id,
+                       idRolParametro = obj.IdRol,
+                       nombreParametro = obj.Nombre,
+                       apellidoParametro = obj.Apellido,
+                       activoParametro = obj.Activo
+                   });
+
+
+            }
+
+            return filasAfectadas;
+        }
 
 
 
@@ -531,10 +571,7 @@ WHERE Usuarios.Usuario LIKE 'bcorrea'
         }
 
 
-        public void Editar(Entidades.Usuarios objEntidad)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public void Eliminar(object id)
         {

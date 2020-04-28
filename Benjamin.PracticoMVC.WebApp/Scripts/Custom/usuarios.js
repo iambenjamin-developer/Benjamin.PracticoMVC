@@ -166,6 +166,9 @@ function abrirModal(id) {
         //modificar titulo del modal
         document.getElementById("tituloModal").innerHTML = "Agregar Usuario";
 
+
+        document.getElementById("txtID").readOnly = true;
+        document.getElementById("txtUsuario").readOnly = false;
         ////ocultar campo de reset clave
         //document.getElementById("divResetClave").style.display = "none";
 
@@ -183,6 +186,10 @@ function abrirModal(id) {
     else {
 
         document.getElementById("tituloModal").innerHTML = "Editar Usuario";
+
+        document.getElementById("txtID").readOnly = true;
+        document.getElementById("txtUsuario").readOnly = true;
+        
         ////visualizar campo de reset clave
         //document.getElementById("divResetClave").style.display = "block";
 

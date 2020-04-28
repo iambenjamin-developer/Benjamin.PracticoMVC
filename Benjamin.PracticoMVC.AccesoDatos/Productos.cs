@@ -53,5 +53,46 @@ Productos.IdMarca = Marcas.Id
 
             return lista;
         }
+
+
+        public Entidades.Productos Detalle(int id)
+        {
+
+            /*
+             
+SELECT 
+Codigo,
+Nombre,
+Descripcion,
+IdMarca,
+PrecioUnitario, 
+Activo, 
+UrlImange
+FROM Productos
+WHERE Codigo = 1000
+             
+             */
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("SELECT ");
+            consultaSQL.Append("Codigo, ");
+            consultaSQL.Append("Nombre, ");
+            consultaSQL.Append("Descripcion, ");
+            consultaSQL.Append("IdMarca, ");
+            consultaSQL.Append("PrecioUnitario, ");
+            consultaSQL.Append("Activo,  ");
+            consultaSQL.Append("UrlImange ");
+            consultaSQL.Append("FROM Productos ");
+            consultaSQL.Append("WHERE Codigo = @codigoParametro ");
+         
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                var obj = connection.QuerySingleOrDefault<Entidades.Productos>(consultaSQL.ToString(), new { codigoParametro = id });
+
+                return obj;
+            }
+
+        }
+
     }
 }

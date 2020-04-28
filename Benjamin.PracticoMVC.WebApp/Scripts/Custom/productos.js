@@ -1,15 +1,19 @@
-﻿//sirve para plasmar el nombre del archivo q se sube en una file input
-$('.custom-file-input').on('change', function (event) {
-    var inputFile = event.currentTarget;
-    $(inputFile).parent()
-        .find('.custom-file-label')
-        .html(inputFile.files[0].name);
+﻿setearFileInput();
 
-});   
+function setearFileInput() {
+    //sirve para plasmar el nombre del archivo q se sube en una file input
+    $('.custom-file-input').on('change', function (event) {
+        var inputFile = event.currentTarget;
+        $(inputFile).parent()
+            .find('.custom-file-label')
+            .html(inputFile.files[0].name);
+
+    });
+
+}
+
 
 mostrarTabla();
-
-rellenarComboBox("Marcas", "Listar", "cboMarcas");
 
 function mostrarTabla() {
 
@@ -43,7 +47,7 @@ function mostrarTabla() {
             contenido += "<td class='text-right' >" + parsearMoneda(data[i].PRECIO) + "</td>";
             contenido += "<td>&nbsp;&nbsp;" + convertirBooleanToString(data[i].ACTIVO.toString()) + "</td>";
             contenido += "<td>&nbsp;&nbsp;<button id='btnEditar' class='btn btn-primary' onclick='abrirModal(" + codigo + ")' data-toggle='modal' data-target='#exampleModal'><i class='fas fa-edit'></i></button></td>";
-            
+
 
             contenido += "</tr>";
         }
@@ -103,6 +107,9 @@ function mostrarTabla() {
 
 }
 
+
+rellenarComboBox("Marcas", "Listar", "cboMarcas");
+
 function rellenarComboBox(controlador, jsonAccion, stringID) {
 
     var ruta = "/";
@@ -129,6 +136,7 @@ function rellenarComboBox(controlador, jsonAccion, stringID) {
     });
 
 }
+
 
 function convertirBooleanToString(cadenaBoolean) {
 
@@ -160,15 +168,12 @@ function abrirModal(id) {
         //modificar titulo del modal
         document.getElementById("tituloModal").innerHTML = "Agregar Producto";
 
-        ////ocultar campo de reset clave
-        //document.getElementById("divResetClave").style.display = "none";
-
 
         limpiarDatos();
 
 
         //chkEstado predefinirlo activo
-        document.getElementById("chkEstado").checked = true;
+        document.getElementById("chkActivo").checked = true;
 
 
 
@@ -177,10 +182,8 @@ function abrirModal(id) {
     else {
 
         document.getElementById("tituloModal").innerHTML = "Editar Producto";
-        ////visualizar campo de reset clave
-        //document.getElementById("divResetClave").style.display = "block";
-
-        obtenerRegistro("Usuarios", "Detalle", id);
+   
+        obtenerRegistro("Productos", "Detalle", id);
     }
 
 }
@@ -189,7 +192,7 @@ function abrirModal(id) {
 function limpiarDatos() {
     limpiarTextBoxes();
     limpiarComboBoxes();
-
+    limpiarFileInput();
 }
 
 function limpiarTextBoxes() {
@@ -215,7 +218,9 @@ function limpiarComboBoxes() {
 
 }
 
+function limpiarFileInput() {
 
+}
 function obtenerRegistro(controlador, jsonAccion, id) {
 
     //ruta = /Controlador/Accion/?id=parametro
@@ -229,12 +234,14 @@ function obtenerRegistro(controlador, jsonAccion, id) {
     $.get(ruta, function (data) {
 
 
-        document.getElementById("txtID").value = data.Id;
-        document.getElementById("txtUsuario").value = data.Usuario;
-        document.getElementById("cboRoles").value = data.IdRol;
-        document.getElementById("txtNombres").value = data.Nombre;
-        document.getElementById("txtApellidos").value = data.Apellido;
-        document.getElementById("chkEstado").checked = data.Activo;
+        document.getElementById("txtCodigo").value = data.Codigo;
+        document.getElementById("txtNombre").value = data.Nombre;
+        document.getElementById("txtDescripcion").value = data.Descripcion;
+        document.getElementById("cboMarcas").value = data.IdMarca;
+        document.getElementById("txtPrecioUnitario").value = data.PrecioUnitario;
+        document.getElementById("chkActivo").checked = data.Activo;
+        document.getElementById("imgProducto").value = data.UrlImange;
+        
 
 
     });
