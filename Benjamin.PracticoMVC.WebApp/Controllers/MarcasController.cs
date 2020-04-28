@@ -6,25 +6,17 @@ using System.Web.Mvc;
 
 namespace Benjamin.PracticoMVC.WebApp.Controllers
 {
-    public class ProductosController : Controller
+    public class MarcasController : Controller
     {
-        // ABM de productos como administrador
-        public ActionResult ABM()
-        {
-            return View();
-        }
-
-
-        //Json que obtiene la lista de todos los producto
+        //listar Marcas para comboBox
         public JsonResult Listar()
         {
-
-            AccesoDatos.Productos metodos = new AccesoDatos.Productos();
-
+            AccesoDatos.Marcas metodos = new AccesoDatos.Marcas();
             var lista = metodos.Listar();
 
             return Json(lista, JsonRequestBehavior.AllowGet);
-
         }
+
+
     }
 }

@@ -53,7 +53,7 @@ function mostrarTabla() {
         contenido += "<th>&nbsp;APELLIDOS</th>";
         contenido += "<th>FECHA DE ALTA</th>";
         contenido += "<th>&nbsp;ESTADO</th>";
-        contenido += "<th>&nbsp;EDITAR</th>";
+        contenido += "<th>&nbsp;ACCIONES</th>";
         contenido += "</tr>";
         contenido += "</tfoot>";
         contenido += "</table>";

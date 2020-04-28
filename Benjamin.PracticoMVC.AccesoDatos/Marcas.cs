@@ -10,34 +10,30 @@ using Dapper;
 
 namespace Benjamin.PracticoMVC.AccesoDatos
 {
-  public  class Roles
+   public class Marcas
     {
         string cadenaConexion = Conexiones.ObtenerCadenaConexion();
 
-        public List<Entidades.Roles> Listar()
+        public List<Entidades.Marcas> Listar()
         {
-            List<Entidades.Roles> lista = new List<Entidades.Roles>();
+            List<Entidades.Marcas> lista = new List<Entidades.Marcas>();
 
             StringBuilder consultaSQL = new StringBuilder();
 
             /*
-           
-SELECT
-Id,
-Descripcion 
-FROM ROLES
+SELECT  Id, Nombre
+FROM Marcas
              */
 
-            consultaSQL.Append("SELECT ");
-            consultaSQL.Append("Id, ");
-            consultaSQL.Append("Descripcion ");
-            consultaSQL.Append("FROM ROLES ");
-         
+            consultaSQL.Append("SELECT  Id, Nombre ");
+            consultaSQL.Append("FROM Marcas ");
+
+
 
 
             using (var connection = new SqlConnection(cadenaConexion))
             {
-                lista = connection.Query<Entidades.Roles>(consultaSQL.ToString()).ToList();
+                lista = connection.Query<Entidades.Marcas>(consultaSQL.ToString()).ToList();
             }
 
             return lista;

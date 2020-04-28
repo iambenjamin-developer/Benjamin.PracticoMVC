@@ -1,9 +1,8 @@
 ﻿           
+SELECT  Id, Nombre
+FROM Marcas
 
-                   select
-                   * from Usuarios
-                  
-                   WHERE Id = 33
+  
 
 /*             
 SELECT  

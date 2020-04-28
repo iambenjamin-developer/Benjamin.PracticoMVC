@@ -1,15 +1,19 @@
-﻿$custom - file - text: (
-    en: "Browse",
-    es: "Elegir"
-);
+﻿//sirve para plasmar el nombre del archivo q se sube en una file input
+$('.custom-file-input').on('change', function (event) {
+    var inputFile = event.currentTarget;
+    $(inputFile).parent()
+        .find('.custom-file-label')
+        .html(inputFile.files[0].name);
+
+});   
 
 mostrarTabla();
 
-rellenarComboBox("Roles", "Listar", "cboRoles");
+rellenarComboBox("Marcas", "Listar", "cboMarcas");
 
 function mostrarTabla() {
 
-    $.get("/Usuarios/Listar", function (data) {
+    $.get("/Productos/Listar", function (data) {
 
         var cadenaBoolean = "";
 
@@ -19,14 +23,12 @@ function mostrarTabla() {
         contenido += "<table id='tabla-paginacion-usuarios' class='table table-striped'>";
         contenido += "<thead>";
         contenido += "<tr>";
-        contenido += "<th scope='col'><i class='fas fa-sort'></i>ID</th>";
-        contenido += "<th scope='col'><i class='fas fa-sort'></i>USUARIO</th>";
-        contenido += "<th scope='col'><i class='fas fa-sort'></i>ROL</th>";
-        contenido += "<th scope='col'><i class='fas fa-sort'></i>NOMBRES</th>";
-        contenido += "<th scope='col'><i class='fas fa-sort'></i>APELLIDOS</th>";
-        contenido += "<th scope='col'><i class='fas fa-sort'></i>FECHA_ALTA</th>";
-        contenido += "<th scope='col'><i class='fas fa-sort'></i>ESTADO</th>";
-        contenido += "<th scope='col'>ACCIONES</th>";
+        contenido += "<th scope='col'><i class='fas fa-sort'></i>CODIGO</th>";
+        contenido += "<th scope='col'><i class='fas fa-sort'></i>NOMBRE</th>";
+        contenido += "<th scope='col'><i class='fas fa-sort'></i>MARCA</th>";
+        contenido += "<th scope='col' class='text-right'><i class='fas fa-sort'></i>PRECIO</th>";
+        contenido += "<th scope='col'><i class='fas fa-sort'></i>ACTIVO</th>";
+        contenido += "<th scope='col'>EDITAR</th>";
         contenido += "</tr>";
         contenido += "</thead>";
         contenido += "<tbody>";
@@ -34,16 +36,14 @@ function mostrarTabla() {
         for (var i = 0; i < data.length; i++) {
             contenido += "<tr>";
 
-            contenido += "<td>&nbsp;&nbsp;" + data[i].ID + "</td>";
-            idUsuario = parseInt(data[i].ID);
-            contenido += "<td>&nbsp;&nbsp;" + data[i].USUARIO + "</td>";
-            contenido += "<td>&nbsp;&nbsp;" + data[i].ROL + "</td>";
-            contenido += "<td>&nbsp;&nbsp;" + data[i].NOMBRES + "</td>";
-            contenido += "<td>&nbsp;&nbsp;" + data[i].APELLIDOS + "</td>";
-            contenido += "<td>&nbsp;&nbsp;" + parsearFecha(data[i].FECHA_ALTA) + "</td>";
-            contenido += "<td>&nbsp;&nbsp;" + convertirBooleanToString(data[i].ESTADO.toString()) + "</td>";
-            contenido += "<td><button id='btnEditar' class='btn btn-primary' onclick='abrirModal(" + idUsuario + ")' data-toggle='modal' data-target='#exampleModal'><i class='fas fa-edit'></i></button>";
-            contenido += "&nbsp;<button id='btnResetClave' class='btn btn-danger' onclick='resetearClave(" + idUsuario + ")' ><i class='fas fa-key'></i></button></td>";
+            contenido += "<td>&nbsp;&nbsp;" + data[i].CODIGO + "</td>";
+            codigo = parseInt(data[i].CODIGO);
+            contenido += "<td>&nbsp;&nbsp;" + data[i].NOMBRE + "</td>";
+            contenido += "<td>&nbsp;&nbsp;" + data[i].MARCA + "</td>";
+            contenido += "<td class='text-right' >" + parsearMoneda(data[i].PRECIO) + "</td>";
+            contenido += "<td>&nbsp;&nbsp;" + convertirBooleanToString(data[i].ACTIVO.toString()) + "</td>";
+            contenido += "<td>&nbsp;&nbsp;<button id='btnEditar' class='btn btn-primary' onclick='abrirModal(" + codigo + ")' data-toggle='modal' data-target='#exampleModal'><i class='fas fa-edit'></i></button></td>";
+            
 
             contenido += "</tr>";
         }
@@ -51,14 +51,12 @@ function mostrarTabla() {
         contenido += "</tbody>";
         contenido += "<tfoot>";
         contenido += "<tr>";
-        contenido += "<th>&nbsp;ID</th>";
-        contenido += "<th>&nbsp;USUARIO</th>";
-        contenido += "<th>&nbsp;ROL</th>";
-        contenido += "<th>&nbsp;NOMBRES</th>";
-        contenido += "<th>&nbsp;APELLIDOS</th>";
-        contenido += "<th>FECHA DE ALTA</th>";
-        contenido += "<th>&nbsp;ESTADO</th>";
-        contenido += "<th>&nbsp;EDITAR</th>";
+        contenido += "<th>&nbsp;CODIGO</th>";
+        contenido += "<th>&nbsp;NOMBRE</th>";
+        contenido += "<th>&nbsp;MARCA</th>";
+        contenido += "<th class='text-right'>&nbsp;PRECIO</th>";
+        contenido += "<th>&nbsp;ACTIVO</th>";
+        contenido += "<th>EDITAR</th>";
         contenido += "</tr>";
         contenido += "</tfoot>";
         contenido += "</table>";
@@ -120,7 +118,7 @@ function rellenarComboBox(controlador, jsonAccion, stringID) {
         for (var i = 0; i < data.length; i++) {
 
             contenido += "<option value='" + data[i].Id + "'>";
-            contenido += data[i].Descripcion;
+            contenido += data[i].Nombre;
             contenido += "</option>";
         }
 
@@ -134,32 +132,23 @@ function rellenarComboBox(controlador, jsonAccion, stringID) {
 
 function convertirBooleanToString(cadenaBoolean) {
 
-    if (cadenaBoolean == "True") {
+
+    if (cadenaBoolean == "true") {
 
         return "Activo";
     }
 
-    if (cadenaBoolean == "False") {
+    if (cadenaBoolean == "false") {
 
         return "Baja";
     }
 
 }
 
-function parsearFecha(fecha) {
 
+function parsearMoneda(decimal) {
 
-    if (fecha != null) {
-
-        moment.locale("es");
-
-        return moment(fecha).format('L');
-
-    } else {
-
-        return "No Aplica";
-    }
-
+    return new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(decimal);
 };
 
 
@@ -169,7 +158,7 @@ function abrirModal(id) {
     if (id == 0) {
 
         //modificar titulo del modal
-        document.getElementById("tituloModal").innerHTML = "Agregar Usuario";
+        document.getElementById("tituloModal").innerHTML = "Agregar Producto";
 
         ////ocultar campo de reset clave
         //document.getElementById("divResetClave").style.display = "none";
@@ -187,7 +176,7 @@ function abrirModal(id) {
     }//Si el ID distinto de cero usamos el modal para editar
     else {
 
-        document.getElementById("tituloModal").innerHTML = "Editar Usuario";
+        document.getElementById("tituloModal").innerHTML = "Editar Producto";
         ////visualizar campo de reset clave
         //document.getElementById("divResetClave").style.display = "block";
 
