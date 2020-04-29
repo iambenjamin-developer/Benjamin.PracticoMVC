@@ -166,7 +166,7 @@ function abrirModal(id) {
     if (id == 0) {
 
         //modificar titulo del modal
-        document.getElementById("tituloModal").innerHTML = "Agregar Producto";
+        document.getElementById("tituloModal").innerHTML = "<strong><em>Agregar Producto</em></strong>";
 
 
         limpiarDatos();
@@ -175,14 +175,15 @@ function abrirModal(id) {
         //chkEstado predefinirlo activo
         document.getElementById("chkActivo").checked = true;
 
-
+        //por defecto la foto es la de no disponible
+        document.getElementById("divFoto").innerHTML = "<img class='img-fluid img-thumbnail' src='/images/productos/no-disponible.png'  />";
 
 
     }//Si el ID distinto de cero usamos el modal para editar
     else {
 
-        document.getElementById("tituloModal").innerHTML = "Editar Producto";
-   
+        document.getElementById("tituloModal").innerHTML = "<strong><em>Editar Producto</em></strong>";
+
         obtenerRegistro("Productos", "Detalle", id);
     }
 
@@ -233,15 +234,22 @@ function obtenerRegistro(controlador, jsonAccion, id) {
 
     $.get(ruta, function (data) {
 
-
+        
+        
         document.getElementById("txtCodigo").value = data.Codigo;
         document.getElementById("txtNombre").value = data.Nombre;
         document.getElementById("txtDescripcion").value = data.Descripcion;
         document.getElementById("cboMarcas").value = data.IdMarca;
         document.getElementById("txtPrecioUnitario").value = data.PrecioUnitario;
         document.getElementById("chkActivo").checked = data.Activo;
-        document.getElementById("imgProducto").value = data.UrlImange;
-        
+
+        var ubicacionFoto = "";
+        ubicacionFoto += "<img class='img-fluid img-thumbnail' src='";
+        ubicacionFoto += data.UrlImange;
+        ubicacionFoto += "' />";
+
+        document.getElementById("divFoto").innerHTML = ubicacionFoto;
+
 
 
     });
