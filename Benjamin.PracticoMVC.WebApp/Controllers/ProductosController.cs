@@ -45,5 +45,35 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
 
 
+        public int Guardar(Entidades.Productos obj)
+        {
+            int retorno = -1;
+
+            //si el ID es cero agregar
+            if (obj.Codigo == 0)
+            {
+                AccesoDatos.Productos metodos = new AccesoDatos.Productos();
+
+                metodos.Crear(obj);
+
+                retorno = 1;
+            }
+            else // si el ID es distinto de cero editar
+            {
+                AccesoDatos.Productos metodos = new AccesoDatos.Productos();
+
+                int filasAfectadas = metodos.Editar(obj);
+                //si hay una fila afectada(actualizada) retornamos 2
+                if (filasAfectadas == 1)
+                {
+                    retorno = 2;
+                }
+
+            }
+
+            return retorno;
+        }
+
+
     }
 }

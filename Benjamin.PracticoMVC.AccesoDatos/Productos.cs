@@ -10,7 +10,7 @@ using Dapper;
 
 namespace Benjamin.PracticoMVC.AccesoDatos
 {
-   public class Productos
+    public class Productos
     {
         string cadenaConexion = Conexiones.ObtenerCadenaConexion();
 
@@ -44,7 +44,7 @@ Productos.IdMarca = Marcas.Id
             consultaSQL.Append("FROM Productos ");
             consultaSQL.Append("INNER JOIN Marcas ON  ");
             consultaSQL.Append("Productos.IdMarca = Marcas.Id ");
-    
+
 
             using (var connection = new SqlConnection(cadenaConexion))
             {
@@ -53,7 +53,6 @@ Productos.IdMarca = Marcas.Id
 
             return lista;
         }
-
 
         public Entidades.Productos Detalle(int id)
         {
@@ -84,7 +83,7 @@ WHERE Codigo = 1000
             consultaSQL.Append("UrlImange ");
             consultaSQL.Append("FROM Productos ");
             consultaSQL.Append("WHERE Codigo = @codigoParametro ");
-         
+
             using (var connection = new SqlConnection(cadenaConexion))
             {
                 var obj = connection.QuerySingleOrDefault<Entidades.Productos>(consultaSQL.ToString(), new { codigoParametro = id });
@@ -93,6 +92,87 @@ WHERE Codigo = 1000
             }
 
         }
+
+        public void Crear(Entidades.Productos obj)
+        {
+
+            /*
+INSERT INTO Productos(Nombre, Descripcion, IdMarca, PrecioUnitario, Activo, UrlImange)
+VALUES (@Nombre, @Descripcion, @IdMarca, @PrecioUnitario, @Activo, @UrlImange)
+
+                 */
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("INSERT INTO Productos(Nombre, Descripcion, IdMarca, PrecioUnitario, Activo, UrlImange)  ");
+            consultaSQL.Append("VALUES (@NombreParametro, @DescripcionParametro, @IdMarcaParametro, @PrecioUnitarioParametro, @ActivoParametro, @UrlImangeParametro) ");
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                var filasAfectadas = connection.Execute(consultaSQL.ToString(),
+                    new
+                    {
+                        NombreParametro = obj.Nombre,
+                        DescripcionParametro = obj.Descripcion,
+                        IdMarcaParametro = obj.IdMarca,
+                        PrecioUnitarioParametro = obj.PrecioUnitario,
+                        ActivoParametro = obj.Activo,
+                        UrlImangeParametro = obj.UrlImange,
+
+                    });
+
+
+            }
+
+
+
+        }
+
+        public int Editar(Entidades.Productos obj)
+        {
+
+            /*
+UPDATE Productos
+SET Nombre = Nombre, Descripcion = Descripcion, IdMarca = IdMarca, 
+PrecioUnitario = PrecioUnitario, Activo = Activo, UrlImange = UrlImange
+WHERE Codigo = 1005
+            */
+
+            int filasAfectadas = 0;
+
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("UPDATE Productos ");
+            consultaSQL.Append("SET Nombre = @NombreParametro, Descripcion = @DescripcionParametro, ");
+            consultaSQL.Append("IdMarca = @IdMarcaParametro, PrecioUnitario = @PrecioUnitarioParametro, ");
+            consultaSQL.Append("Activo = @ActivoParametro, UrlImange = @UrlImangeParametro ");
+            consultaSQL.Append("WHERE Codigo = @CodigoParametro ");
+
+
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                filasAfectadas = connection.Execute(consultaSQL.ToString(),
+                   new
+                   {
+                       CodigoParametro = obj.Codigo,
+                       NombreParametro = obj.Nombre,
+                       DescripcionParametro = obj.Descripcion,
+                       IdMarcaParametro = obj.IdMarca,
+                       PrecioUnitarioParametro = obj.PrecioUnitario,
+                       ActivoParametro = obj.Activo,
+                       UrlImangeParametro = obj.UrlImange
+                   });
+
+
+            }
+
+            return filasAfectadas;
+        }
+
+
+
+
+
 
     }
 }

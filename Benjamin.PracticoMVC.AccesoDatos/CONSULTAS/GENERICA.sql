@@ -1,5 +1,7 @@
-﻿
-select * from Productos
+﻿UPDATE Productos
+SET Nombre = Nombre, Descripcion = Descripcion, IdMarca = IdMarca, 
+PrecioUnitario = PrecioUnitario, Activo = Activo, UrlImange = UrlImange
+WHERE Codigo = 1005
 
 /*       
 update productos

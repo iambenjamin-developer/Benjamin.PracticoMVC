@@ -10,7 +10,7 @@ $('.custom-file-input').on('change', function (event) {
     $(inputFile).parent()
         .find('.custom-file-label')
         .html(nombreArchivo);
-  
+    document.getElementById("divFoto").innerHTML = "<img class='img-fluid img-thumbnail' src='/Images/productos/" + inputFile.files[0].name + "'  />";
     contadorCargaImagenes = contadorCargaImagenes + 1;
 });
 
@@ -169,7 +169,7 @@ function abrirModal(id) {
 
     //apenas abre el modal la etiqueta debe quedar con examinar.. si selecciona algun archivo poner el nombre del archivo
     document.getElementById("lblNombreArchivo").innerHTML = "Examinar...";
-    
+
 
 
     //Si el ID es cero usamos el modal para agregar
@@ -178,19 +178,13 @@ function abrirModal(id) {
         //modificar titulo del modal
         document.getElementById("tituloModal").innerHTML = "<strong><em>Agregar Producto</em></strong>";
 
-        
-        
         limpiarDatos();
-
 
         //chkEstado predefinirlo activo
         document.getElementById("chkActivo").checked = true;
 
         //por defecto la foto es la de no disponible
-        document.getElementById("divFoto").innerHTML = "<img class='img-fluid img-thumbnail' src='/images/productos/no-disponible.png'  />";
-       
-        
-
+        document.getElementById("divFoto").innerHTML = "<img class='img-fluid img-thumbnail' src='/Images/productos/no-disponible.png'  />";
 
 
     }//Si el ID distinto de cero usamos el modal para editar
@@ -313,67 +307,64 @@ function guardar() {
 
 
 
-    /*
-    
-        //relacionar el valor de cada elemento con la clase que le corresponde
-        frm.append("Codigo", codigo);
-        frm.append("Nombre", nombre);
-        frm.append("Descripcion", descripcion);
-        frm.append("IdMarca", idMarca);
-        frm.append("PrecioUnitario", precioUnitario);
-        frm.append("Activo", activo);
-        frm.append("UrlImange", ubicacion);
-    
-    
-    
-    
-    
-        alertify.confirm("¿Desea Guardar cambios?", function (e) {
-            if (e) {
-                //after clicking OK
-    
-                $.ajax({
-                    type: "POST",
-                    url: "/Productos/Guardar/",
-                    data: frm,
-                    contentType: false,
-                    processData: false,
-                    success: function (data) {
-                        if (data != 0) {
-    
-                            mostrarTabla();
-    
-                            if (id == 0)
-                                alertify.success('Agregado exitosamente!');
-                            else
-                                alertify.success('Editado exitosamente!');
-    
-    
-                            document.getElementById("btnCancelar").click();
-    
-    
-                        } else {
-                            alertify.error('Error');
-                        }
-    
+    //relacionar el valor de cada elemento con la clase que le corresponde
+    frm.append("Codigo", codigo);
+    frm.append("Nombre", nombre);
+    frm.append("Descripcion", descripcion);
+    frm.append("IdMarca", idMarca);
+    frm.append("PrecioUnitario", precioUnitario.replace(".", ","));
+    frm.append("Activo", activo);
+    frm.append("UrlImange", ruta);
+
+
+
+
+
+    alertify.confirm("¿Desea Guardar cambios?", function (e) {
+        if (e) {
+            //after clicking OK
+
+            $.ajax({
+                type: "POST",
+                url: "/Productos/Guardar/",
+                data: frm,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data != 0) {
+
+                        mostrarTabla();
+
+                        if (id == 0)
+                            alertify.success('Agregado exitosamente!');
+                        else
+                            alertify.success('Editado exitosamente!');
+
+
+                        document.getElementById("btnCancelar").click();
+
+
+                    } else {
+                        alertify.error('Error');
                     }
-    
-                })
-    
-    
-    
-    
-    
-    
-    
-                //else de alertify despues de evento cancel 
-            } else {
-                //after clicking Cancel          
-            }
-        });// fin alertify
-    
-    
-        */
+
+                }
+
+            })
+
+
+
+
+
+
+
+            //else de alertify despues de evento cancel 
+        } else {
+            //after clicking Cancel          
+        }
+    });// fin alertify
+
+
 }
 
 function resetearClave(idUsuario) {
