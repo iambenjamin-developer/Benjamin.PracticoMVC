@@ -14,6 +14,11 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return View();
         }
 
+        public ActionResult ABM2()
+        {
+            return View();
+        }
+
 
         //Json que obtiene la lista de todos los producto
         public JsonResult Listar()

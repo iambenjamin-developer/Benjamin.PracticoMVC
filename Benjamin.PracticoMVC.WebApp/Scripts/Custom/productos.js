@@ -262,12 +262,12 @@ function guardar() {
     var estado = document.getElementById("chkEstado").checked;
 
 
-    console.log(id);
-    console.log(usuario);
-    console.log(idRol);
-    console.log(nombres);
-    console.log(apellidos);
-    console.log(estado);
+    //console.log(id);
+    //console.log(usuario);
+    //console.log(idRol);
+    //console.log(nombres);
+    //console.log(apellidos);
+    //console.log(estado);
 
 
     //relacionar el valor de cada elemento con la clase que le corresponde

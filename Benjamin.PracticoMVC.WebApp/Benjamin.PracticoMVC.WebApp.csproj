@@ -169,6 +169,7 @@
     <Content Include="Images\productos\ironman.png" />
     <Content Include="Images\productos\linterna-verde.png" />
     <Content Include="Images\productos\no-disponible.png" />
+    <Content Include="Images\productos\notebook.png" />
     <Content Include="Images\productos\robin.png" />
     <Content Include="Images\productos\spiderman.png" />
     <Content Include="Images\productos\sr-fantastico.png" />
@@ -227,6 +228,7 @@
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\Usuarios\Index.cshtml" />
     <Content Include="Views\Productos\ABM.cshtml" />
+    <Content Include="Views\Productos\ABM2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Benjamin.PracticoMVC.AccesoDatos\Benjamin.PracticoMVC.AccesoDatos.csproj">
