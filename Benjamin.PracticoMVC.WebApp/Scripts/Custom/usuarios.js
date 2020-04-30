@@ -189,7 +189,7 @@ function abrirModal(id) {
 
         document.getElementById("txtID").readOnly = true;
         document.getElementById("txtUsuario").readOnly = true;
-        
+
         ////visualizar campo de reset clave
         //document.getElementById("divResetClave").style.display = "block";
 
@@ -256,69 +256,72 @@ function obtenerRegistro(controlador, jsonAccion, id) {
 
 function guardar() {
 
+    
+    // chequear campos obligatorios
+    if (obligatorio() == true) {
 
-    var frm = new FormData();
+        var frm = new FormData();
 
-    //colocar en una variable el valor de cada elemento
-    var id = document.getElementById("txtID").value;
-    var usuario = document.getElementById("txtUsuario").value;
-    var idRol = document.getElementById("cboRoles").value;
-    var nombres = document.getElementById("txtNombres").value;
-    var apellidos = document.getElementById("txtApellidos").value;
-    var estado = document.getElementById("chkEstado").checked;
-
-
-    console.log(id);
-    console.log(usuario);
-    console.log(idRol);
-    console.log(nombres);
-    console.log(apellidos);
-    console.log(estado);
+        //colocar en una variable el valor de cada elemento
+        var id = document.getElementById("txtID").value;
+        var usuario = document.getElementById("txtUsuario").value;
+        var idRol = document.getElementById("cboRoles").value;
+        var nombres = document.getElementById("txtNombres").value;
+        var apellidos = document.getElementById("txtApellidos").value;
+        var estado = document.getElementById("chkEstado").checked;
 
 
-    //relacionar el valor de cada elemento con la clase que le corresponde
-    frm.append("Id", id);
-    frm.append("Usuario", usuario);
-    frm.append("IdRol", idRol);
-    frm.append("Nombre", nombres);
-    frm.append("Apellido", apellidos);
-    frm.append("Activo", estado);
+        console.log(id);
+        console.log(usuario);
+        console.log(idRol);
+        console.log(nombres);
+        console.log(apellidos);
+        console.log(estado);
+
+
+        //relacionar el valor de cada elemento con la clase que le corresponde
+        frm.append("Id", id);
+        frm.append("Usuario", usuario);
+        frm.append("IdRol", idRol);
+        frm.append("Nombre", nombres);
+        frm.append("Apellido", apellidos);
+        frm.append("Activo", estado);
 
 
 
 
 
-    alertify.confirm("¿Desea Guardar cambios?", function (e) {
-        if (e) {
-            //after clicking OK
+        alertify.confirm("¿Desea Guardar cambios?", function (e) {
+            if (e) {
+                //after clicking OK
 
-            $.ajax({
-                type: "POST",
-                url: "/Usuarios/Guardar/",
-                data: frm,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    if (data != 0) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Usuarios/Guardar/",
+                    data: frm,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data != 0) {
 
-                        mostrarTabla();
+                            mostrarTabla();
 
-                        if (id == 0)
-                            alertify.success('Agregado exitosamente!');
-                        else
-                            alertify.success('Editado exitosamente!');
-
-
-                        document.getElementById("btnCancelar").click();
+                            if (id == 0)
+                                alertify.success('Agregado exitosamente!');
+                            else
+                                alertify.success('Editado exitosamente!');
 
 
-                    } else {
-                        alertify.error('Error');
+                            document.getElementById("btnCancelar").click();
+
+
+                        } else {
+                            alertify.error('Error');
+                        }
+
                     }
 
-                }
-
-            })
+                })
 
 
 
@@ -326,11 +329,16 @@ function guardar() {
 
 
 
-            //else de alertify despues de evento cancel 
-        } else {
-            //after clicking Cancel          
-        }
-    });// fin alertify
+                //else de alertify despues de evento cancel 
+            } else {
+                //after clicking Cancel          
+            }
+        });// fin alertify
+
+
+
+    }
+
 
 
 }
@@ -364,14 +372,63 @@ function resetearClave(idUsuario) {
 
             });
 
-           
-        }, 
-        function () {/* alertify.error('No se realizó el reset clave') */}); //cuando se presiona Cancel
+
+        },
+        function () {/* alertify.error('No se realizó el reset clave') */ }); //cuando se presiona Cancel
 
 
 
 }
 
 
+function obligatorio() {
+
+     var contador = 0;
+
+    // var id = document.getElementById("txtID").value;
+    var usuario = document.getElementById("txtUsuario").value;
+    var idRol = document.getElementById("cboRoles").value;
+    var nombres = document.getElementById("txtNombres").value;
+    var apellidos = document.getElementById("txtApellidos").value;
+    // var estado = document.getElementById("chkEstado").checked;
+
+    if (validarCampoTexto(usuario) == false) {
+        contador = contador + 1;
+        alertify.error("Ingrese correctamente Usuario");
+    }
+
+    if (idRol <= 0) {
+        contador = contador + 1;
+        alertify.error("Seleccione Rol");
+    }
+
+    if (validarCampoTexto(nombres) == false) {
+        contador = contador + 1;
+        alertify.error("Ingrese correctamente el nombre");
+    }
+
+    if (validarCampoTexto(apellidos) == false) {
+        contador = contador + 1;
+        alertify.error("Ingrese correctamente el apellido");
+    }
 
 
+
+    if (contador == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+function validarCampoTexto(cadena) {
+
+    //Permite de 3 a 99 caracteres alfanuméricos, incluyendo la ñ
+    //y espacios en blanco puntos y guiones.
+    //NO puede comenzar con espacios en blanco
+
+    var reg_ex = /^(?!\s)([A-Za-zñÑ0-9-.\s]{3,99})/;
+
+    return reg_ex.test(cadena);
+}

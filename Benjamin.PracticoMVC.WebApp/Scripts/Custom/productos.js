@@ -1,5 +1,16 @@
 ﻿var contadorCargaImagenes = 0;
 
+var botonAceptar = document.getElementById("btnAceptar");
+
+botonAceptar.onclick = function () {
+
+    if (guardar() == 1) {
+
+        document.getElementById("btnCancelar").click();
+    }
+
+}
+
 //sirve para plasmar el nombre del archivo q se sube en una file input
 $('.custom-file-input').on('change', function (event) {
 
@@ -176,7 +187,7 @@ function abrirModal(id) {
     if (id == 0) {
 
         //modificar titulo del modal
-        document.getElementById("tituloModal").innerHTML = "<strong><em>Agregar Producto</em></strong>";
+        document.getElementById("tituloModal").innerHTML = "<strong>Agregar Producto</strong>";
 
         limpiarDatos();
 
@@ -190,7 +201,7 @@ function abrirModal(id) {
     }//Si el ID distinto de cero usamos el modal para editar
     else {
 
-        document.getElementById("tituloModal").innerHTML = "<strong><em>Editar Producto</em></strong>";
+        document.getElementById("tituloModal").innerHTML = "<strong>Editar Producto</strong>";
 
         obtenerRegistro("Productos", "Detalle", id);
 
@@ -268,103 +279,106 @@ function obtenerRegistro(controlador, jsonAccion, id) {
 
 function guardar() {
 
+    var filasAfectadas = 0;
 
-    var frm = new FormData();
+    if (obligatorio() == true) {
+        var frm = new FormData();
 
-    //colocar en una variable el valor de cada elemento
-    var codigo = document.getElementById("txtCodigo").value;
-    var nombre = document.getElementById("txtNombre").value;
-    var descripcion = document.getElementById("txtDescripcion").value;
-    var idMarca = document.getElementById("cboMarcas").value;
-    var precioUnitario = document.getElementById("txtPrecioUnitario").value;
-    var activo = document.getElementById("chkActivo").checked;
-
-
-    var imgNombreArchivo = "no-disponible.png";
-
-    //si se carga un archivo para cargarlo en imagenes la primera vez va a ser imagen no disponible
-    //una vez empice a cargar archivos se tomara en cuenta el nombre del archivo que se cargo
-    if (contadorCargaImagenes != 0) {
-        imgNombreArchivo = document.getElementById("imgNombreArchivo").value.replace('C:\\fakepath\\', "");
-    }
-    //carpeta donde se guardan las fotos por defecto
-    var carpeta = "/Images/productos/";
-    //compone la ruta completa o ubicacion del archivo con su nombre
-    var ruta = carpeta + imgNombreArchivo;
+        //colocar en una variable el valor de cada elemento
+        var codigo = document.getElementById("txtCodigo").value;
+        var nombre = document.getElementById("txtNombre").value;
+        var descripcion = document.getElementById("txtDescripcion").value;
+        var idMarca = document.getElementById("cboMarcas").value;
+        var precioUnitario = document.getElementById("txtPrecioUnitario").value;
+        var activo = document.getElementById("chkActivo").checked;
 
 
-    console.log(codigo);
-    console.log(nombre);
-    console.log(descripcion);
-    console.log(idMarca);
-    console.log(precioUnitario);
-    console.log(activo);
-    console.log(imgNombreArchivo);
-    console.log(carpeta);
-    console.log(ruta);
+        var imgNombreArchivo = "no-disponible.png";
 
-
-
-
-
-    //relacionar el valor de cada elemento con la clase que le corresponde
-    frm.append("Codigo", codigo);
-    frm.append("Nombre", nombre);
-    frm.append("Descripcion", descripcion);
-    frm.append("IdMarca", idMarca);
-    frm.append("PrecioUnitario", precioUnitario.replace(".", ","));
-    frm.append("Activo", activo);
-    frm.append("UrlImange", ruta);
-
-
-
-
-
-    alertify.confirm("¿Desea Guardar cambios?", function (e) {
-        if (e) {
-            //after clicking OK
-
-            $.ajax({
-                type: "POST",
-                url: "/Productos/Guardar/",
-                data: frm,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    if (data != 0) {
-
-                        mostrarTabla();
-
-                        if (id == 0)
-                            alertify.success('Agregado exitosamente!');
-                        else
-                            alertify.success('Editado exitosamente!');
-
-
-                        document.getElementById("btnCancelar").click();
-
-
-                    } else {
-                        alertify.error('Error');
-                    }
-
-                }
-
-            })
-
-
-
-
-
-
-
-            //else de alertify despues de evento cancel 
-        } else {
-            //after clicking Cancel          
+        //si se carga un archivo para cargarlo en imagenes la primera vez va a ser imagen no disponible
+        //una vez empice a cargar archivos se tomara en cuenta el nombre del archivo que se cargo
+        if (contadorCargaImagenes != 0) {
+            imgNombreArchivo = document.getElementById("imgNombreArchivo").value.replace('C:\\fakepath\\', "");
         }
-    });// fin alertify
+        //carpeta donde se guardan las fotos por defecto
+        var carpeta = "/Images/productos/";
+        //compone la ruta completa o ubicacion del archivo con su nombre
+        var ruta = carpeta + imgNombreArchivo;
 
 
+        console.log(codigo);
+        console.log(nombre);
+        console.log(descripcion);
+        console.log(idMarca);
+        console.log(precioUnitario);
+        console.log(activo);
+        console.log(imgNombreArchivo);
+        console.log(carpeta);
+        console.log(ruta);
+
+
+
+
+
+        //relacionar el valor de cada elemento con la clase que le corresponde
+        frm.append("Codigo", codigo);
+        frm.append("Nombre", nombre);
+        frm.append("Descripcion", descripcion);
+        frm.append("IdMarca", idMarca);
+        frm.append("PrecioUnitario", precioUnitario.replace(".", ","));
+        frm.append("Activo", activo);
+        frm.append("UrlImange", ruta);
+
+        ////////////////////////////////////////////////////
+
+        alertify.confirm('Productos', //titulo
+            '¿Desea Guardar cambios?', //mensaje
+            function () { //cuando se presiona OK
+
+                /////////////////////ajax//////////////////
+                $.ajax({
+                    type: "POST",
+                    url: "/Productos/Guardar/",
+                    data: frm,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data != 0) {
+
+                            mostrarTabla();
+
+                            if (id == 0) {
+                                alertify.success('Agregado exitosamente!');
+                                filasAfectadas = 1;
+                            } else {
+                                alertify.success('Editado exitosamente!');
+                                filasAfectadas = 1;
+                               
+                            }
+
+                        }
+                        else {
+                            alertify.error('Error');
+                        }
+
+                    }//fin success
+
+                }) // fin de ajax
+
+
+
+                /////////////////fin ajax////////////////////////
+
+
+            },
+            function () {/* alertify.error('No se realizó el reset clave') */ }); //cuando se presiona Cancel
+
+
+       
+    }
+
+
+    return filasAfectadas;
 }
 
 function resetearClave(idUsuario) {
@@ -407,3 +421,66 @@ function resetearClave(idUsuario) {
 
 
 
+function obligatorio() {
+
+    var contador = 0;
+
+    //colocar en una variable el valor de cada elemento
+    //   var codigo = document.getElementById("txtCodigo").value;
+    var nombre = document.getElementById("txtNombre").value;
+    var descripcion = document.getElementById("txtDescripcion").value;
+    var idMarca = document.getElementById("cboMarcas").value;
+    var precioUnitario = document.getElementById("txtPrecioUnitario").value;
+    // var activo = document.getElementById("chkActivo").checked;
+
+    if (validarCampoTexto(nombre) == false) {
+        contador = contador + 1;
+        alertify.error("Ingrese correctamente el nombre");
+    }
+
+
+    if (validarCampoTexto(descripcion) == false) {
+        contador = contador + 1;
+        alertify.error("Ingrese correctamente la descripcion");
+    }
+
+    if (idMarca <= 0) {
+        contador = contador + 1;
+        alertify.error("Seleccione Marca");
+    }
+
+    if (validarNumeroDecimal(precioUnitario) == false) {
+        contador = contador + 1;
+        alertify.error("Ingrese correctamente el precio");
+    }
+
+
+
+    if (contador == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+function validarCampoTexto(cadena) {
+
+    //Permite de 3 a 99 caracteres alfanuméricos, incluyendo la ñ
+    //y espacios en blanco puntos y guiones.
+    //NO puede comenzar con espacios en blanco
+
+    var reg_ex = /^(?!\s)([A-Za-zñÑ0-9-.\s]{3,99})/;
+
+    return reg_ex.test(cadena);
+}
+
+function validarNumeroDecimal(cadena) {
+    //Numeros decimales de 1 a 18 digitos.
+    //Incluye puntos y coma
+
+    var reg_ex = /[\d.,]{1,18}/;
+
+    return reg_ex.test(cadena);
+
+}

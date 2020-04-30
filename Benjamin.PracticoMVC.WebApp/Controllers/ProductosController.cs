@@ -14,6 +14,12 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return View();
         }
 
+        public ActionResult Cards()
+        {
+            return View();
+        }
+
+
         public ActionResult ABM2()
         {
             return View();

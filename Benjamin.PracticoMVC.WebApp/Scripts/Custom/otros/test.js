@@ -1,17 +1,8 @@
-﻿var btnLogin = document.getElementById("btnLogin");
+﻿var botonAceptar = document.getElementById("btnAceptar");
 
 
-document.getElementById("txtUsuario").style.display = "block";
-//document.getElementById().style.display = "none";
+botonAceptar.onclick = function () {
 
-btnLogin.onclick = function () {
-
-    //alert("aceptar");
-    //alert("cancelar");
-
-    alertify.success("usuer");
-    alertify.error("lave");
-
-
+    alert("hacer algo");
+    document.getElementById("btnCancelar").click();
 }
-
