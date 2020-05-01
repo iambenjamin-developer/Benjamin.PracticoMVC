@@ -1,15 +1,6 @@
 ﻿var contadorCargaImagenes = 0;
 
-var botonAceptar = document.getElementById("btnAceptar");
 
-botonAceptar.onclick = function () {
-
-    if (guardar() == 1) {
-
-        document.getElementById("btnCancelar").click();
-    }
-
-}
 
 //sirve para plasmar el nombre del archivo q se sube en una file input
 $('.custom-file-input').on('change', function (event) {
@@ -279,7 +270,7 @@ function obtenerRegistro(controlador, jsonAccion, id) {
 
 function guardar() {
 
-    var filasAfectadas = 0;
+
 
     if (obligatorio() == true) {
         var frm = new FormData();
@@ -347,14 +338,16 @@ function guardar() {
 
                             mostrarTabla();
 
-                            if (id == 0) {
+                            if (codigo == 0) {
+
                                 alertify.success('Agregado exitosamente!');
-                                filasAfectadas = 1;
+
                             } else {
+
                                 alertify.success('Editado exitosamente!');
-                                filasAfectadas = 1;
-                               
                             }
+
+                            $("#btnCerrar").click();
 
                         }
                         else {
@@ -378,7 +371,7 @@ function guardar() {
     }
 
 
-    return filasAfectadas;
+   
 }
 
 function resetearClave(idUsuario) {
@@ -482,5 +475,128 @@ function validarNumeroDecimal(cadena) {
     var reg_ex = /[\d.,]{1,18}/;
 
     return reg_ex.test(cadena);
+
+}
+
+/*
+
+var btnOcultar = document.getElementById("btnOcultar");
+
+btnOcultar.onclick = function ()
+{
+    alertify.success("putito");
+    $("#btnCerrar").click();
+}
+
+*/
+
+
+
+function guardar7() {
+
+    var filasAfectadas = 0;
+
+    // chequear campos obligatorios
+    if (obligatorio() == true) {
+
+        var frm = new FormData();
+
+        //colocar en una variable el valor de cada elemento
+        var codigo = document.getElementById("txtCodigo").value;
+        var nombre = document.getElementById("txtNombre").value;
+        var descripcion = document.getElementById("txtDescripcion").value;
+        var idMarca = document.getElementById("cboMarcas").value;
+        var precioUnitario = document.getElementById("txtPrecioUnitario").value;
+        var activo = document.getElementById("chkActivo").checked;
+
+
+        var imgNombreArchivo = "no-disponible.png";
+
+        //si se carga un archivo para cargarlo en imagenes la primera vez va a ser imagen no disponible
+        //una vez empice a cargar archivos se tomara en cuenta el nombre del archivo que se cargo
+        if (contadorCargaImagenes != 0) {
+            imgNombreArchivo = document.getElementById("imgNombreArchivo").value.replace('C:\\fakepath\\', "");
+        }
+        //carpeta donde se guardan las fotos por defecto
+        var carpeta = "/Images/productos/";
+        //compone la ruta completa o ubicacion del archivo con su nombre
+        var ruta = carpeta + imgNombreArchivo;
+
+
+        console.log(codigo);
+        console.log(nombre);
+        console.log(descripcion);
+        console.log(idMarca);
+        console.log(precioUnitario);
+        console.log(activo);
+        console.log(imgNombreArchivo);
+        console.log(carpeta);
+        console.log(ruta);
+
+
+
+
+
+        //relacionar el valor de cada elemento con la clase que le corresponde
+        frm.append("Codigo", codigo);
+        frm.append("Nombre", nombre);
+        frm.append("Descripcion", descripcion);
+        frm.append("IdMarca", idMarca);
+        frm.append("PrecioUnitario", precioUnitario.replace(".", ","));
+        frm.append("Activo", activo);
+        frm.append("UrlImange", ruta);
+
+
+
+
+        alertify.confirm("¿Desea Guardar cambios?", function (e) {
+            if (e) {
+                //after clicking OK
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Productos/Guardar/",
+                    data: frm,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data != 0) {
+
+                            mostrarTabla();
+
+                            if (codigo == 0)
+                                alertify.success('Agregado exitosamente!');
+                            else
+                                alertify.success('Editado exitosamente!');
+
+
+                            document.getElementById("btnCancelar").click();
+
+
+                        } else {
+                            alertify.error('Error');
+                        }
+
+                    }
+
+                })
+
+
+
+
+
+
+
+                //else de alertify despues de evento cancel 
+            } else {
+                //after clicking Cancel          
+            }
+        });// fin alertify
+
+
+
+    }
+
+
 
 }

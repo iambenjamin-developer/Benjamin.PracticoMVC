@@ -27,7 +27,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="tituloModal"> @*titulo*@ </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button id="btnCerrar" type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -118,7 +118,7 @@
             </div>
             <div class="modal-footer">
                 <button id="btnCancelar" type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancelar</button>
-                <button id="btnAceptar" type="button" class="btn btn-outline-success">Aceptar</button>
+                <button id="btnAceptar" type="button" class="btn btn-outline-success" onclick="guardar()">Aceptar</button>
             </div>
         </div>
     </div>
