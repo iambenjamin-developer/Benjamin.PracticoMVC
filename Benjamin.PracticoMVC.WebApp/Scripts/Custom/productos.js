@@ -7,12 +7,17 @@ $('.custom-file-input').on('change', function (event) {
 
     var inputFile = event.currentTarget;
     var nombreArchivo = inputFile.files[0].name;
-    nombreArchivo = nombreArchivo.substring(0, 15) + "...";
+
 
     $(inputFile).parent()
         .find('.custom-file-label')
-        .html(nombreArchivo);
+        .html("Img Seleccionada");
     document.getElementById("divFoto").innerHTML = "<img class='img-fluid img-thumbnail' src='/Images/productos/" + inputFile.files[0].name + "'  />";
+
+    document.getElementById("idRuta").value = "/Images/productos/" + nombreArchivo;
+    //habilitar etiqueta ubicacion
+    document.getElementById("idRutaPadre").style.display = "block";
+
     contadorCargaImagenes = contadorCargaImagenes + 1;
 });
 
@@ -188,15 +193,20 @@ function abrirModal(id) {
         //por defecto la foto es la de no disponible
         document.getElementById("divFoto").innerHTML = "<img class='img-fluid img-thumbnail' src='/Images/productos/no-disponible.png'  />";
 
+        //deshabilitar etiqueta ubicacion
+        document.getElementById("idRutaPadre").style.display = "none";
 
     }//Si el ID distinto de cero usamos el modal para editar
     else {
+        //habilitar etiqueta ubicacion
+        document.getElementById("idRutaPadre").style.display = "block";
+
 
         document.getElementById("tituloModal").innerHTML = "<strong>Editar Producto</strong>";
 
         obtenerRegistro("Productos", "Detalle", id);
 
-        document.getElementById("lblNombreArchivo").value = "Examinar...7";
+
     }
 
 }
@@ -254,6 +264,7 @@ function obtenerRegistro(controlador, jsonAccion, id) {
         document.getElementById("cboMarcas").value = data.IdMarca;
         document.getElementById("txtPrecioUnitario").value = data.PrecioUnitario;
         document.getElementById("chkActivo").checked = data.Activo;
+        document.getElementById("idRuta").value = data.UrlImange;
 
         var ubicacionFoto = "";
         ubicacionFoto += "<img class='img-fluid img-thumbnail' src='";
@@ -282,19 +293,36 @@ function guardar() {
         var idMarca = document.getElementById("cboMarcas").value;
         var precioUnitario = document.getElementById("txtPrecioUnitario").value;
         var activo = document.getElementById("chkActivo").checked;
+        var ruta = document.getElementById("idRuta").value;
 
 
-        var imgNombreArchivo = "no-disponible.png";
+        
 
-        //si se carga un archivo para cargarlo en imagenes la primera vez va a ser imagen no disponible
-        //una vez empice a cargar archivos se tomara en cuenta el nombre del archivo que se cargo
-        if (contadorCargaImagenes != 0) {
-            imgNombreArchivo = document.getElementById("imgNombreArchivo").value.replace('C:\\fakepath\\', "");
+        //si el codigo es cero significa que es crear un nuevo objeto
+        if (codigo == 0) {
+
+            //se va a colocar imagen por defecto de no disponible en que caso de que no se seleccione ninguna
+            var imgNombreArchivo = "no-disponible.png";
+            //carpeta donde se guardan las fotos por defecto
+            var carpeta = "/Images/productos/";
+
+            //si se carga un archivo para cargarlo en imagenes la primera vez va a ser "no-disponible.png"
+            //una vez empice a cargar archivos se tomara en cuenta el nombre del archivo que se cargo
+            if (contadorCargaImagenes > 0) {
+
+                imgNombreArchivo = document.getElementById("imgNombreArchivo").value.replace('C:\\fakepath\\', "");
+            }
+
+           
+            //compone la ruta completa o ubicacion del archivo con su nombre
+            ruta = carpeta + imgNombreArchivo;
         }
-        //carpeta donde se guardan las fotos por defecto
-        var carpeta = "/Images/productos/";
-        //compone la ruta completa o ubicacion del archivo con su nombre
-        var ruta = carpeta + imgNombreArchivo;
+
+
+       
+
+
+      
 
 
         console.log(codigo);
@@ -367,11 +395,11 @@ function guardar() {
             function () {/* alertify.error('No se realizó el reset clave') */ }); //cuando se presiona Cancel
 
 
-       
+
     }
 
 
-   
+
 }
 
 function resetearClave(idUsuario) {
