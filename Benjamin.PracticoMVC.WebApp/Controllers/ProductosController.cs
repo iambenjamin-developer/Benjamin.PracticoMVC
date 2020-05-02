@@ -20,10 +20,6 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         }
 
 
-        public ActionResult ABM2()
-        {
-            return View();
-        }
 
 
         //Json que obtiene la lista de todos los producto
@@ -33,6 +29,21 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             AccesoDatos.Productos metodos = new AccesoDatos.Productos();
 
             var lista = metodos.Listar();
+
+            return Json(lista, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+
+        //Json que obtiene la lista de todos los producto activos
+        //para mostrar a los clientes en forma de cards
+        public JsonResult ListarCards()
+        {
+
+            AccesoDatos.Productos metodos = new AccesoDatos.Productos();
+
+            var lista = metodos.ListarCards();
 
             return Json(lista, JsonRequestBehavior.AllowGet);
 

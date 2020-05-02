@@ -1,7 +1,14 @@
-﻿UPDATE Productos
-SET Nombre = Nombre, Descripcion = Descripcion, IdMarca = IdMarca, 
-PrecioUnitario = PrecioUnitario, Activo = Activo, UrlImange = UrlImange
-WHERE Codigo = 1005
+﻿SELECT 
+Productos.Codigo AS CODIGO,
+Productos.UrlImange AS UBICACION,
+Productos.Nombre AS NOMBRE,
+Marcas.Nombre AS MARCA,
+Productos.Descripcion AS  DESCRIPCION,
+Productos.PrecioUnitario AS PRECIO_UNITARIO
+FROM Productos
+INNER JOIN Marcas ON
+Productos.IdMarca = Marcas.Id
+WHERE Productos.Activo = 1
 
 /*       
 update productos

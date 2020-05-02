@@ -169,6 +169,7 @@
     <Content Include="Scripts\alertify.min.js" />
     <Content Include="Scripts\all.min.js" />
     <Content Include="Scripts\Custom\cambiarClave.js" />
+    <Content Include="Scripts\Custom\cards.js" />
     <Content Include="Scripts\Custom\expresionesRegulares.js" />
     <Content Include="Scripts\Custom\otros\abmData.js" />
     <Content Include="Scripts\Custom\otros\docenteScript.js" />

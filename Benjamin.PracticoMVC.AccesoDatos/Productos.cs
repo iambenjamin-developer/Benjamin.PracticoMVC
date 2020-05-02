@@ -169,8 +169,48 @@ WHERE Codigo = 1005
             return filasAfectadas;
         }
 
+        public List<Entidades.Join_Cards> ListarCards()
+        {
+            /*
+SELECT 
+Productos.Codigo AS CODIGO,
+Productos.UrlImange AS UBICACION,
+Productos.Nombre AS NOMBRE,
+Marcas.Nombre AS MARCA,
+Productos.Descripcion AS  DESCRIPCION,
+Productos.PrecioUnitario AS PRECIO_UNITARIO
+FROM Productos
+INNER JOIN Marcas ON
+Productos.IdMarca = Marcas.Id
+WHERE Productos.Activo = 1
+             */
+            List<Entidades.Join_Cards> lista = new List<Entidades.Join_Cards>();
+
+            StringBuilder consultaSQL = new StringBuilder();
 
 
+            consultaSQL.Append("SELECT ");
+            consultaSQL.Append("Productos.Codigo AS CODIGO, ");
+            consultaSQL.Append("Productos.UrlImange AS UBICACION, "); 
+            consultaSQL.Append("Productos.Nombre AS NOMBRE, ");
+            consultaSQL.Append("Marcas.Nombre AS MARCA, ");
+            consultaSQL.Append("Productos.Descripcion AS  DESCRIPCION, ");
+            consultaSQL.Append("Productos.PrecioUnitario AS PRECIO_UNITARIO ");
+            consultaSQL.Append("FROM Productos ");
+            consultaSQL.Append("INNER JOIN Marcas ON ");
+            consultaSQL.Append("Productos.IdMarca = Marcas.Id ");
+            consultaSQL.Append("WHERE Productos.Activo = 1 "); 
+       
+
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                lista = connection.Query<Entidades.Join_Cards>(consultaSQL.ToString()).ToList();
+            }
+
+            return lista;
+
+        }
 
 
 
