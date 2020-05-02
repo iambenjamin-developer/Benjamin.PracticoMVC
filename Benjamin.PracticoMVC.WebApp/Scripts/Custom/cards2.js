@@ -21,7 +21,7 @@ $.get("/Productos/ListarCards/", function (data) {
         contenido += "<p class='card-text'>" + data[i].DESCRIPCION + "</p>";
         contenido += "<h3 class='card-title'>" + parsearMoneda(data[i].PRECIO_UNITARIO) + "</h3>";
         contenido += "<button id='btnAgregarAlCarrito' class='btn btn-primary' onclick='agregarAlCarrito(" + data[i].CODIGO + ")' >Agregar al carrito</button>";
-
+      
         contenido += "</div>";
         contenido += "</div>";
 

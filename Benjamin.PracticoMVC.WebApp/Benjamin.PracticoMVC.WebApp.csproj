@@ -170,6 +170,7 @@
     <Content Include="Scripts\all.min.js" />
     <Content Include="Scripts\Custom\cambiarClave.js" />
     <Content Include="Scripts\Custom\cards.js" />
+    <Content Include="Scripts\Custom\cards2.js" />
     <Content Include="Scripts\Custom\expresionesRegulares.js" />
     <Content Include="Scripts\Custom\otros\abmData.js" />
     <Content Include="Scripts\Custom\otros\docenteScript.js" />
@@ -221,6 +222,7 @@
     <Content Include="Views\Usuarios\Index.cshtml" />
     <Content Include="Views\Productos\ABM.cshtml" />
     <Content Include="Views\Productos\Cards.cshtml" />
+    <Content Include="Views\Productos\Cards2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Benjamin.PracticoMVC.AccesoDatos\Benjamin.PracticoMVC.AccesoDatos.csproj">
