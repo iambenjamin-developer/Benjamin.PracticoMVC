@@ -1,4 +1,6 @@
-﻿
+﻿var cantidadCarrito = 0;
+document.getElementById("idCantidadCarrito").innerHTML = "(" + cantidadCarrito + ")";
+
 $.get("/Productos/ListarCards/", function (data) {
 
     var contenido = "";
@@ -43,4 +45,8 @@ function parsearMoneda(decimal) {
 function agregarAlCarrito(codigo) {
 
     alert(codigo);
+
+    cantidadCarrito = cantidadCarrito + 1;
+
+    document.getElementById("idCantidadCarrito").innerHTML = "(" + cantidadCarrito + ")";
 }
