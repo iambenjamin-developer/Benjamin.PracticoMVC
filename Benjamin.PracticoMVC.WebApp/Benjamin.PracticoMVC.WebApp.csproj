@@ -157,14 +157,6 @@
     <Content Include="Images\iconos\bombilla.svg" />
     <Content Include="Images\iconos\bootstrap-solid.svg" />
     <Content Include="Images\iconos\bulb.ico" />
-    <Content Include="Images\productos\discoExterno.jpg" />
-    <Content Include="Images\productos\monitor.jpg" />
-    <Content Include="Images\productos\no-disponible.png" />
-    <Content Include="Images\productos\notebook.png" />
-    <Content Include="Images\productos\pc.jpg" />
-    <Content Include="Images\productos\pendrive.jpg" />
-    <Content Include="Images\productos\play4.jpg" />
-    <Content Include="Images\productos\teclado.jpg" />
     <Content Include="Images\wallpaper.jpg" />
     <Content Include="Scripts\alertify.min.js" />
     <Content Include="Scripts\all.min.js" />
@@ -204,6 +196,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Custom\" />
+    <Folder Include="Images\productos\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Marcas\" />
     <Folder Include="Views\Roles\" />

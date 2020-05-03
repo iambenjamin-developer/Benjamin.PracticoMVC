@@ -65,7 +65,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CONSULTAS\GENERICA.sql" />
+    <Content Include="CONSULTAS\db_practico_benjamin.sql" />
+    <Content Include="CONSULTAS\select.sql" />
+    <Content Include="CONSULTAS\insert.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

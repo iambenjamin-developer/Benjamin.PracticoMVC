@@ -11,7 +11,7 @@ namespace Benjamin.PracticoMVC.AccesoDatos
         public static string ObtenerCadenaConexion()
         {
             //cadena de conexion del practico
-            return @"Data Source=NOTEBENJA;Initial Catalog=extrados;Integrated Security=True";
+            return @"Data Source=NOTEBENJA;Initial Catalog=db_practico_benjamin;Integrated Security=True";
         }
 
     }
