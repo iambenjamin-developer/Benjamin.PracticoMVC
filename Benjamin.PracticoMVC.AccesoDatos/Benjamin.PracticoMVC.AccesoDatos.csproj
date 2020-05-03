@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Clientes.cs" />
     <Compile Include="Conexiones.cs" />
     <Compile Include="IRepositorio.cs" />
     <Compile Include="Marcas.cs" />

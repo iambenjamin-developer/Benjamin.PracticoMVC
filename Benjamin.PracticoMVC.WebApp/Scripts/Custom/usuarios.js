@@ -1,4 +1,21 @@
-﻿mostrarTabla();
+﻿comboRoles = document.getElementById("cboRoles");
+document.getElementById("txtRazonSocial").readOnly = true;
+
+comboRoles.onchange = function () {
+
+    var idRol = document.getElementById("cboRoles").value;
+
+    if (idRol == "CLI") {
+        document.getElementById("txtRazonSocial").readOnly = false;
+        document.getElementById("txtRazonSocial").value = "";
+    } else {
+        document.getElementById("txtRazonSocial").readOnly = true;
+        document.getElementById("txtRazonSocial").value = "";
+    }
+
+}
+
+mostrarTabla();
 
 rellenarComboBox("Roles", "Listar", "cboRoles");
 
