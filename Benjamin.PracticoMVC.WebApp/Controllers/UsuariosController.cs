@@ -165,6 +165,8 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         {
             int retorno = -1;
 
+
+         
             //si el ID es cero agregar
             if (obj.Id == 0)
             {
@@ -179,6 +181,42 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
                 AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
                 int filasAfectadas = metodos.Editar(obj);
+                //si hay una fila afectada(actualizada) retornamos 2
+                if (filasAfectadas == 1)
+                {
+                    retorno = 2;
+                }
+
+            }
+
+            return retorno;
+        }
+
+
+        public int Guardar2(Entidades.Join_UsuariosClientes obj_Usuario_Cliente)
+        {
+            int retorno = -1;
+
+
+
+            //si el ID_USUARIO es cero agregar
+            if (obj_Usuario_Cliente.ID_USUARIO == 0)
+            {
+                //colocar fecha de hoy / ahora cuando se da un alta
+                obj_Usuario_Cliente.FECHA_CREACION = DateTime.Now;
+
+
+                AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
+
+                metodos.Crear2(obj_Usuario_Cliente);
+
+                retorno = 1;
+            }
+            else // si el ID_USUARIO es distinto de cero editar
+            {
+                AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
+
+                int filasAfectadas = metodos.Editar2(obj_Usuario_Cliente);
                 //si hay una fila afectada(actualizada) retornamos 2
                 if (filasAfectadas == 1)
                 {

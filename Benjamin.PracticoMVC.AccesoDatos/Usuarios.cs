@@ -131,6 +131,58 @@ Usuarios.IdRol = Roles.Id
 
         }
 
+        public void Crear2(Entidades.Join_UsuariosClientes obj)
+        {
+            /*
+
+            //INSERT INTO Usuarios(IdRol, Usuario, Nombre, Apellido, Password, PasswordSalt, FechaCreacion, Activo)
+            //VALUES('CLI', 'drodriguez', 'David', 'Rodriguez', 'password', 'passwordSalt', GETDATE(), 0);
+
+            //cuando creamos el usuario, la contraseña es la misma que el nombre de usuario. 
+            // En el primer logueo si la contraseña es igual al usuario le pedira el cambio de la misma
+
+            //Cuando se crea por primera vez el usuario y la contraseña son las mismas asi en el proximo
+            //login pide cambiarla
+            obj.Password = obj.Usuario;
+
+
+
+            //generamos password salt para guardar en la base
+            obj.PasswordSalt = GenerarPasswordSalt(obj.Password);
+
+            //generamos Password hash ya encriptada, para que solo el usuario sepa la password
+            objEntidad.Password = GenerarPasswordHash(obj.Password, obj.PasswordSalt);
+
+
+
+
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("INSERT INTO Usuarios(IdRol, Usuario, Nombre, Apellido, Password, PasswordSalt, FechaCreacion, Activo)  ");
+            consultaSQL.Append("VALUES(@IdRol, @Usuario, @Nombre, @Apellido, @Password, @PasswordSalt, @FechaCreacion, @Activo); ");
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                var filasAfectadas = connection.Execute(consultaSQL.ToString(),
+                    new
+                    {
+                        IdRol = objEntidad.IdRol,
+                        Usuario = objEntidad.Usuario,
+                        Nombre = objEntidad.Nombre,
+                        Apellido = objEntidad.Apellido,
+                        Password = objEntidad.Password,
+                        PasswordSalt = objEntidad.PasswordSalt,
+                        FechaCreacion = DateTime.Now,
+                        Activo = objEntidad.Activo
+                    });
+
+
+            }
+
+*/
+
+        }
+
 
         public static string GenerarPasswordSalt(string password)
         {
@@ -544,6 +596,52 @@ WHERE ID = 11
             return filasAfectadas;
         }
 
+        public int Editar2(Entidades.Join_UsuariosClientes obj)
+        {
+
+
+            /*
+UPDATE Usuarios
+SET IdRol = 'CLI', 
+Nombre = 'VICKY', Apellido = 'JOHNSON',
+Activo = 0
+WHERE ID = 11
+
+            */
+
+            /*
+            int filasAfectadas = 0;
+
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("UPDATE Usuarios ");
+            consultaSQL.Append("SET IdRol = @idRolParametro,  ");
+            consultaSQL.Append("Nombre = @nombreParametro, Apellido = @apellidoParametro, ");
+            consultaSQL.Append("Activo = @activoParametro ");
+            consultaSQL.Append("WHERE ID = @idParametro ");
+
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                filasAfectadas = connection.Execute(consultaSQL.ToString(),
+                   new
+                   {
+                       idParametro = obj.Id,
+                       idRolParametro = obj.IdRol,
+                       nombreParametro = obj.Nombre,
+                       apellidoParametro = obj.Apellido,
+                       activoParametro = obj.Activo
+                   });
+
+
+            }
+
+            return filasAfectadas;
+
+            */
+
+            return 777;
+        }
 
 
 

@@ -1,7 +1,7 @@
 ﻿--INSERT INTO Productos(Nombre, Descripcion, IdMarca, PrecioUnitario, Activo, UrlImange)
 --VALUES (value1, value2, value3, ...);
 select * from Clientes
-select * from Roles
+select * from usuarios
 
 /*
 
