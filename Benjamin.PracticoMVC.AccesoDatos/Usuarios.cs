@@ -131,56 +131,75 @@ Usuarios.IdRol = Roles.Id
 
         }
 
-        public void Crear2(Entidades.Join_UsuariosClientes obj)
+        public int Crear2(Entidades.Join_UsuariosClientes obj)
         {
-            /*
 
-            //INSERT INTO Usuarios(IdRol, Usuario, Nombre, Apellido, Password, PasswordSalt, FechaCreacion, Activo)
-            //VALUES('CLI', 'drodriguez', 'David', 'Rodriguez', 'password', 'passwordSalt', GETDATE(), 0);
+
+            int filasAfectadas = 0;
+
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
+
+
 
             //cuando creamos el usuario, la contraseña es la misma que el nombre de usuario. 
             // En el primer logueo si la contraseña es igual al usuario le pedira el cambio de la misma
 
-            //Cuando se crea por primera vez el usuario y la contraseña son las mismas asi en el proximo
-            //login pide cambiarla
-            obj.Password = obj.Usuario;
-
-
-
-            //generamos password salt para guardar en la base
-            obj.PasswordSalt = GenerarPasswordSalt(obj.Password);
-
-            //generamos Password hash ya encriptada, para que solo el usuario sepa la password
-            objEntidad.Password = GenerarPasswordHash(obj.Password, obj.PasswordSalt);
 
 
 
 
-            StringBuilder consultaSQL = new StringBuilder();
+            SqlTransaction transaccion = conexion.BeginTransaction();
 
-            consultaSQL.Append("INSERT INTO Usuarios(IdRol, Usuario, Nombre, Apellido, Password, PasswordSalt, FechaCreacion, Activo)  ");
-            consultaSQL.Append("VALUES(@IdRol, @Usuario, @Nombre, @Apellido, @Password, @PasswordSalt, @FechaCreacion, @Activo); ");
-
-            using (var connection = new SqlConnection(cadenaConexion))
+            try
             {
-                var filasAfectadas = connection.Execute(consultaSQL.ToString(),
-                    new
-                    {
-                        IdRol = objEntidad.IdRol,
-                        Usuario = objEntidad.Usuario,
-                        Nombre = objEntidad.Nombre,
-                        Apellido = objEntidad.Apellido,
-                        Password = objEntidad.Password,
-                        PasswordSalt = objEntidad.PasswordSalt,
-                        FechaCreacion = DateTime.Now,
-                        Activo = objEntidad.Activo
-                    });
+                //Cuando se crea por primera vez el usuario y la contraseña son las mismas asi en el proximo
+                //login pide cambiarla
+                string clave = obj.USERNAME;
 
+                //generamos password salt para guardar en la base
+                string claveSalt = GenerarPasswordSalt(clave);
+
+                //generamos Password hash ya encriptada, para que solo el usuario sepa la password
+                string claveHash = GenerarPasswordHash(clave, claveSalt);
+
+
+                conexion.Open();
+
+                StringBuilder consultaSQL = new StringBuilder();
+                consultaSQL.Append("INSERT INTO Usuarios(IdRol, Usuario, Nombre, Apellido, Password, PasswordSalt, FechaCreacion, Activo)  ");
+                consultaSQL.Append("VALUES(@IdRol, @Usuario, @Nombre, @Apellido, @Password, @PasswordSalt, @FechaCreacion, @Activo); ");
+
+
+                filasAfectadas = conexion.Execute(consultaSQL.ToString(),
+                       new
+                       {
+                           IdRol = obj.ID_ROL,
+                           Usuario = obj.USERNAME,
+                           Nombre = obj.NOMBRES,
+                           Apellido = obj.APELLIDOS,
+                           Password = claveHash,
+                           PasswordSalt = claveSalt,
+                           FechaCreacion = DateTime.Now,
+                           Activo = obj.ACTIVO
+                       });
+
+
+                transaccion.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaccion.Rollback();
+                filasAfectadas = 0;
 
             }
+            finally
+            {
 
-*/
+                conexion.Close();
+            }
 
+
+            return filasAfectadas;           
         }
 
 
@@ -576,7 +595,7 @@ WHERE ID = 11
             consultaSQL.Append("Nombre = @nombreParametro, Apellido = @apellidoParametro, ");
             consultaSQL.Append("Activo = @activoParametro ");
             consultaSQL.Append("WHERE ID = @idParametro ");
-           
+
 
             using (var connection = new SqlConnection(cadenaConexion))
             {
@@ -669,7 +688,7 @@ WHERE ID = 11
         }
 
 
-      
+
 
         public void Eliminar(object id)
         {
