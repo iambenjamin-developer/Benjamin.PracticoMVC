@@ -259,13 +259,21 @@ function obtenerRegistro(controlador, jsonAccion, id) {
     $.get(ruta, function (data) {
 
 
-        document.getElementById("txtID").value = data.Id;
-        document.getElementById("txtUsuario").value = data.Usuario;
-        document.getElementById("cboRoles").value = data.IdRol;
-        document.getElementById("txtNombres").value = data.Nombre;
-        document.getElementById("txtApellidos").value = data.Apellido;
-       // document.getElementById("txtRazonSocial").value = data.Apellido;
-        document.getElementById("chkEstado").checked = data.Activo;
+        document.getElementById("txtID").value = data.ID_USUARIO;
+        document.getElementById("txtUsuario").value = data.USERNAME;
+        document.getElementById("txtNombres").value = data.NOMBRES;
+        document.getElementById("txtApellidos").value = data.APELLIDOS;
+        document.getElementById("chkEstado").checked = data.ACTIVO;
+        document.getElementById("cboRoles").value = data.ID_ROL;
+
+        if (data.ID_ROL == "CLI") {
+            document.getElementById("txtRazonSocial").readOnly = false;
+        } else {
+            document.getElementById("txtRazonSocial").readOnly = true;
+        }
+
+        document.getElementById("txtRazonSocial").value = data.RAZON_SOCIAL;
+
 
 
     });
@@ -278,8 +286,8 @@ function guardar() {
     // chequear campos obligatorios
     if (obligatorio() == true) {
 
-      //  var hoy = new Date();
-      //  var fechaHoy = hoy.getDate() + "-" + (hoy.getMonth() + 1) + "-" + hoy.getFullYear();
+        //  var hoy = new Date();
+        //  var fechaHoy = hoy.getDate() + "-" + (hoy.getMonth() + 1) + "-" + hoy.getFullYear();
 
         var id_usuario = document.getElementById("txtID").value;
         var id_rol = document.getElementById("cboRoles").value;
@@ -287,7 +295,7 @@ function guardar() {
         var apellidos = document.getElementById("txtApellidos").value;
         var nombres = document.getElementById("txtNombres").value;
         var razon_social = document.getElementById("txtRazonSocial").value;
-       // var fecha_creacion = fechaHoy;
+        // var fecha_creacion = fechaHoy;
         var activo = document.getElementById("chkEstado").checked;
 
 
@@ -300,7 +308,7 @@ function guardar() {
         objUsuarioCliente.append("NOMBRES", nombres);
         objUsuarioCliente.append("APELLIDOS", apellidos);
         objUsuarioCliente.append("RAZON_SOCIAL", razon_social);
-       // objUsuarioCliente.append("FECHA_CREACION", fecha_creacion);
+        // objUsuarioCliente.append("FECHA_CREACION", fecha_creacion);
         objUsuarioCliente.append("ACTIVO", activo);
 
 
@@ -314,7 +322,7 @@ function guardar() {
 
                 $.ajax({
                     type: "POST",
-                    url: "/Usuarios/Guardar2/",
+                    url: "/Usuarios/Guardar/",
                     data: objUsuarioCliente,
                     contentType: false,
                     processData: false,

@@ -1,8 +1,15 @@
-﻿
-
-select * from Usuarios
-order by 1 desc
-
+﻿SELECT 
+Usuarios.Id AS ID_USUARIO,
+Usuarios.Usuario AS USERNAME,
+Usuarios.IdRol AS ID_ROL,
+Usuarios.Nombre AS NOMBRES,
+Usuarios.Apellido AS APELLIDOS,
+Clientes.RazonSocial AS RAZON_SOCIAL, 
+Usuarios.Activo AS ACTIVO
+FROM Usuarios
+LEFT JOIN Clientes ON
+Usuarios.Id = Clientes.IdUsuario
+WHERE Usuarios.Id = 4
 /*
 
 SELECT column1, column2, ...

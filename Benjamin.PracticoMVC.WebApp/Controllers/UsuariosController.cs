@@ -148,7 +148,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         {
             AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
-            Entidades.Usuarios userSeleccionado = metodos.Detalle(id);
+            var userSeleccionado = metodos.Detalle(id);
 
             return Json(userSeleccionado, JsonRequestBehavior.AllowGet);
         }
@@ -161,7 +161,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         }
 
 
-        public int Guardar(Entidades.Usuarios obj)
+        public int Guardar3(Entidades.Usuarios obj)
         {
             int retorno = -1;
 
@@ -180,12 +180,12 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             {
                 AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
-                int filasAfectadas = metodos.Editar(obj);
+                //int filasAfectadas = metodos.Editar(obj);
                 //si hay una fila afectada(actualizada) retornamos 2
-                if (filasAfectadas == 1)
-                {
-                    retorno = 2;
-                }
+                //if (filasAfectadas == 1)
+                //{
+                //    retorno = 2;
+                //}
 
             }
 
@@ -193,7 +193,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         }
 
 
-        public int Guardar2(Entidades.Join_UsuariosClientes obj_Usuario_Cliente)
+        public int Guardar(Entidades.Join_UsuariosClientes obj_Usuario_Cliente)
         {
             int retorno = -1;
 
@@ -211,7 +211,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             {
                 AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
-                int filasAfectadas = metodos.Editar2(obj_Usuario_Cliente);
+                int filasAfectadas = metodos.Editar(obj_Usuario_Cliente);
                 //si hay una fila afectada(actualizada) retornamos 2
                 if (filasAfectadas == 1)
                 {
