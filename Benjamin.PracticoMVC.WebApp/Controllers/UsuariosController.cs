@@ -166,7 +166,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             int retorno = -1;
 
 
-         
+
             //si el ID es cero agregar
             if (obj.Id == 0)
             {
@@ -202,15 +202,10 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             //si el ID_USUARIO es cero agregar
             if (obj_Usuario_Cliente.ID_USUARIO == 0)
             {
-                //colocar fecha de hoy / ahora cuando se da un alta
-                obj_Usuario_Cliente.FECHA_CREACION = DateTime.Now;
-
-
                 AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
-                metodos.Crear2(obj_Usuario_Cliente);
+                retorno = metodos.Crear2(obj_Usuario_Cliente);
 
-                retorno = 1;
             }
             else // si el ID_USUARIO es distinto de cero editar
             {

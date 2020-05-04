@@ -148,7 +148,7 @@ Usuarios.IdRol = Roles.Id
 
 
 
-            SqlTransaction transaccion = conexion.BeginTransaction();
+            //var transaccion = conexion.BeginTransaction();
 
             try
             {
@@ -165,12 +165,12 @@ Usuarios.IdRol = Roles.Id
 
                 conexion.Open();
 
-                StringBuilder consultaSQL = new StringBuilder();
-                consultaSQL.Append("INSERT INTO Usuarios(IdRol, Usuario, Nombre, Apellido, Password, PasswordSalt, FechaCreacion, Activo)  ");
-                consultaSQL.Append("VALUES(@IdRol, @Usuario, @Nombre, @Apellido, @Password, @PasswordSalt, @FechaCreacion, @Activo); ");
+                StringBuilder consultaSQL1 = new StringBuilder();
+                consultaSQL1.Append("INSERT INTO Usuarios(IdRol, Usuario, Nombre, Apellido, Password, PasswordSalt, FechaCreacion, Activo)  ");
+                consultaSQL1.Append("VALUES(@IdRol, @Usuario, @Nombre, @Apellido, @Password, @PasswordSalt, @FechaCreacion, @Activo); ");
 
 
-                filasAfectadas = conexion.Execute(consultaSQL.ToString(),
+                filasAfectadas = conexion.Execute(consultaSQL1.ToString(),
                        new
                        {
                            IdRol = obj.ID_ROL,
@@ -184,22 +184,55 @@ Usuarios.IdRol = Roles.Id
                        });
 
 
-                transaccion.Commit();
+                if (obj.ID_ROL == "CLI")
+                {
+
+                    /////////////////////////////
+
+                    StringBuilder consultaSQL2 = new StringBuilder();
+
+                    consultaSQL2.Append("SELECT Id FROM Usuarios ");
+                    consultaSQL2.Append("WHERE Usuario LIKE @UsernameParametro ");
+
+
+                    obj.ID_USUARIO = conexion.ExecuteScalar<int>(consultaSQL2.ToString(), new { UsernameParametro = obj.USERNAME });
+
+
+                    /////////////////////////////////
+                    StringBuilder consultaSQL3 = new StringBuilder();
+                    consultaSQL3.Append("INSERT INTO Clientes(RazonSocial, FechaCreacion, IdUsuario)  ");
+                    consultaSQL3.Append("VALUES (@RazonSocialParametro, @FechaCreacionParametro, @IdUsuarioParametro )  ");
+
+
+                    filasAfectadas = conexion.Execute(consultaSQL3.ToString(),
+                           new
+                           {
+                               RazonSocialParametro = obj.RAZON_SOCIAL,
+                               IdUsuarioParametro = obj.ID_USUARIO,
+                               FechaCreacionParametro = DateTime.Now,
+
+                           });
+                }
+
+
+
+                /////////////////////////////////
+
+                //transaccion.Commit();
             }
             catch (Exception ex)
             {
-                transaccion.Rollback();
+                //transaccion.Rollback();
                 filasAfectadas = 0;
 
             }
             finally
             {
-
                 conexion.Close();
             }
 
 
-            return filasAfectadas;           
+            return filasAfectadas;
         }
 
 
