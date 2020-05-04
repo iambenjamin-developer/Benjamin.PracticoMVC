@@ -1,6 +1,5 @@
 ﻿
-select * from Clientes
-order by 1 desc
+
 select * from Usuarios
 order by 1 desc
 

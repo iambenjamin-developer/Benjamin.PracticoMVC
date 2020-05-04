@@ -80,7 +80,7 @@ Usuarios.IdRol = Roles.Id
 
         }
 
-        public void Crear(Entidades.Usuarios objEntidad)
+        public void Crear3(Entidades.Usuarios objEntidad)
         {
 
             //INSERT INTO Usuarios(IdRol, Usuario, Nombre, Apellido, Password, PasswordSalt, FechaCreacion, Activo)
@@ -131,7 +131,7 @@ Usuarios.IdRol = Roles.Id
 
         }
 
-        public int Crear2(Entidades.Join_UsuariosClientes obj)
+        public int Crear(Entidades.Join_UsuariosClientes obj)
         {
 
 
@@ -140,20 +140,16 @@ Usuarios.IdRol = Roles.Id
             SqlConnection conexion = new SqlConnection(cadenaConexion);
 
 
+            conexion.Open();
 
-            //cuando creamos el usuario, la contraseña es la misma que el nombre de usuario. 
-            // En el primer logueo si la contraseña es igual al usuario le pedira el cambio de la misma
+            //como vamos a realizar dos inserciones debemos hacerlo con una transaccion
+            var transaccion = conexion.BeginTransaction();
 
-
-
-
-
-            //var transaccion = conexion.BeginTransaction();
 
             try
             {
-                //Cuando se crea por primera vez el usuario y la contraseña son las mismas asi en el proximo
-                //login pide cambiarla
+                //Cuando se crea por primera vez el usuario y la contraseña son las mismas 
+                //asi en el proximo login pide cambiarla
                 string clave = obj.USERNAME;
 
                 //generamos password salt para guardar en la base
@@ -163,8 +159,7 @@ Usuarios.IdRol = Roles.Id
                 string claveHash = GenerarPasswordHash(clave, claveSalt);
 
 
-                conexion.Open();
-
+                //primer consulta que inserta un nuevo usuario admin o cliente
                 StringBuilder consultaSQL1 = new StringBuilder();
                 consultaSQL1.Append("INSERT INTO Usuarios(IdRol, Usuario, Nombre, Apellido, Password, PasswordSalt, FechaCreacion, Activo)  ");
                 consultaSQL1.Append("VALUES(@IdRol, @Usuario, @Nombre, @Apellido, @Password, @PasswordSalt, @FechaCreacion, @Activo); ");
@@ -181,9 +176,11 @@ Usuarios.IdRol = Roles.Id
                            PasswordSalt = claveSalt,
                            FechaCreacion = DateTime.Now,
                            Activo = obj.ACTIVO
-                       });
+                       }
+                       , transaction: transaccion);
 
 
+                //solamente si el usuario es de rol cliente se realiza esta operacion extra
                 if (obj.ID_ROL == "CLI")
                 {
 
@@ -191,14 +188,17 @@ Usuarios.IdRol = Roles.Id
 
                     StringBuilder consultaSQL2 = new StringBuilder();
 
+                    //obtenemos el id usuario segun el username,
+                    //este dato nos servirá luego para insertarlo en la tabla clientes
                     consultaSQL2.Append("SELECT Id FROM Usuarios ");
                     consultaSQL2.Append("WHERE Usuario LIKE @UsernameParametro ");
 
 
-                    obj.ID_USUARIO = conexion.ExecuteScalar<int>(consultaSQL2.ToString(), new { UsernameParametro = obj.USERNAME });
+                    obj.ID_USUARIO = conexion.ExecuteScalar<int>(consultaSQL2.ToString(), new { UsernameParametro = obj.USERNAME }, transaction: transaccion);
 
 
                     /////////////////////////////////
+                    //insertamos nuevo cliente, relacionado con el idusuario de la tabla usuarios
                     StringBuilder consultaSQL3 = new StringBuilder();
                     consultaSQL3.Append("INSERT INTO Clientes(RazonSocial, FechaCreacion, IdUsuario)  ");
                     consultaSQL3.Append("VALUES (@RazonSocialParametro, @FechaCreacionParametro, @IdUsuarioParametro )  ");
@@ -211,27 +211,32 @@ Usuarios.IdRol = Roles.Id
                                IdUsuarioParametro = obj.ID_USUARIO,
                                FechaCreacionParametro = DateTime.Now,
 
-                           });
+                           },
+                           transaction: transaccion);
                 }
 
 
 
                 /////////////////////////////////
-
-                //transaccion.Commit();
+                // si las operaciones relacionadas salieron bien, se realiza un commit
+                transaccion.Commit();
             }
             catch (Exception ex)
             {
-                //transaccion.Rollback();
+                // en caso que haya un error en el medio de la funcion
+                //lanzamos codigo de error 0 y realizamos un rollback para que los datos
+                //no se reflejen en la base de datos
                 filasAfectadas = 0;
+                transaccion.Rollback();
 
             }
             finally
             {
+                //si el procedimiento salio bien o mal, siempre se debe cerrar la conexion
                 conexion.Close();
             }
 
-
+            // si el resultado de filasafectadas es 1 es porque salio OK
             return filasAfectadas;
         }
 

@@ -172,7 +172,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             {
                 AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
-                metodos.Crear(obj);
+                //metodos.Crear(obj);
 
                 retorno = 1;
             }
@@ -204,7 +204,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             {
                 AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
-                retorno = metodos.Crear2(obj_Usuario_Cliente);
+                retorno = metodos.Crear(obj_Usuario_Cliente);
 
             }
             else // si el ID_USUARIO es distinto de cero editar
