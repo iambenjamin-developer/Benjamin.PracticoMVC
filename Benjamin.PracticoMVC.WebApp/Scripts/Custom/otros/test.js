@@ -1,26 +1,17 @@
 ﻿function probar() {
 
-    //var id_usuario = document.getElementById("txt").value;
-    //var id_rol = document.getElementById("txt").value;
-    //var username = document.getElementById("txt").value;
-    //var nombres = document.getElementById("txt").value;
-    //var apellidos = document.getElementById("txt").value;
-    //var razon_social = document.getElementById("txt").value;
-    //var fecha_creacion = document.getElementById("txt").value;
-    //var activo = document.getElementById("txt").checked;
 
     var hoy = new Date();
     var fechaHoy = hoy.getDate() + "-" + (hoy.getMonth() + 1) + "-" + hoy.getFullYear();
-    alert(fechaHoy);
 
-    var id_usuario = 66;
-    var id_rol = "CLI";
-    var username = "mperez";
-    var nombres = "Miriam";
-    var apellidos = "Perez";
-    var razon_social = "La falda y asociados SRL";
+    var id_usuario = document.getElementById("txtID").value;
+    var id_rol = document.getElementById("cboRoles").value;
+    var username = document.getElementById("txtUsuario").value;
+    var apellidos = document.getElementById("txtApellidos").value;
+    var nombres = document.getElementById("txtNombres").value;
+    var razon_social = document.getElementById("txtRazonSocial").value;
     var fecha_creacion = fechaHoy;
-    var activo = false;
+    var activo = document.getElementById("chkEstado").checked;
 
 
     var objUsuarioCliente = new FormData();
@@ -53,11 +44,16 @@
                 success: function (data) {
                     if (data != 0) {
 
-                        alert(data);
+                        mostrarTabla();
 
-                        alertify.success(data);
+                        if (id == 0) {
+                            alertify.success('Agregado exitosamente!');
+                        }
+                        else {
+                            alertify.success('Editado exitosamente!');
+                        }
 
-
+                        document.getElementById("btnCancelar").click();
 
 
                     } else {

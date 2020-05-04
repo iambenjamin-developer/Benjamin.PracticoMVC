@@ -264,6 +264,7 @@ function obtenerRegistro(controlador, jsonAccion, id) {
         document.getElementById("cboRoles").value = data.IdRol;
         document.getElementById("txtNombres").value = data.Nombre;
         document.getElementById("txtApellidos").value = data.Apellido;
+       // document.getElementById("txtRazonSocial").value = data.Apellido;
         document.getElementById("chkEstado").checked = data.Activo;
 
 
@@ -273,49 +274,48 @@ function obtenerRegistro(controlador, jsonAccion, id) {
 
 function guardar() {
 
-    
+
     // chequear campos obligatorios
     if (obligatorio() == true) {
 
-        var frm = new FormData();
+      //  var hoy = new Date();
+      //  var fechaHoy = hoy.getDate() + "-" + (hoy.getMonth() + 1) + "-" + hoy.getFullYear();
 
-        //colocar en una variable el valor de cada elemento
-        var id = document.getElementById("txtID").value;
-        var usuario = document.getElementById("txtUsuario").value;
-        var idRol = document.getElementById("cboRoles").value;
-        var nombres = document.getElementById("txtNombres").value;
+        var id_usuario = document.getElementById("txtID").value;
+        var id_rol = document.getElementById("cboRoles").value;
+        var username = document.getElementById("txtUsuario").value;
         var apellidos = document.getElementById("txtApellidos").value;
-        var estado = document.getElementById("chkEstado").checked;
+        var nombres = document.getElementById("txtNombres").value;
+        var razon_social = document.getElementById("txtRazonSocial").value;
+       // var fecha_creacion = fechaHoy;
+        var activo = document.getElementById("chkEstado").checked;
 
 
-        console.log(id);
-        console.log(usuario);
-        console.log(idRol);
-        console.log(nombres);
-        console.log(apellidos);
-        console.log(estado);
-
+        var objUsuarioCliente = new FormData();
 
         //relacionar el valor de cada elemento con la clase que le corresponde
-        frm.append("Id", id);
-        frm.append("Usuario", usuario);
-        frm.append("IdRol", idRol);
-        frm.append("Nombre", nombres);
-        frm.append("Apellido", apellidos);
-        frm.append("Activo", estado);
+        objUsuarioCliente.append("ID_USUARIO", id_usuario);
+        objUsuarioCliente.append("ID_ROL", id_rol);
+        objUsuarioCliente.append("USERNAME", username);
+        objUsuarioCliente.append("NOMBRES", nombres);
+        objUsuarioCliente.append("APELLIDOS", apellidos);
+        objUsuarioCliente.append("RAZON_SOCIAL", razon_social);
+       // objUsuarioCliente.append("FECHA_CREACION", fecha_creacion);
+        objUsuarioCliente.append("ACTIVO", activo);
 
 
-
-
+        console.log(objUsuarioCliente);
 
         alertify.confirm("¿Desea Guardar cambios?", function (e) {
             if (e) {
                 //after clicking OK
 
+
+
                 $.ajax({
                     type: "POST",
-                    url: "/Usuarios/Guardar/",
-                    data: frm,
+                    url: "/Usuarios/Guardar2/",
+                    data: objUsuarioCliente,
                     contentType: false,
                     processData: false,
                     success: function (data) {
@@ -323,11 +323,12 @@ function guardar() {
 
                             mostrarTabla();
 
-                            if (id == 0)
+                            if (id_usuario == 0) {
                                 alertify.success('Agregado exitosamente!');
-                            else
+                            }
+                            else {
                                 alertify.success('Editado exitosamente!');
-
+                            }
 
                             document.getElementById("btnCancelar").click();
 
@@ -354,11 +355,11 @@ function guardar() {
 
 
 
-    }
 
 
+    }// fin obligatorio()
 
-}
+}// fin guardar()
 
 function resetearClave(idUsuario) {
 
@@ -400,7 +401,7 @@ function resetearClave(idUsuario) {
 
 function obligatorio() {
 
-     var contador = 0;
+    var contador = 0;
 
     // var id = document.getElementById("txtID").value;
     var usuario = document.getElementById("txtUsuario").value;
