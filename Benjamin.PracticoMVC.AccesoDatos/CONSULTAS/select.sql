@@ -1,15 +1,22 @@
-﻿SELECT 
-Usuarios.Id AS ID_USUARIO,
-Usuarios.Usuario AS USERNAME,
-Usuarios.IdRol AS ID_ROL,
-Usuarios.Nombre AS NOMBRES,
-Usuarios.Apellido AS APELLIDOS,
-Clientes.RazonSocial AS RAZON_SOCIAL, 
-Usuarios.Activo AS ACTIVO
-FROM Usuarios
-LEFT JOIN Clientes ON
-Usuarios.Id = Clientes.IdUsuario
-WHERE Usuarios.Id = 4
+﻿
+
+--SELECT 
+--Marcas.Nombre AS MARCA,
+--Productos.Nombre AS PRODUCTO,
+--DetallesPedidos.PrecioUnitario AS PRECIO_UNITARIO,
+--DetallesPedidos.Cantidad AS CANTIDAD,
+--(DetallesPedidos.PrecioUnitario * DetallesPedidos.Cantidad) AS SUBTOTAL
+--FROM DetallesPedidos
+--INNER JOIN Pedidos ON
+--DetallesPedidos.NumeroPedido = Pedidos.NumeroPedido
+--INNER JOIN Productos ON
+--DetallesPedidos.CodigoProducto = Productos.Codigo
+--INNER JOIN Marcas ON
+--Productos.IdMarca = Marcas.Id 
+--WHERE Pedidos.NumeroPedido = 1
+--ORDER BY Pedidos.Fecha DESC, DetallesPedidos.NumeroItem ASC
+
+SELECT * FROM DetallesPedidos
 /*
 
 SELECT column1, column2, ...
