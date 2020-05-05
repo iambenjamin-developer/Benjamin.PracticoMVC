@@ -72,5 +72,45 @@ ORDER BY DetallesPedidos.NumeroItem ASC
 
         }
 
+        public List<Entidades.Pedidos> MisPedidos(int idCliente) {
+
+            var lista = new List<Entidades.Pedidos>();
+
+            /*
+SELECT 
+NumeroPedido AS ID_PEDIDO,
+Fecha AS FECHA_PEDIDO,
+Observacion AS OBSERVACIONES
+FROM Pedidos
+WHERE CodigoCliente = 1000
+ORDER BY Fecha DESC
+             */
+            StringBuilder consultaSQL = new StringBuilder();
+            consultaSQL.Append("SELECT ");
+            consultaSQL.Append("NumeroPedido AS ID_PEDIDO, ");
+            consultaSQL.Append("Fecha AS FECHA_PEDIDO, ");
+            consultaSQL.Append("Observacion AS OBSERVACIONES ");
+            consultaSQL.Append("FROM Pedidos ");
+            consultaSQL.Append("WHERE CodigoCliente = @idClienteParametro ");
+            consultaSQL.Append("ORDER BY Fecha DESC ");
+
+
+
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                lista = connection.Query<Entidades.Pedidos>(consultaSQL.ToString(),
+
+                     new
+                     {
+                         idClienteParametro = idCliente
+
+                     }).ToList();
+            }
+
+            return lista;
+
+
+        }
     }
 }

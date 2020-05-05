@@ -25,5 +25,24 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return (Json(lista,JsonRequestBehavior.AllowGet));
 
         }
+
+        public ActionResult MisPedidos()
+        {
+            return View();
+        }
+
+
+
+        public JsonResult VerMisPedidos(int idCliente)
+        {
+
+            var metodos = new AccesoDatos.Pedidos();
+
+            var lista = metodos.MisPedidos(idCliente);
+
+
+            return (Json(lista, JsonRequestBehavior.AllowGet));
+
+        }
     }
 }

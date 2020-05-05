@@ -172,7 +172,7 @@ function parsearFecha(fecha) {
         return "No Aplica";
     }
 
-};
+}
 
 
 function abrirModal(id) {

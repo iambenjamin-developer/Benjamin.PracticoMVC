@@ -1,38 +1,10 @@
 ﻿SELECT 
-DetallesPedidos.NumeroItem AS ITEM,
-Marcas.Nombre AS MARCA,
-Productos.Nombre AS PRODUCTO,
-DetallesPedidos.PrecioUnitario AS PRECIO_UNITARIO,
-DetallesPedidos.Cantidad AS CANTIDAD,
-(DetallesPedidos.PrecioUnitario * DetallesPedidos.Cantidad) AS SUBTOTAL
-FROM DetallesPedidos
-INNER JOIN Pedidos ON
-DetallesPedidos.NumeroPedido = Pedidos.NumeroPedido
-INNER JOIN Productos ON
-DetallesPedidos.CodigoProducto = Productos.Codigo
-INNER JOIN Marcas ON
-Productos.IdMarca = Marcas.Id 
-WHERE Pedidos.NumeroPedido = 1
-ORDER BY DetallesPedidos.NumeroItem ASC
-
-
---select * from DetallesPedidos
---SELECT 
---Marcas.Nombre AS MARCA,
---Productos.Nombre AS PRODUCTO,
---DetallesPedidos.PrecioUnitario AS PRECIO_UNITARIO,
---DetallesPedidos.Cantidad AS CANTIDAD,
---(DetallesPedidos.PrecioUnitario * DetallesPedidos.Cantidad) AS SUBTOTAL
---FROM DetallesPedidos
---INNER JOIN Pedidos ON
---DetallesPedidos.NumeroPedido = Pedidos.NumeroPedido
---INNER JOIN Productos ON
---DetallesPedidos.CodigoProducto = Productos.Codigo
---INNER JOIN Marcas ON
---Productos.IdMarca = Marcas.Id 
---WHERE Pedidos.NumeroPedido = 1
---ORDER BY Pedidos.Fecha DESC, DetallesPedidos.NumeroItem ASC
-
+NumeroPedido AS ID_PEDIDO,
+Fecha AS FECHA_PEDIDO,
+Observacion AS OBSERVACIONES
+FROM Pedidos
+WHERE CodigoCliente = 1000
+ORDER BY Fecha DESC
 /*
 
 SELECT column1, column2, ...

@@ -212,6 +212,7 @@
     <Content Include="Views\Productos\ABM.cshtml" />
     <Content Include="Views\Productos\Cards.cshtml" />
     <Content Include="Views\Pedidos\Carrito.cshtml" />
+    <Content Include="Views\Pedidos\MisPedidos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Benjamin.PracticoMVC.AccesoDatos\Benjamin.PracticoMVC.AccesoDatos.csproj">
