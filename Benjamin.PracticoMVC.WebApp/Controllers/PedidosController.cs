@@ -8,32 +8,13 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 {
     public class PedidosController : Controller
     {
-       
-        public ActionResult Carrito()
-        {
-            return View();
-        }
-
-        public JsonResult ObtenerDetallesPedido(int idPedido)
-        {
-
-            var metodos = new AccesoDatos.Pedidos();
-
-            var lista = metodos.ListaDetallePedido(idPedido);
-
-
-            return (Json(lista,JsonRequestBehavior.AllowGet));
-
-        }
 
         public ActionResult MisPedidos()
         {
             return View();
         }
 
-
-
-        public JsonResult VerMisPedidos()
+        public JsonResult JsonMisPedidos()
         {
             int idCliente = Convert.ToInt32(Session["ID_CLIENTE"]);
 
@@ -45,5 +26,26 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return (Json(lista, JsonRequestBehavior.AllowGet));
 
         }
+
+        public ActionResult Carrito(int idPedido)
+        {
+            return View();
+        }
+
+        public JsonResult JsonObtenerDetallesPedido(int idPedido)
+        {
+
+            var metodos = new AccesoDatos.Pedidos();
+
+            var lista = metodos.ListaDetallePedido(idPedido);
+
+
+            return (Json(lista,JsonRequestBehavior.AllowGet));
+
+        }
+
+       
+
+       
     }
 }

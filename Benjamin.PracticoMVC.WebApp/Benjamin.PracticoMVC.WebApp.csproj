@@ -163,10 +163,11 @@
     <Content Include="Scripts\all.min.js" />
     <Content Include="Scripts\Custom\cambiarClave.js" />
     <Content Include="Scripts\Custom\cards.js" />
+    <Content Include="Scripts\Custom\carrito.js" />
     <Content Include="Scripts\Custom\expresionesRegulares.js" />
     <Content Include="Scripts\Custom\login.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
-    <Content Include="Scripts\Custom\pedidos.js" />
+    <Content Include="Scripts\Custom\mispedidos.js" />
     <Content Include="Scripts\Custom\productos.js" />
     <Content Include="Scripts\Custom\usuarios.js" />
     <Content Include="Scripts\datatables.min.js" />
