@@ -54,10 +54,15 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
                 Entidades.Sesion objSesion = metodos.ObtenerUsuarioSesion(obj.USUARIO);
 
                 //dejar usuario de sesion logueado
-                Session["NOMBRE"] = objSesion.NOMBRE;
-                Session["ROL"] = objSesion.ROL;
-                Session["ID"] = objSesion.ID;
-                Session["USUARIO"] = objSesion.USUARIO;
+                objSesion.ONLINE = true;
+                Session["ID_USUARIO"] = objSesion.ID_USUARIO;
+                Session["USERNAME"] = objSesion.USERNAME;
+                Session["ID_ROL"] = objSesion.ID_ROL;
+                Session["ROL_DESCRIPCION"] = objSesion.ROL_DESCRIPCION;
+                Session["ID_CLIENTE"] = objSesion.ID_CLIENTE;
+                Session["NOMBRES"] = objSesion.NOMBRES;
+                Session["APELLIDOS"] = objSesion.APELLIDOS;
+                Session["ONLINE"] = objSesion.ONLINE;
 
 
                 //si el usuario y la clave son iguales, significa que esta blanqueada

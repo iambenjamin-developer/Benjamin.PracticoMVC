@@ -18,7 +18,6 @@ namespace Benjamin.PracticoMVC.Entidades
 
         public string OBSERVACIONES { get; set; }
 
-        public decimal TOTAL { get; set; }
 
     }
 }

@@ -33,8 +33,9 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
 
 
-        public JsonResult VerMisPedidos(int idCliente)
+        public JsonResult VerMisPedidos()
         {
+            int idCliente = Convert.ToInt32(Session["ID_CLIENTE"]);
 
             var metodos = new AccesoDatos.Pedidos();
 

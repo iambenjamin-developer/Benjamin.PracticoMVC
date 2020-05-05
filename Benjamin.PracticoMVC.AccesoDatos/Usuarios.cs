@@ -523,14 +523,19 @@ AND Password LIKE 'bcorrea'
 
 
             /*
-SELECT  
-Usuarios.Nombre + ' '+ Usuarios.Apellido AS NOMBRE,
-Roles.Descripcion AS ROL, 
-Usuarios.Id AS ID, 
-Usuarios.Usuario AS USUARIO
+SELECT
+Usuarios.Id AS ID_USUARIO,
+Usuarios.Usuario AS USERNAME,
+Roles.Id AS ID_ROL,
+Roles.Descripcion AS ROL_DESCRIPCION,
+Clientes.Codigo AS ID_CLIENTE,
+Usuarios.Nombre AS NOMBRES,
+Usuarios.Apellido AS APELLIDOS
 FROM Usuarios
-INNER JOIN Roles ON 
+INNER JOIN Roles ON
 Usuarios.IdRol = Roles.Id
+LEFT JOIN Clientes ON
+Usuarios.Id = Clientes.IdUsuario
 WHERE Usuarios.Usuario LIKE 'bcorrea'
              
              */
@@ -540,13 +545,18 @@ WHERE Usuarios.Usuario LIKE 'bcorrea'
             StringBuilder consultaSQL = new StringBuilder();
 
             consultaSQL.Append("SELECT ");
-            consultaSQL.Append("Usuarios.Nombre + ' '+ Usuarios.Apellido AS NOMBRE, ");
-            consultaSQL.Append("Roles.Descripcion AS ROL, ");
-            consultaSQL.Append("Usuarios.Id AS ID,  ");
-            consultaSQL.Append("Usuarios.Usuario AS USUARIO ");
+            consultaSQL.Append("Usuarios.Id AS ID_USUARIO, ");
+            consultaSQL.Append("Usuarios.Usuario AS USERNAME, ");
+            consultaSQL.Append("Roles.Id AS ID_ROL, ");
+            consultaSQL.Append("Roles.Descripcion AS ROL_DESCRIPCION, ");
+            consultaSQL.Append("Clientes.Codigo AS ID_CLIENTE, ");
+            consultaSQL.Append("Usuarios.Nombre AS NOMBRES, ");
+            consultaSQL.Append("Usuarios.Apellido AS APELLIDOS ");
             consultaSQL.Append("FROM Usuarios ");
             consultaSQL.Append("INNER JOIN Roles ON ");
             consultaSQL.Append("Usuarios.IdRol = Roles.Id ");
+            consultaSQL.Append("LEFT JOIN Clientes ON ");
+            consultaSQL.Append("Usuarios.Id = Clientes.IdUsuario ");
             consultaSQL.Append("WHERE Usuarios.Usuario LIKE @usuarioParametro ");
 
 

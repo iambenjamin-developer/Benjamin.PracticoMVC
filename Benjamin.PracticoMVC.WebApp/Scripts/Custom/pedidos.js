@@ -3,7 +3,7 @@ tablaMisPedidos();
 
 function tablaMisPedidos() {
 
-    $.get("/Pedidos/VerMisPedidos/?idCliente=" + 1000, function (data) {
+    $.get("/Pedidos/VerMisPedidos/", function (data) {
 
         var total = 0;
         var contenido = "";

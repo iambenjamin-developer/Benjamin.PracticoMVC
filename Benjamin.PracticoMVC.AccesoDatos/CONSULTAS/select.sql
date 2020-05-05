@@ -1,10 +1,17 @@
-﻿SELECT 
-NumeroPedido AS ID_PEDIDO,
-Fecha AS FECHA_PEDIDO,
-Observacion AS OBSERVACIONES
-FROM Pedidos
-WHERE CodigoCliente = 1000
-ORDER BY Fecha DESC
+﻿SELECT
+Usuarios.Id AS ID_USUARIO,
+Usuarios.Usuario AS USERNAME,
+Roles.Id AS ID_ROL,
+Roles.Descripcion AS ROL_DESCRIPCION,
+Clientes.Codigo AS ID_CLIENTE,
+Usuarios.Nombre AS NOMBRES,
+Usuarios.Apellido AS APELLIDOS
+FROM Usuarios
+INNER JOIN Roles ON
+Usuarios.IdRol = Roles.Id
+LEFT JOIN Clientes ON
+Usuarios.Id = Clientes.IdUsuario
+WHERE Usuarios.Usuario LIKE 'MIMI'
 /*
 
 SELECT column1, column2, ...
