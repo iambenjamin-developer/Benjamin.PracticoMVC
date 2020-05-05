@@ -4,17 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Data.SqlClient;
+using Dapper;
+
 namespace Benjamin.PracticoMVC.AccesoDatos
 {
    public class Pedidos
     {
+        string cadenaConexion = Conexiones.ObtenerCadenaConexion();
 
-        public List<Entidades.Join_PedidosCarrito> ListaCarrito() {
+        public List<Entidades.DetallesPedidos> ListaDetallePedido(int idPedido) {
 
-            var lista = new List<Entidades.Join_PedidosCarrito>();
+            var lista = new List<Entidades.DetallesPedidos>();
+
 
             /*
 SELECT 
+DetallesPedidos.NumeroItem AS ITEM,
 Marcas.Nombre AS MARCA,
 Productos.Nombre AS PRODUCTO,
 DetallesPedidos.PrecioUnitario AS PRECIO_UNITARIO,
@@ -28,13 +34,42 @@ DetallesPedidos.CodigoProducto = Productos.Codigo
 INNER JOIN Marcas ON
 Productos.IdMarca = Marcas.Id 
 WHERE Pedidos.NumeroPedido = 1
-ORDER BY Pedidos.Fecha DESC, DetallesPedidos.NumeroItem ASC
+ORDER BY DetallesPedidos.NumeroItem ASC
              */
+            StringBuilder consultaSQL = new StringBuilder();
+            consultaSQL.Append("SELECT ");
+            consultaSQL.Append("DetallesPedidos.NumeroItem AS ITEM, ");
+            consultaSQL.Append("Marcas.Nombre AS MARCA, ");
+            consultaSQL.Append("Productos.Nombre AS PRODUCTO, ");
+            consultaSQL.Append("DetallesPedidos.PrecioUnitario AS PRECIO_UNITARIO, ");
+            consultaSQL.Append("DetallesPedidos.Cantidad AS CANTIDAD, ");
+            consultaSQL.Append("(DetallesPedidos.PrecioUnitario * DetallesPedidos.Cantidad) AS SUBTOTAL ");
+            consultaSQL.Append("FROM DetallesPedidos ");
+            consultaSQL.Append("INNER JOIN Pedidos ON ");
+            consultaSQL.Append("DetallesPedidos.NumeroPedido = Pedidos.NumeroPedido ");
+            consultaSQL.Append("INNER JOIN Productos ON ");
+            consultaSQL.Append("DetallesPedidos.CodigoProducto = Productos.Codigo ");
+            consultaSQL.Append("INNER JOIN Marcas ON ");
+            consultaSQL.Append("Productos.IdMarca = Marcas.Id  ");
+            consultaSQL.Append("WHERE Pedidos.NumeroPedido = @idPedidoParametro ");
+            consultaSQL.Append("ORDER BY DetallesPedidos.NumeroItem ASC ");
+     
 
 
 
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                lista = connection.Query<Entidades.DetallesPedidos>(consultaSQL.ToString(),
+
+                     new
+                     {
+                         idPedidoParametro = idPedido
+                     
+                     }).ToList();
+            }
 
             return lista;
+
         }
 
     }

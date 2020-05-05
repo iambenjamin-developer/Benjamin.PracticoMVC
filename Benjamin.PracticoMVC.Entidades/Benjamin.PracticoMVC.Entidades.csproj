@@ -44,7 +44,6 @@
     <Compile Include="Clientes.cs" />
     <Compile Include="DetallesPedidos.cs" />
     <Compile Include="Join_Cards.cs" />
-    <Compile Include="Join_PedidosCarrito.cs" />
     <Compile Include="Join_ProductosMarcas.cs" />
     <Compile Include="Join_UsuariosClientes.cs" />
     <Compile Include="Join_UsuariosRoles.cs" />

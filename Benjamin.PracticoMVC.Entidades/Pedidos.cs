@@ -9,10 +9,16 @@ namespace Benjamin.PracticoMVC.Entidades
     public class Pedidos
     {
 
-        public int NumeroPedido { get; set; }
-        public int CodigoCliente { get; set; }
-        public DateTime Fecha { get; set; }
-        public string Observacion { get; set; }
+     
+        public int ID_PEDIDO { get; set; }
+
+        public int ID_CLIENTE { get; set; }
+
+        public DateTime FECHA_PEDIDO { get; set; }
+
+        public string OBSERVACIONES { get; set; }
+
+        public decimal TOTAL { get; set; }
 
     }
 }
