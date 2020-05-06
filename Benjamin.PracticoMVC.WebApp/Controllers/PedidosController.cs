@@ -29,6 +29,8 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
         public ActionResult Carrito(int idPedido)
         {
+            ViewBag.idPedido = idPedido;
+
             return View();
         }
 
@@ -40,12 +42,12 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             var lista = metodos.ListaDetallePedido(idPedido);
 
 
-            return (Json(lista,JsonRequestBehavior.AllowGet));
+            return (Json(lista, JsonRequestBehavior.AllowGet));
 
         }
 
-       
 
-       
+
+
     }
 }

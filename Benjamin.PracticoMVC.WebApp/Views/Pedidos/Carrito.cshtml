@@ -1,17 +1,67 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Carrito";
+
 }
 
 
 
-<h2>Pedido #</h2>
+<div class="row col-sm-6">
+
+    <h3 class="col-sm-4 text-right">Pedido Nº:</h3>
+    <input id="txtIdPedido" type="text" value="@ViewBag.idPedido" readonly class="form-control col-sm-2" />
+</div>
+
 
 <div id="tabla-detalle-pedidos"></div>
 
-<div id="heredero"></div>
 
 
-<script src="~/Scripts/moment.min.js"></script>
-<script src="~/Scripts/moment-with-locales.min.js"></script>
+@*<input type="number" id="txtPrueba" onchange="hacer()"  min="1" step="1"/>*@
+
+
 <script src="~/Scripts/Custom/carrito.js"></script>
+
+@*@model List<Benjamin.PracticoMVC.Entidades.DetallesPedidos>
+
+<table id="tabla-detalle-pedidopppp" class="table table-striped">
+    <thead>
+        <tr>
+            <th>ITEM</th>
+            <th>PRODUCTO</th>
+            <th class="text-right">PRECIO UNITARIO</th>
+            <th class="text-center">CANTIDAD</th>
+            <th class="text-right">SUBTOTAL</th>
+            <th class="text-center">ELIMINAR</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{decimal total = 0;}
+
+        @foreach (var obj in Model)
+        {
+            total = total + obj.SUBTOTAL;
+            <tr>
+                <td>@obj.ITEM</td>
+                <td>@obj.PRODUCTO</td>
+                <td class="text-right">$ @string.Format("{0:0,0.00}", obj.PRECIO_UNITARIO)</td>
+                <td class="text-center"><input id="numCantidad" type="number" min="1" step="1" value="@obj.CANTIDAD" /></td>
+                <td class="text-right">$ @string.Format("{0:0,0.00}", obj.SUBTOTAL) </td>
+                <td class="text-center"><button id="btnEliminar" class="btn btn-danger" onclick='eliminarItem(@obj.ITEM)'><i class="fas fa-trash-alt"></i></button></td>
+            </tr>
+        }
+
+
+
+    </tbody>
+    <tfoot>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th class="text-right">TOTAL: $ @string.Format("{0:0,0.00}", total)  </th>
+            <th></th>
+        </tr>
+    </tfoot>
+</table>*@

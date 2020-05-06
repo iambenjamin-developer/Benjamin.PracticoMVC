@@ -1,13 +1,16 @@
-﻿tablaDetallePedido();
+﻿
+var idPedido = document.getElementById("txtIdPedido").value;
+
+tablaDetallePedido();
 
 function tablaDetallePedido() {
 
-    var idPedido = 1;
 
     $.get("/Pedidos/JsonObtenerDetallesPedido/?idPedido=" + idPedido, function (data) {
 
         var total = 0;
         var contenido = "";
+        var cantidad = 0;
 
         contenido += "<table id='tabla-paginacion-usuarios' class='table table-striped'>";
         contenido += "<thead>";
@@ -28,8 +31,8 @@ function tablaDetallePedido() {
             nroItem = parseInt(data[i].ITEM);
             contenido += "<td class='text-center' >" + data[i].MARCA + " - " + data[i].PRODUCTO + "</td>";
             contenido += "<td class='text-right'>" + parsearMoneda(data[i].PRECIO_UNITARIO) + "</td>";
-            // contenido += "<td class='text-right'>" + data[i].CANTIDAD + "</td>";
-            contenido += "<td class='text-center'> <input id='numCantidad' type='number'  min='1' step='1' value='" + data[i].CANTIDAD + "'> </td>";
+            contenido += "<td class='text-center'> <input id='txtCantidad" + data[i].ITEM + "' type='number'  min='1' step='1' value='" + data[i].CANTIDAD + "' onchange='modificarCantidad(" + data[i].ITEM + ")'> </td>";
+
             contenido += "<td class='text-right'>" + parsearMoneda(data[i].SUBTOTAL) + "</td>";
             //calcular el total con los subtotales
             total = total + data[i].SUBTOTAL;
@@ -72,7 +75,13 @@ function parsearMoneda(decimal) {
 
 function eliminarItem(nroItem) {
 
-    alert(nroItem);
+    alertify.error("Pedido Nro:" + idPedido + " - Eliminar Item Nro:" + nroItem);
+
+
 }
 
 
+function modificarCantidad(nroItem) {
+    var cantidad = document.getElementById("txtCantidad" + nroItem.toString()).value;
+    alertify.success("Pedido Nro:" + idPedido + " - Item Nro:" + nroItem+" - Cantidad: "+ cantidad);
+}
