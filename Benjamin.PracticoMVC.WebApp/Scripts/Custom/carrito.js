@@ -75,41 +75,47 @@ function parsearMoneda(decimal) {
 
 function eliminarItem(nroItem) {
 
-    alertify.error("Pedido Nro:" + idPedido + " - Eliminar Item Nro:" + nroItem);
-    ///////////////////////////
+    //alertify.error("Pedido Nro:" + idPedido + " - Eliminar Item Nro:" + nroItem);
 
-    var obj = new FormData();
+    alertify.confirm('Carrito', //titulo
+        '¿Desea Eliminar item?', //mensaje
+        function () { //cuando se presiona OK
 
-    obj.append("ID_PEDIDO", idPedido);
-    obj.append("ITEM", nroItem);
-  
+            var obj = new FormData();
 
+            obj.append("ID_PEDIDO", idPedido);
+            obj.append("ITEM", nroItem);
 
-
-    $.ajax({
-        type: "POST",
-        url: "/Pedidos/EliminarItemPedido/",
-        data: obj,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-
-
-            var filasAfectadas = parseInt(data);
-
-            if (filasAfectadas == 1) {
-
-                //refrescar tabla
-                tablaDetallePedido();
-                alertify.success("Item eliminado");
-            } else {
-                alert("error");
-            }
+            $.ajax({
+                type: "POST",
+                url: "/Pedidos/EliminarItemPedido/",
+                data: obj,
+                contentType: false,
+                processData: false,
+                success: function (data) {
 
 
-        }//fin success
+                    var filasAfectadas = parseInt(data);
 
-    }) // fin de ajax
+                    if (filasAfectadas == 1) {
+
+                        //refrescar tabla
+                        tablaDetallePedido();
+                        alertify.success("Item eliminado");
+                    } else {
+                        alert("error");
+                    }
+
+
+                }//fin success
+
+            }) // fin de ajax
+
+        },
+        function () {//cuando se presiona Cancel
+            alertify.error("Cancelado")
+        });
+
 
 
 }
@@ -136,7 +142,7 @@ function modificarCantidad(nroItem) {
         processData: false,
         success: function (data) {
 
-            
+
             var filasAfectadas = parseInt(data);
 
             if (filasAfectadas == 1) {
