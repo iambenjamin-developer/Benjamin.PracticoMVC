@@ -60,9 +60,14 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
         public int EliminarItemPedido(Entidades.DetallesPedidos obj)
         {
+            var metodos = new AccesoDatos.Pedidos();
 
             //   int idPedido, int nroItem
-            return 0;
+
+
+            int filasAfectadas = metodos.EliminarItemPedido(obj.ID_PEDIDO, obj.ITEM);
+
+            return filasAfectadas;
         }
 
 

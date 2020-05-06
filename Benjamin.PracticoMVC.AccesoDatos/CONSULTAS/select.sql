@@ -2,6 +2,9 @@
 --SET Cantidad = 3
 --WHERE NumeroPedido = 1
 --AND NumeroItem = 4
+DELETE FROM DetallesPedidos 
+WHERE NumeroPedido = 1
+AND NumeroItem = 1;
 
 SELECT * FROM DetallesPedidos
 --INSERT INTO DetallesPedidos (NumeroPedido, NumeroItem, CodigoProducto, Cantidad, PrecioUnitario )

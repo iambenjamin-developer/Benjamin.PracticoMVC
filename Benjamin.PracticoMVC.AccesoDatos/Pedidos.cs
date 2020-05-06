@@ -108,6 +108,40 @@ AND NumeroItem = 4
             return filasAfectadas;
         }
 
+        public int EliminarItemPedido(int idPedido, int nroItem)
+        {
+            int filasAfectadas = 0;
+            /*
+DELETE FROM DetallesPedidos 
+WHERE NumeroPedido = 1
+AND NumeroItem = 1;
+
+            */
+
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("DELETE FROM DetallesPedidos ");
+            consultaSQL.Append("WHERE NumeroPedido = @numeroPedidoParametro ");
+            consultaSQL.Append("AND NumeroItem = @numeroItemParametro ");
+   
+
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                filasAfectadas = connection.Execute(consultaSQL.ToString(),
+                   new
+                   {
+                       numeroPedidoParametro = idPedido,
+                       numeroItemParametro = nroItem
+                   });
+
+
+            }
+
+            return filasAfectadas;
+        }
+
+
         public List<Entidades.Pedidos> MisPedidos(int idCliente) {
 
             var lista = new List<Entidades.Pedidos>();

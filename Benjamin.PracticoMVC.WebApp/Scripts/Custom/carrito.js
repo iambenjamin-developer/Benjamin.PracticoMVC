@@ -76,6 +76,40 @@ function parsearMoneda(decimal) {
 function eliminarItem(nroItem) {
 
     alertify.error("Pedido Nro:" + idPedido + " - Eliminar Item Nro:" + nroItem);
+    ///////////////////////////
+
+    var obj = new FormData();
+
+    obj.append("ID_PEDIDO", idPedido);
+    obj.append("ITEM", nroItem);
+  
+
+
+
+    $.ajax({
+        type: "POST",
+        url: "/Pedidos/EliminarItemPedido/",
+        data: obj,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+
+
+            var filasAfectadas = parseInt(data);
+
+            if (filasAfectadas == 1) {
+
+                //refrescar tabla
+                tablaDetallePedido();
+                alertify.success("Item eliminado");
+            } else {
+                alert("error");
+            }
+
+
+        }//fin success
+
+    }) // fin de ajax
 
 
 }
@@ -107,7 +141,7 @@ function modificarCantidad(nroItem) {
 
             if (filasAfectadas == 1) {
 
-                //actualizar tabla
+                //refrescar tabla
                 tablaDetallePedido();
             } else {
                 alert("error");
