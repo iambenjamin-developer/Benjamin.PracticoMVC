@@ -1,17 +1,12 @@
-﻿SELECT
-Usuarios.Id AS ID_USUARIO,
-Usuarios.Usuario AS USERNAME,
-Roles.Id AS ID_ROL,
-Roles.Descripcion AS ROL_DESCRIPCION,
-Clientes.Codigo AS ID_CLIENTE,
-Usuarios.Nombre AS NOMBRES,
-Usuarios.Apellido AS APELLIDOS
-FROM Usuarios
-INNER JOIN Roles ON
-Usuarios.IdRol = Roles.Id
-LEFT JOIN Clientes ON
-Usuarios.Id = Clientes.IdUsuario
-WHERE Usuarios.Usuario LIKE 'MIMI'
+﻿--UPDATE DetallesPedidos
+--SET Cantidad = 3
+--WHERE NumeroPedido = 1
+--AND NumeroItem = 4
+
+SELECT * FROM DetallesPedidos
+--INSERT INTO DetallesPedidos (NumeroPedido, NumeroItem, CodigoProducto, Cantidad, PrecioUnitario )
+--VALUES (1, 4, 1004, 5, 152.67);
+
 /*
 
 SELECT column1, column2, ...

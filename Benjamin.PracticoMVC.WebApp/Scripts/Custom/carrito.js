@@ -83,5 +83,40 @@ function eliminarItem(nroItem) {
 
 function modificarCantidad(nroItem) {
     var cantidad = document.getElementById("txtCantidad" + nroItem.toString()).value;
-    alertify.success("Pedido Nro:" + idPedido + " - Item Nro:" + nroItem+" - Cantidad: "+ cantidad);
+
+    //alertify.success("Pedido Nro:" + idPedido + " - Item Nro:" + nroItem + " - Cantidad: " + cantidad);
+
+    var obj = new FormData();
+
+    obj.append("ID_PEDIDO", idPedido);
+    obj.append("ITEM", nroItem);
+    obj.append("CANTIDAD", cantidad);
+
+
+
+    $.ajax({
+        type: "POST",
+        url: "/Pedidos/Recalcular/",
+        data: obj,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+
+            
+            var filasAfectadas = parseInt(data);
+
+            if (filasAfectadas == 1) {
+
+                //actualizar tabla
+                tablaDetallePedido();
+            } else {
+                alert("error");
+            }
+
+
+        }//fin success
+
+    }) // fin de ajax
+
+
 }

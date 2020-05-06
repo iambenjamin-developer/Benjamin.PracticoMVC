@@ -29,6 +29,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
         public ActionResult Carrito(int idPedido)
         {
+            //numero de pedido
             ViewBag.idPedido = idPedido;
 
             return View();
@@ -46,7 +47,23 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
         }
 
+        public int Recalcular(Entidades.DetallesPedidos obj)
+        {
+            var metodos = new AccesoDatos.Pedidos();
+            //int idPedido, int nroItem, int cantidad
+           
+            int filasAfectadas = metodos.CalcularPrecioSegunCantidad(obj.ID_PEDIDO, obj.ITEM, obj.CANTIDAD);
 
+
+            return filasAfectadas;
+        }
+
+        public int EliminarItemPedido(Entidades.DetallesPedidos obj)
+        {
+
+            //   int idPedido, int nroItem
+            return 0;
+        }
 
 
     }

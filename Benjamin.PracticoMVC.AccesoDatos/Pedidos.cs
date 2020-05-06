@@ -72,6 +72,42 @@ ORDER BY DetallesPedidos.NumeroItem ASC
 
         }
 
+
+        public int CalcularPrecioSegunCantidad(int idPedido, int nroItem, int cantidad)
+        {
+            int filasAfectadas = 0;
+            /*
+UPDATE DetallesPedidos
+SET Cantidad = 3
+WHERE NumeroPedido = 1
+AND NumeroItem = 4
+
+            */
+
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("UPDATE DetallesPedidos ");
+            consultaSQL.Append("SET Cantidad = @cantidadParametro ");
+            consultaSQL.Append("WHERE NumeroPedido = @idPedidoParametro ");
+            consultaSQL.Append("AND NumeroItem = @nroItemParametro ");
+
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                filasAfectadas = connection.Execute(consultaSQL.ToString(),
+                   new
+                   {
+                       idPedidoParametro = idPedido,
+                       nroItemParametro = nroItem,
+                       cantidadParametro = cantidad
+                   });
+
+
+            }
+
+            return filasAfectadas;
+        }
+
         public List<Entidades.Pedidos> MisPedidos(int idCliente) {
 
             var lista = new List<Entidades.Pedidos>();
@@ -112,5 +148,12 @@ ORDER BY Fecha DESC
 
 
         }
+
+
+
+       
+
+
+
     }
 }
