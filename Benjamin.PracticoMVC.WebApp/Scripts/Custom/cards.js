@@ -1,5 +1,16 @@
 ﻿var cantidadCarrito = 0;
-document.getElementById("idCantidadCarrito").innerHTML = "(" + cantidadCarrito + ")";
+
+$.get("/Pedidos/VerCantidadProductosEnCarrito/", function (data) {
+
+    
+    cantidadCarrito = parseInt(data);
+
+    document.getElementById("idCantidadCarrito").innerHTML = "(" + cantidadCarrito + ")";
+});
+
+
+
+
 
 $.get("/Productos/ListarCards/", function (data) {
 

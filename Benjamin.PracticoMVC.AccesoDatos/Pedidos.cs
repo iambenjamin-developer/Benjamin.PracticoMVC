@@ -183,9 +183,42 @@ ORDER BY Fecha DESC
 
         }
 
-      
-        
-        
+
+        public int VerCantidadProductosEnCarrito(int idCliente)
+        {
+            /*
+   --CANTIDAD PUESTA EN EL CARRITO SEGUN ID CLIENTE
+    
+    SELECT COUNT(*) 
+    FROM DetallesPedidos
+    WHERE NumeroPedido = (SELECT NumeroPedido 
+                          FROM Pedidos
+                          WHERE CodigoCliente = 1000)
+                 */
+            int cantidadProductosEnCarrito = 0;
+
+            StringBuilder consultaSQL = new StringBuilder();
+            consultaSQL.Append("SELECT COUNT(*) ");
+            consultaSQL.Append("FROM DetallesPedidos ");
+            consultaSQL.Append(" WHERE NumeroPedido =  ");
+            consultaSQL.Append("(SELECT NumeroPedido  ");
+            consultaSQL.Append("FROM Pedidos ");
+            consultaSQL.Append("WHERE CodigoCliente = @idClienteParametro) ");
+
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                cantidadProductosEnCarrito = connection.ExecuteScalar<int>(consultaSQL.ToString(),
+                   new
+                   {
+                       idClienteParametro = idCliente
+                   });
+
+            }
+
+            return cantidadProductosEnCarrito;
+        }
+
         public int AgregarAlCarrito(int idCliente, int idProducto)
         {
             /*

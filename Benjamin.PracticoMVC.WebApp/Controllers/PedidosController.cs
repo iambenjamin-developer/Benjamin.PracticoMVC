@@ -86,5 +86,17 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return cantidadItemsCarrito;
         }
 
+
+        public int VerCantidadProductosEnCarrito() {
+
+            int idCliente = Convert.ToInt32(Session["ID_CLIENTE"]);
+
+            var metodos = new AccesoDatos.Pedidos();
+
+            int cantidadProductosEnCarrito = metodos.VerCantidadProductosEnCarrito(idCliente);
+
+            return cantidadProductosEnCarrito;
+        }
+
     }
 }

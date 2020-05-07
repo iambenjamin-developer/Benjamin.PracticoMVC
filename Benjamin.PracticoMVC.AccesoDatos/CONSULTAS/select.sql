@@ -1,5 +1,13 @@
-﻿   SELECT COUNT (*) FROM Pedidos
-             WHERE CodigoCliente  = 1000
+﻿--CANTIDAD PUESTA EN EL CARRITO SEGUN ID CLIENTE
+SELECT COUNT(*) 
+FROM DetallesPedidos
+WHERE NumeroPedido = (SELECT NumeroPedido 
+					  FROM Pedidos
+					  WHERE CodigoCliente = 1000)
+
+
+
+
 
 
 

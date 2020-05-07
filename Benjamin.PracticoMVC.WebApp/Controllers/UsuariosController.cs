@@ -93,7 +93,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
 
             Entidades.Login obj = new Entidades.Login();
-            obj.USUARIO = Session["USUARIO"].ToString();
+            obj.USUARIO = Session["USERNAME"].ToString();
 
             obj.CLAVE = claveActual;
             AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
@@ -110,7 +110,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         public int CodigoCambiarClave(Entidades.Login obj)
         {
 
-            obj.USUARIO = Session["USUARIO"].ToString();
+            obj.USUARIO = Session["USERNAME"].ToString();
 
             AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
