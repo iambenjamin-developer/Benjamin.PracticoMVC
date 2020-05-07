@@ -1,10 +1,8 @@
-﻿--UPDATE DetallesPedidos
---SET Cantidad = 3
---WHERE NumeroPedido = 1
---AND NumeroItem = 4
+﻿   SELECT COUNT (*) FROM Pedidos
+             WHERE CodigoCliente  = 1000
 
 
-SELECT * FROM DetallesPedidos
+
 --INSERT INTO DetallesPedidos (NumeroPedido, NumeroItem, CodigoProducto, Cantidad, PrecioUnitario )
 --VALUES (1, 10, 1007, 5, 152.67);
 

@@ -71,5 +71,20 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         }
 
 
+        public int AgregarAlCarrito(Entidades.TIPO_DATO obj)
+        {
+
+            int idProducto = obj.ENTERO;
+            int idCliente = Convert.ToInt32(Session["ID_CLIENTE"]);
+
+            var metodos = new AccesoDatos.Pedidos();
+            //int idPedido, int nroItem, int cantidad
+
+            int cantidadItemsCarrito = metodos.AgregarAlCarrito(idCliente, idProducto);
+
+
+            return cantidadItemsCarrito;
+        }
+
     }
 }

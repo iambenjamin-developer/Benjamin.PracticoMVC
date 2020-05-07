@@ -183,9 +183,60 @@ ORDER BY Fecha DESC
 
         }
 
+      
+        
+        
+        public int AgregarAlCarrito(int idCliente, int idProducto)
+        {
+            /*
+             SELECT COUNT (*) FROM Pedidos
+             WHERE CodigoCliente  = 1000
+             */
+            int cantidadPedidos = 0;
+
+            StringBuilder consultaSQL = new StringBuilder();
+            consultaSQL.Append("SELECT COUNT (*) FROM Pedidos ");
+            consultaSQL.Append("WHERE CodigoCliente  = @idClienteParametro ");
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                cantidadPedidos = connection.ExecuteScalar<int>(consultaSQL.ToString(),
+                   new
+                   {
+                       idClienteParametro = idCliente
+                   });
 
 
-       
+            }
+
+            int cantidadItemsCarrito;
+
+            if (cantidadPedidos == 0)
+            {
+                cantidadItemsCarrito =  CrearPedido(idCliente, idProducto);
+            }
+            else
+            {
+                cantidadItemsCarrito = EditarPedido(idCliente, idProducto);
+            }
+
+
+            return cantidadItemsCarrito;
+        }
+
+
+
+        public int CrearPedido(int idCliente, int idProducto)
+        {
+            return -1;
+        }
+
+        public int EditarPedido(int idCliente, int idProducto)
+        {
+            return -2;
+        }
+
+
 
 
 

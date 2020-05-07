@@ -42,11 +42,44 @@ function parsearMoneda(decimal) {
 };
 
 
-function agregarAlCarrito(codigo) {
+function agregarAlCarrito(idProducto) {
 
-    alert(codigo);
+    alertify.success(idProducto.toString());
 
-    cantidadCarrito = cantidadCarrito + 1;
 
-    document.getElementById("idCantidadCarrito").innerHTML = "(" + cantidadCarrito + ")";
+    //cantidadCarrito = cantidadCarrito + 1;
+
+    //document.getElementById("idCantidadCarrito").innerHTML = "(" + cantidadCarrito + ")";
+    var TIPO_DATO = new FormData();
+
+    TIPO_DATO.append("ENTERO", idProducto);
+
+
+    $.ajax({
+        type: "POST",
+        url: "/Pedidos/AgregarAlCarrito/",
+        data: TIPO_DATO,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+
+
+            var cantidadCarrito = parseInt(data);
+            document.getElementById("idCantidadCarrito").innerHTML = "(" + cantidadCarrito + ")";
+
+            if (cantidadCarrito > 0) {
+
+             
+                //refrescar tabla
+                tablaDetallePedido();
+                alertify.success("Agregado al Carrito: " + cantidadCarrito + " Item");
+            } else {
+                alertify.error("Error");
+            }
+
+
+        }//fin success
+
+    }) // fin de ajax
+
 }
