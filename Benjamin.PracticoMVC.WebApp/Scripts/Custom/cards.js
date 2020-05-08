@@ -55,7 +55,7 @@ function parsearMoneda(decimal) {
 
 function agregarAlCarrito(idProducto) {
 
-    alertify.success(idProducto.toString());
+    //alertify.success(idProducto.toString());
 
 
     //cantidadCarrito = cantidadCarrito + 1;
@@ -77,15 +77,15 @@ function agregarAlCarrito(idProducto) {
 
             var cantidadCarrito = parseInt(data);
             document.getElementById("idCantidadCarrito").innerHTML = "(" + cantidadCarrito + ")";
-
-            if (cantidadCarrito > 0) {
-
+            //alert(cantidadCarrito);
+            if (cantidadCarrito == 0) {
+                alertify.error("El producto ya esta en el carrito!");
              
+            } else {
+                alertify.success("Se agrego al carrito!");
                 //refrescar tabla
                 tablaDetallePedido();
-                alertify.success("Agregado al Carrito: " + cantidadCarrito + " Item");
-            } else {
-                alertify.error("Error");
+                
             }
 
 
