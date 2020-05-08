@@ -250,9 +250,14 @@ ORDER BY Fecha DESC
             {
                 cantidadItemsCarrito = CrearPedido(idCliente, idProducto);
             }
-            else
+            else if (cantidadPedidos == 1)
             {
                 cantidadItemsCarrito = EditarPedido(idCliente, idProducto);
+            }
+            else
+            {
+
+                cantidadItemsCarrito = -1;
             }
 
 
@@ -374,12 +379,137 @@ VALUES 						((SELECT MAX(NumeroPedido) FROM Pedidos),
 
             // si el resultado de filasafectadas es 1 es porque salio OK
             return cantidadProductosEnCarrito;
-      
+
         }
 
         public int EditarPedido(int idCliente, int idProducto)
         {
-            return -2;
+            int proximoNroItem = 0;
+            int idPedido = 0;
+
+            int filasAfectadas = 0;
+            int cantidadProductosEnCarrito = 0;
+
+
+
+
+
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
+
+
+            conexion.Open();
+
+            //como vamos a realizar dos inserciones debemos hacerlo con una transaccion
+            var transaccion = conexion.BeginTransaction();
+
+
+            try
+            {
+                /*
+                --NUMERO DE PEDIDO  ASIGNADO AL CLIENTE
+                SELECT NumeroPedido 
+                FROM Pedidos
+                WHERE CodigoCliente = 1000
+
+                 */
+
+                StringBuilder consultaSQL1 = new StringBuilder();
+                consultaSQL1.Append("SELECT NumeroPedido ");
+                consultaSQL1.Append("FROM Pedidos ");
+                consultaSQL1.Append("WHERE CodigoCliente = @idClienteParametro ");
+
+
+                idPedido = conexion.ExecuteScalar<int>(consultaSQL1.ToString(),
+                   new { idClienteParametro = idCliente },
+                   transaction: transaccion);
+
+                /*
+           --ULTIMO NUMERO DE ITEM DEL PEDIDO DEL CLIENTE
+                SELECT MAX(NumeroItem) 
+                FROM DetallesPedidos
+                WHERE NumeroPedido = (SELECT NumeroPedido 
+                                      FROM Pedidos
+                                      WHERE CodigoCliente = 1000)
+            */
+
+                StringBuilder consultaSQL2 = new StringBuilder();
+                consultaSQL2.Append("SELECT MAX(NumeroItem)  ");
+                consultaSQL2.Append("FROM DetallesPedidos ");
+                consultaSQL2.Append("WHERE NumeroPedido =  ");
+                consultaSQL2.Append("(SELECT NumeroPedido ");
+                consultaSQL2.Append("FROM Pedidos ");
+                consultaSQL2.Append("WHERE CodigoCliente = @idClienteParametro ) ");
+
+
+                proximoNroItem = conexion.ExecuteScalar<int>(consultaSQL2.ToString(),
+                    new { idClienteParametro = idCliente },
+                    transaction: transaccion);
+
+                proximoNroItem = proximoNroItem + 1;
+
+                /*
+            INSERT INTO DetallesPedidos
+                           (NumeroPedido, 
+                           NumeroItem, 
+                           CodigoProducto, 
+                           Cantidad, 
+                           PrecioUnitario)
+                   VALUES( @idPedidoParametro,
+                           @proximoNroItem, 
+                           @idProductoParametro, 
+                           1, 
+                           (SELECT PrecioUnitario FROM PRODUCTOS WHERE Codigo = @idProductoParametro));
+
+            */
+                StringBuilder consultaSQL3 = new StringBuilder();
+                consultaSQL3.Append("INSERT INTO DetallesPedidos ");
+                consultaSQL3.Append("(NumeroPedido, ");
+                consultaSQL3.Append("NumeroItem,  ");
+                consultaSQL3.Append("CodigoProducto, ");
+                consultaSQL3.Append("Cantidad,  ");
+                consultaSQL3.Append("PrecioUnitario) ");
+                consultaSQL3.Append("VALUES( ");
+                consultaSQL3.Append("@idPedidoParametro, ");
+                consultaSQL3.Append("@proximoNroItem,  ");
+                consultaSQL3.Append("@idProductoParametro,  ");
+                consultaSQL3.Append("1, ");
+                consultaSQL3.Append(" (SELECT PrecioUnitario FROM PRODUCTOS WHERE Codigo = @idProductoParametro)); ");
+
+
+
+                filasAfectadas = conexion.Execute(consultaSQL3.ToString(),
+                       new
+                       {
+                           idPedidoParametro = idPedido,
+                           proximoNroItem = proximoNroItem,
+                           idProductoParametro = idProducto
+                       }
+                       , transaction: transaccion);
+
+
+                // si las operaciones relacionadas salieron bien, se realiza un commit
+                transaccion.Commit();
+
+                cantidadProductosEnCarrito = VerCantidadProductosEnCarrito(idCliente);
+
+            }
+            catch (Exception ex)
+            {
+                // en caso que haya un error en el medio de la funcion
+                //lanzamos codigo de error 0 y realizamos un rollback para que los datos
+                //no se reflejen en la base de datos
+                filasAfectadas = 0;
+                transaccion.Rollback();
+
+            }
+            finally
+            {
+                //si el procedimiento salio bien o mal, siempre se debe cerrar la conexion
+                conexion.Close();
+            }
+
+            // si el resultado de filasafectadas es 1 es porque salio OK
+            return cantidadProductosEnCarrito;
         }
 
 
