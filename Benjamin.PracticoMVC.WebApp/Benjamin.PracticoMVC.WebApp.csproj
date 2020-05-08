@@ -167,6 +167,7 @@
     <Content Include="Scripts\Custom\expresionesRegulares.js" />
     <Content Include="Scripts\Custom\login.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\Custom\menu.js" />
     <Content Include="Scripts\Custom\mispedidos.js" />
     <Content Include="Scripts\Custom\productos.js" />
     <Content Include="Scripts\Custom\test.js" />

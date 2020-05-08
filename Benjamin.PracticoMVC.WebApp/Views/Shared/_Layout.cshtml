@@ -13,45 +13,63 @@
 
 </head>
 <body>
+    <!-- Links -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div id="idMenuSegunRol" class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+            @*<ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class='nav-link' href='~/Usuarios/ABM'> <i class='fas fa-users'></i> Usuarios</a>";
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="//codeply.com">Codeply</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                </ul>*@
+        </div>
+        <div class="mx-auto order-0">
+            <a class="navbar-brand mx-auto" href="#">
+                <img src="~/Images/iconos/bombilla.svg" alt="logo" style="width:30px;" />
+                <b><i> @Session["NOMBRES"] (@Session["ROL_DESCRIPCION"])</i> </b>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Usuarios/CambiarClave"><i class='fas fa-key'></i> Cambiar Clave</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="~/Usuarios/Login"><i class='fas fa-sign-out-alt'></i> Cerrar Sesión </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+   
 
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <!-- Brand/logo -->
-        <a class="navbar-brand" href="#">
-            <img src="~/Images/iconos/bombilla.svg" alt="logo" style="width:40px;" />
-            @Session["NOMBRE"]
-        </a>
-    
-        <!-- Links -->
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="~/Usuarios/Index">Index</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="~/Usuarios/ABM">Usuarios(admin)</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="~/Productos/ABM">Productos(admin)</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="~/Productos/Cards">Productos(cliente)</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="~/Test/Jquery">Carrito  <i class="fas fa-cart-plus"></i><label id="idCantidadCarrito"></label></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="~/Pedidos/MisPedidos">Pedidos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="~/Usuarios/CambiarClave">Cambiar Clave</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="~/Usuarios/Login">Cerrar Sesión <i class="fas fa-sign-out-alt"></i></a>
-            </li>
+    <!--
+      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">   -->
+    <!-- Brand/logo -->
+    <!--
+    <a class="navbar-brand" href="#">
+        <img src="~/Images/iconos/bombilla.svg" alt="logo" style="width:30px;" />
+        <b><i>@Session["NOMBRES"]</i> </b>
 
-        </ul>
+    </a>
+
+
     </nav>
 
-
+    -->
     <div class="container">
         @RenderBody()
         <hr />
@@ -66,6 +84,9 @@
 
     <!--  Font Awesome -->
     @Scripts.Render("~/Scripts/all.min.js")
+
+    <!--  Renderizar Menu -->
+    @Scripts.Render("~/Scripts/Custom/menu.js")
 
     @RenderSection("scripts", required: false)
 

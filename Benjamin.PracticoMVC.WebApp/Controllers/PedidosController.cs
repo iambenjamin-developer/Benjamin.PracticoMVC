@@ -12,6 +12,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         public ActionResult MisPedidos()
         {
             return View();
+            
         }
 
         public JsonResult JsonMisPedidos()
