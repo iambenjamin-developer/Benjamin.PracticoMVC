@@ -9,8 +9,6 @@ namespace Benjamin.PracticoMVC.Entidades
   public  class Sesion
     {
 
-
-
         public int ID_USUARIO { get; set; }
 
         public string USERNAME { get; set; }
@@ -27,6 +25,9 @@ namespace Benjamin.PracticoMVC.Entidades
 
         public bool ONLINE { get; set; }
 
+        public string ESTADO_PEDIDO { get; set; }
 
+
+        
     }
 }

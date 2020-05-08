@@ -1,8 +1,5 @@
-﻿select * from DetallesPedidos
-
-
-
-
+﻿SELECT NumeroItem FROM DetallesPedidos
+WHERE NumeroPedido = 1
 
 
 

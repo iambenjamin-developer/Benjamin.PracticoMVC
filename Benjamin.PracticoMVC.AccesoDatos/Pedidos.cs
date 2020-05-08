@@ -23,6 +23,7 @@ namespace Benjamin.PracticoMVC.AccesoDatos
 SELECT 
 DetallesPedidos.NumeroItem AS ITEM,
 Marcas.Nombre AS MARCA,
+Productos.Codigo AS ID_PRODUCTO,
 Productos.Nombre AS PRODUCTO,
 DetallesPedidos.PrecioUnitario AS PRECIO_UNITARIO,
 DetallesPedidos.Cantidad AS CANTIDAD,
@@ -41,6 +42,7 @@ ORDER BY DetallesPedidos.NumeroItem ASC
             consultaSQL.Append("SELECT ");
             consultaSQL.Append("DetallesPedidos.NumeroItem AS ITEM, ");
             consultaSQL.Append("Marcas.Nombre AS MARCA, ");
+            consultaSQL.Append("Productos.Codigo AS ID_PRODUCTO, ");
             consultaSQL.Append("Productos.Nombre AS PRODUCTO, ");
             consultaSQL.Append("DetallesPedidos.PrecioUnitario AS PRECIO_UNITARIO, ");
             consultaSQL.Append("DetallesPedidos.Cantidad AS CANTIDAD, ");
@@ -109,13 +111,13 @@ AND NumeroItem = 4
             return filasAfectadas;
         }
 
-        public int EliminarItemPedido(int idPedido, int nroItem)
+        public int EliminarItemPedido(int idPedido, int codProducto)
         {
             int filasAfectadas = 0;
             /*
 DELETE FROM DetallesPedidos 
 WHERE NumeroPedido = 1
-AND NumeroItem = 1;
+AND CodigoProducto = 1003;
 
             */
 
@@ -123,7 +125,7 @@ AND NumeroItem = 1;
 
             consultaSQL.Append("DELETE FROM DetallesPedidos ");
             consultaSQL.Append("WHERE NumeroPedido = @numeroPedidoParametro ");
-            consultaSQL.Append("AND NumeroItem = @numeroItemParametro ");
+            consultaSQL.Append("AND CodigoProducto = @codigoProductoParametro ");
 
 
 
@@ -133,15 +135,131 @@ AND NumeroItem = 1;
                    new
                    {
                        numeroPedidoParametro = idPedido,
-                       numeroItemParametro = nroItem
+                       codigoProductoParametro = codProducto
                    });
 
 
             }
 
+            if (filasAfectadas == 1)
+            {
+
+                ReordenarItemsPedido(idPedido);
+            }
+
             return filasAfectadas;
         }
 
+        public void ReordenarItemsPedido(int idPedido)
+        {
+
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
+
+            conexion.Open();
+
+            //como vamos a realizar dos inserciones debemos hacerlo con una transaccion
+            var transaccion = conexion.BeginTransaction();
+
+
+            try
+            {
+                /*
+SELECT CodigoProducto FROM DetallesPedidos
+WHERE NumeroPedido  = 1
+                 */
+                StringBuilder consultaSQL1 = new StringBuilder();
+                consultaSQL1.Append("SELECT CodigoProducto FROM DetallesPedidos ");
+                consultaSQL1.Append("WHERE NumeroPedido  = @idPedidoParametro ");
+
+                List<int> lista = new List<int>();
+
+                using (var connection = new SqlConnection(cadenaConexion))
+                {
+                    lista = connection.Query<int>(consultaSQL1.ToString(),
+                        new { idPedidoParametro = idPedido }).ToList();
+                }
+
+
+
+                /*
+UPDATE DetallesPedidos
+SET NumeroItem = 1
+WHERE NumeroPedido = 1
+AND CodigoProducto = 1006
+                 */
+
+                StringBuilder consultaSQL2 = new StringBuilder();
+                int filasAfectadas = 0;
+
+                for (int i = 0; i < lista.Count; i++)
+                {
+                    consultaSQL2.Clear();
+
+                    consultaSQL2.Append("UPDATE DetallesPedidos ");
+                    consultaSQL2.Append("SET NumeroItem = @nroItemParametro ");
+                    consultaSQL2.Append("WHERE NumeroPedido = @idPedidoParametro ");
+                    consultaSQL2.Append("AND CodigoProducto = @idProductoParametro ");
+
+
+                    filasAfectadas = conexion.Execute(consultaSQL2.ToString(),
+                           new
+                           {//lo multiplicamos por menos uno para que haya restriccion de clave primaria
+                               nroItemParametro = (i + 1) * (-1),
+                               idPedidoParametro = idPedido,
+                               idProductoParametro = lista[i]
+                           }
+                           , transaction: transaccion);
+
+                }
+
+                //se enumera la lista para actualizarla nuevo positivamente
+                List<int> listaEnumerada = new List<int>();
+
+                for (int i = 0; i < lista.Count; i++)
+                {
+                    listaEnumerada.Add(i +1);
+                }
+
+                for (int i = 0; i < lista.Count; i++)
+                {
+                    consultaSQL2.Clear();
+
+                    consultaSQL2.Append("UPDATE DetallesPedidos ");
+                    consultaSQL2.Append("SET NumeroItem = @nroItemParametro ");
+                    consultaSQL2.Append("WHERE NumeroPedido = @idPedidoParametro ");
+                    consultaSQL2.Append("AND CodigoProducto = @idProductoParametro ");
+
+
+                    filasAfectadas = conexion.Execute(consultaSQL2.ToString(),
+                           new
+                           {//lo multiplicamos por menos uno para que haya restriccion de clave primaria
+                               nroItemParametro = listaEnumerada[i],
+                               idPedidoParametro = idPedido,
+                               idProductoParametro = lista[i]
+                           }
+                           , transaction: transaccion);
+
+                }
+
+
+                // si las operaciones relacionadas salieron bien, se realiza un commit
+                transaccion.Commit();
+
+
+            }
+            catch (Exception ex)
+            {
+
+                transaccion.Rollback();
+
+            }
+            finally
+            {
+                //si el procedimiento salio bien o mal, siempre se debe cerrar la conexion
+                conexion.Close();
+            }
+
+        }
 
         public List<Entidades.Pedidos> MisPedidos(int idCliente)
         {

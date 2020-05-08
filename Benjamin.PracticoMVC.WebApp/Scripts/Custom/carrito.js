@@ -1,6 +1,7 @@
 ﻿
 var idPedido = document.getElementById("txtIdPedido").value;
 
+
 tablaDetallePedido();
 
 function tablaDetallePedido() {
@@ -10,12 +11,13 @@ function tablaDetallePedido() {
 
         var total = 0;
         var contenido = "";
-        var cantidad = 0;
+
 
         contenido += "<table id='tabla-paginacion-usuarios' class='table table-striped'>";
         contenido += "<thead>";
         contenido += "<tr>";
         contenido += "<th scope='col'>ITEM</th>";
+        contenido += "<th scope='col' class='text-center'>CODIGO</th>";
         contenido += "<th scope='col' class='text-center'>PRODUCTO</th>";
         contenido += "<th scope='col' class='text-right' >&nbsp;&nbsp;&nbsp;&nbsp;PRECIO UNITARIO</th>";
         contenido += "<th scope='col' class='text-center' >&nbsp;&nbsp;&nbsp;&nbsp;CANTIDAD</th>";
@@ -26,9 +28,11 @@ function tablaDetallePedido() {
         contenido += "<tbody>";
 
         for (var i = 0; i < data.length; i++) {
+
             contenido += "<tr>";
             contenido += "<td>&nbsp;&nbsp;" + data[i].ITEM + "</td>";
-            nroItem = parseInt(data[i].ITEM);
+            contenido += "<td class='text-center' >" + data[i].ID_PRODUCTO + "</td>";
+            codProducto = parseInt(data[i].ID_PRODUCTO);
             contenido += "<td class='text-center' >" + data[i].MARCA + " - " + data[i].PRODUCTO + "</td>";
             contenido += "<td class='text-right'>" + parsearMoneda(data[i].PRECIO_UNITARIO) + "</td>";
             contenido += "<td class='text-center'> <input id='txtCantidad" + data[i].ITEM + "' type='number'  min='1' step='1' value='" + data[i].CANTIDAD + "' onchange='modificarCantidad(" + data[i].ITEM + ")'> </td>";
@@ -36,7 +40,7 @@ function tablaDetallePedido() {
             contenido += "<td class='text-right'>" + parsearMoneda(data[i].SUBTOTAL) + "</td>";
             //calcular el total con los subtotales
             total = total + data[i].SUBTOTAL;
-            contenido += "<td class='text-center' ><button id='btnEliminar' class='btn btn-danger' onclick='eliminarItem(" + nroItem + ")' ><i class='fas fa-trash-alt'></i></button></td>";
+            contenido += "<td class='text-center' ><button id='btnEliminar' class='btn btn-danger' onclick='eliminarItem(" + codProducto + ")' ><i class='fas fa-trash-alt'></i></button></td>";
 
             contenido += "</tr>";
         }
@@ -73,9 +77,9 @@ function parsearMoneda(decimal) {
 }
 
 
-function eliminarItem(nroItem) {
+function eliminarItem(codProducto) {
 
-    //alertify.error("Pedido Nro:" + idPedido + " - Eliminar Item Nro:" + nroItem);
+    //alertify.error("Pedido Nro:" + idPedido + " - Eliminar Item Nro:" + codProducto);
 
     alertify.confirm('Carrito', //titulo
         '¿Desea Eliminar item?', //mensaje
@@ -84,7 +88,7 @@ function eliminarItem(nroItem) {
             var obj = new FormData();
 
             obj.append("ID_PEDIDO", idPedido);
-            obj.append("ITEM", nroItem);
+            obj.append("ID_PRODUCTO", codProducto);
 
             $.ajax({
                 type: "POST",
@@ -121,15 +125,15 @@ function eliminarItem(nroItem) {
 }
 
 
-function modificarCantidad(nroItem) {
-    var cantidad = document.getElementById("txtCantidad" + nroItem.toString()).value;
+function modificarCantidad(codProducto) {
+    var cantidad = document.getElementById("txtCantidad" + codProducto.toString()).value;
 
-    //alertify.success("Pedido Nro:" + idPedido + " - Item Nro:" + nroItem + " - Cantidad: " + cantidad);
+    //alertify.success("Pedido Nro:" + idPedido + " - Item Nro:" + codProducto + " - Cantidad: " + cantidad);
 
     var obj = new FormData();
 
     obj.append("ID_PEDIDO", idPedido);
-    obj.append("ITEM", nroItem);
+    obj.append("ITEM", codProducto);
     obj.append("CANTIDAD", cantidad);
 
 

@@ -66,7 +66,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             //   int idPedido, int nroItem
 
 
-            int filasAfectadas = metodos.EliminarItemPedido(obj.ID_PEDIDO, obj.ITEM);
+            int filasAfectadas = metodos.EliminarItemPedido(obj.ID_PEDIDO, obj.ID_PRODUCTO);
 
             return filasAfectadas;
         }

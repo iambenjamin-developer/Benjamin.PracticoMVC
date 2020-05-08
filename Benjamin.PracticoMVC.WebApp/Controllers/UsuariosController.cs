@@ -63,8 +63,9 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
                 Session["NOMBRES"] = objSesion.NOMBRES;
                 Session["APELLIDOS"] = objSesion.APELLIDOS;
                 Session["ONLINE"] = objSesion.ONLINE;
+                Session["ESTADO_PEDIDO"] = "SIN_PEDIDOS";
 
-
+              
                 //si el usuario y la clave son iguales, significa que esta blanqueada
                 //por lo cual hay q redirigirlos a cambiar contraseña
                 if (usuarioClaveIguales == true)
