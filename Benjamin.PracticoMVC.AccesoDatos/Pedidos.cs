@@ -9,11 +9,12 @@ using Dapper;
 
 namespace Benjamin.PracticoMVC.AccesoDatos
 {
-   public class Pedidos
+    public class Pedidos
     {
         string cadenaConexion = Conexiones.ObtenerCadenaConexion();
 
-        public List<Entidades.DetallesPedidos> ListaDetallePedido(int idPedido) {
+        public List<Entidades.DetallesPedidos> ListaDetallePedido(int idPedido)
+        {
 
             var lista = new List<Entidades.DetallesPedidos>();
 
@@ -53,7 +54,7 @@ ORDER BY DetallesPedidos.NumeroItem ASC
             consultaSQL.Append("Productos.IdMarca = Marcas.Id  ");
             consultaSQL.Append("WHERE Pedidos.NumeroPedido = @idPedidoParametro ");
             consultaSQL.Append("ORDER BY DetallesPedidos.NumeroItem ASC ");
-     
+
 
 
 
@@ -64,7 +65,7 @@ ORDER BY DetallesPedidos.NumeroItem ASC
                      new
                      {
                          idPedidoParametro = idPedido
-                     
+
                      }).ToList();
             }
 
@@ -123,7 +124,7 @@ AND NumeroItem = 1;
             consultaSQL.Append("DELETE FROM DetallesPedidos ");
             consultaSQL.Append("WHERE NumeroPedido = @numeroPedidoParametro ");
             consultaSQL.Append("AND NumeroItem = @numeroItemParametro ");
-   
+
 
 
             using (var connection = new SqlConnection(cadenaConexion))
@@ -142,7 +143,8 @@ AND NumeroItem = 1;
         }
 
 
-        public List<Entidades.Pedidos> MisPedidos(int idCliente) {
+        public List<Entidades.Pedidos> MisPedidos(int idCliente)
+        {
 
             var lista = new List<Entidades.Pedidos>();
 
@@ -246,7 +248,7 @@ ORDER BY Fecha DESC
 
             if (cantidadPedidos == 0)
             {
-                cantidadItemsCarrito =  CrearPedido(idCliente, idProducto);
+                cantidadItemsCarrito = CrearPedido(idCliente, idProducto);
             }
             else
             {
@@ -261,7 +263,118 @@ ORDER BY Fecha DESC
 
         public int CrearPedido(int idCliente, int idProducto)
         {
-            return -1;
+
+            /*
+             
+-- SI NO TIENE NINGUN PEDIDO ASIGNADO, CREAR UNO Y EL DETALLE DE ESE PEDIDO
+INSERT INTO Pedidos(CodigoCliente, Fecha, Observacion)
+VALUES (@idClienteParametro , GETDATE(), '')
+
+--CREAR DETALLE DE PEDIDO DE ESE PEDIDO
+
+INSERT INTO DetallesPedidos(NumeroPedido, 
+							NumeroItem, 
+							CodigoProducto, 
+							Cantidad, 
+							PrecioUnitario)
+VALUES 						((SELECT MAX(NumeroPedido) FROM Pedidos),
+							1, 
+							@idProductoParametro, 
+							1, 
+							(SELECT PrecioUnitario FROM PRODUCTOS WHERE Codigo = @idProductoParametro));
+
+             
+             */
+
+            int filasAfectadas = 0;
+            int cantidadProductosEnCarrito = 0;
+            SqlConnection conexion = new SqlConnection(cadenaConexion);
+
+
+            conexion.Open();
+
+            //como vamos a realizar dos inserciones debemos hacerlo con una transaccion
+            var transaccion = conexion.BeginTransaction();
+
+
+            try
+            {
+                /*
+                 INSERT INTO Pedidos(CodigoCliente, Fecha, Observacion)
+                VALUES (@idClienteParametro , GETDATE(), '')
+                                 */
+
+                StringBuilder consultaSQL1 = new StringBuilder();
+                consultaSQL1.Append("INSERT INTO Pedidos(CodigoCliente, Fecha, Observacion) ");
+                consultaSQL1.Append("VALUES (@idClienteParametro , @fechaParametro, @observacionParametro) ");
+
+
+
+                filasAfectadas = conexion.Execute(consultaSQL1.ToString(),
+                       new
+                       {
+                           idClienteParametro = idCliente,
+                           fechaParametro = DateTime.Now,
+                           observacionParametro = string.Empty
+
+                       }
+                       , transaction: transaccion);
+
+
+
+                /*
+                 INSERT INTO DetallesPedidos(NumeroPedido, 
+							NumeroItem, 
+							CodigoProducto, 
+							Cantidad, 
+							PrecioUnitario)
+VALUES 						((SELECT MAX(NumeroPedido) FROM Pedidos),
+							1, 
+							@idProductoParametro, 
+							1, 
+							(SELECT PrecioUnitario FROM PRODUCTOS WHERE Codigo = @idProductoParametro));
+                 */
+                StringBuilder consultaSQL2 = new StringBuilder();
+                consultaSQL2.Append("INSERT INTO DetallesPedidos(NumeroPedido, NumeroItem, CodigoProducto, Cantidad, PrecioUnitario) ");
+                consultaSQL2.Append("VALUES( ");
+                consultaSQL2.Append("(SELECT MAX(NumeroPedido) FROM Pedidos), ");
+                consultaSQL2.Append("1, ");
+                consultaSQL2.Append("@idProductoParametro,  ");
+                consultaSQL2.Append("1, ");
+                consultaSQL2.Append("(SELECT PrecioUnitario FROM PRODUCTOS WHERE Codigo = @idProductoParametro)); ");
+
+
+                filasAfectadas = conexion.Execute(consultaSQL2.ToString(),
+                       new
+                       {
+                           idProductoParametro = idProducto
+                       },
+                       transaction: transaccion);
+
+                // si las operaciones relacionadas salieron bien, se realiza un commit
+                transaccion.Commit();
+
+                cantidadProductosEnCarrito = VerCantidadProductosEnCarrito(idCliente);
+
+            }
+            catch (Exception ex)
+            {
+                // en caso que haya un error en el medio de la funcion
+                //lanzamos codigo de error 0 y realizamos un rollback para que los datos
+                //no se reflejen en la base de datos
+                filasAfectadas = 0;
+                transaccion.Rollback();
+
+            }
+            finally
+            {
+                //si el procedimiento salio bien o mal, siempre se debe cerrar la conexion
+                conexion.Close();
+            }
+
+            // si el resultado de filasafectadas es 1 es porque salio OK
+            return cantidadProductosEnCarrito;
+      
         }
 
         public int EditarPedido(int idCliente, int idProducto)
