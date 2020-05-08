@@ -1,5 +1,4 @@
-﻿SELECT NumeroItem FROM DetallesPedidos
-WHERE NumeroPedido = 1
+﻿select * from pedidos
 
 
 
