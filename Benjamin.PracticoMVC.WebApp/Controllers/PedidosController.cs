@@ -99,5 +99,22 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return cantidadProductosEnCarrito;
         }
 
+        public ActionResult PedidosClientes()
+        {
+            return View();
+        }
+
+        public JsonResult JsonPedidosClientes()
+        {
+    
+            var metodos = new AccesoDatos.Pedidos();
+
+            var lista = metodos.ListarPedidosClientes();
+
+
+            return (Json(lista, JsonRequestBehavior.AllowGet));
+
+        }
+
     }
 }

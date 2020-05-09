@@ -17,7 +17,7 @@ $.get("/Usuarios/ObtenerIdRol/", function (data) {
         menu += "</li> ";
 
         menu += "<li class='nav-item'> ";
-        menu += "<a class='nav-link'  href='/Pedidos/Clientes' > <i class='fas fa-list-ul'></i> Pedidos </a>";
+        menu += "<a class='nav-link'  href='/Pedidos/PedidosClientes' > <i class='fas fa-list-ul'></i> Pedidos </a>";
         menu += "</li> ";
 
 

@@ -308,6 +308,9 @@ ORDER BY FECHA_PEDIDO DESC
 
         }
 
+        
+
+
 
         public int VerCantidadProductosEnCarrito(int idCliente)
         {
@@ -636,6 +639,67 @@ VALUES 						((SELECT MAX(NumeroPedido) FROM Pedidos),
         }
 
 
+
+        public List<Entidades.Join_PedidosClientes> ListarPedidosClientes()
+        {
+
+            var lista = new List<Entidades.Join_PedidosClientes>();
+
+            /*
+SELECT 
+Pedidos.NumeroPedido AS ID_PEDIDO,
+Pedidos.CodigoCliente AS ID_CLIENTE,
+Clientes.RazonSocial AS RAZON_SOCIAL,
+Usuarios.Apellido + ' ' + Usuarios.Nombre AS APELLIDO_NOMBRE,
+Pedidos.Fecha AS FECHA_PEDIDO, 
+--SUBSTRING( Pedidos.Observacion, 0, 4 ) AS ESTADO_PEDIDO,
+CASE
+    WHEN SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(P)' THEN 'PENDIENTE'
+    WHEN SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(C)' THEN 'CANCELADO'
+    WHEN SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(F)' THEN 'FINALIZADO'
+    ELSE 'DESCONOCIDO'
+END AS ESTADO_PEDIDO,
+SUBSTRING( Pedidos.Observacion, 4, 90 ) AS OBSERVACIONES
+FROM Pedidos
+INNER JOIN Clientes ON
+Pedidos.CodigoCliente = Clientes.Codigo
+INNER JOIN Usuarios ON
+Clientes.IdUsuario = Usuarios.Id
+ORDER BY FECHA_PEDIDO DESC
+           
+             */
+            StringBuilder consultaSQL = new StringBuilder();
+            consultaSQL.Append("SELECT ");
+            consultaSQL.Append("Pedidos.NumeroPedido AS ID_PEDIDO, ");
+            consultaSQL.Append("Pedidos.CodigoCliente AS ID_CLIENTE, ");
+            consultaSQL.Append("Clientes.RazonSocial AS RAZON_SOCIAL, "); 
+            consultaSQL.Append("Usuarios.Apellido + ' ' + Usuarios.Nombre AS APELLIDO_NOMBRE, ");
+            consultaSQL.Append("Pedidos.Fecha AS FECHA_PEDIDO, ");
+            consultaSQL.Append("CASE ");
+            consultaSQL.Append("WHEN SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(P)' THEN 'PENDIENTE' ");
+            consultaSQL.Append("WHEN SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(C)' THEN 'CANCELADO' ");
+            consultaSQL.Append("WHEN SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(F)' THEN 'FINALIZADO' ");
+            consultaSQL.Append("ELSE 'DESCONOCIDO' ");
+            consultaSQL.Append("END AS ESTADO_PEDIDO, ");
+            consultaSQL.Append("SUBSTRING( Pedidos.Observacion, 4, 90 ) AS OBSERVACIONES ");
+            consultaSQL.Append("FROM Pedidos ");
+            consultaSQL.Append("INNER JOIN Clientes ON ");
+            consultaSQL.Append("Pedidos.CodigoCliente = Clientes.Codigo ");
+            consultaSQL.Append("INNER JOIN Usuarios ON "); 
+            consultaSQL.Append("Clientes.IdUsuario = Usuarios.Id ");
+            consultaSQL.Append("ORDER BY FECHA_PEDIDO DESC ");
+           
+
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                lista = connection.Query<Entidades.Join_PedidosClientes>(consultaSQL.ToString()).ToList();
+            }
+
+            return lista;
+
+
+        }
 
 
 

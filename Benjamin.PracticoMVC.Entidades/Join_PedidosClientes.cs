@@ -1,4 +1,30 @@
-﻿SELECT 
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Benjamin.PracticoMVC.Entidades
+{
+   public class Join_PedidosClientes
+    {
+
+        public int ID_PEDIDO { get; set; }
+
+        public int ID_CLIENTE { get; set; }
+
+        public string RAZON_SOCIAL { get; set; }
+
+        public string APELLIDO_NOMBRE { get; set; }
+
+        public DateTime FECHA_PEDIDO { get; set; }
+
+        public string ESTADO_PEDIDO { get; set; }
+
+        public string OBSERVACIONES { get; set; }
+
+        /*
+         SELECT 
 Pedidos.NumeroPedido AS ID_PEDIDO,
 Pedidos.CodigoCliente AS ID_CLIENTE,
 Clientes.RazonSocial AS RAZON_SOCIAL,
@@ -18,25 +44,10 @@ Pedidos.CodigoCliente = Clientes.Codigo
 INNER JOIN Usuarios ON
 Clientes.IdUsuario = Usuarios.Id
 ORDER BY FECHA_PEDIDO DESC
-
---INSERT INTO DetallesPedidos (NumeroPedido, NumeroItem, CodigoProducto, Cantidad, PrecioUnitario )
---VALUES (1, 10, 1007, 5, 152.67);
-
-/*
-
-SELECT column1, column2, ...
-FROM table_name;
-
-INSERT INTO table_name (column1, column2, column3, ...)
-VALUES (value1, value2, value3, ...);
-
-UPDATE table_name
-SET column1 = value1, column2 = value2, ...
-WHERE condition;
-
-DELETE FROM table_name 
-WHERE condition;
+         
+         
+         */
 
 
-
-*/
+    }
+}
