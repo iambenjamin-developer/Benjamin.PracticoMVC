@@ -15,6 +15,7 @@ function tablaMisPedidos() {
         contenido += "<tr>";
         contenido += "<th scope='col'>NRO PEDIDO</th>";
         contenido += "<th scope='col' class='text-center'>FECHA</th>";
+        contenido += "<th scope='col' class='text-center'>ESTADO</th>";
         contenido += "<th scope='col' class='text-center' >&nbsp;&nbsp;&nbsp;&nbsp;OBSERVACIONES</th>";
         contenido += "<th scope='col' class='text-center'>DETALLES</th>";
         contenido += "</tr>";
@@ -28,6 +29,7 @@ function tablaMisPedidos() {
 
             contenido += "<td class='text-center'>" + parsearFecha(data[i].FECHA_PEDIDO) + "</td>";
 
+            contenido += "<td class='text-center'>" + parsearEstado(data[i].ESTADO_PEDIDO) + "</td>";
 
             contenido += "<td class='text-center'>" + data[i].OBSERVACIONES + "</td>";
 
@@ -76,3 +78,25 @@ function parsearMoneda(decimal) {
     return new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(decimal);
 }
 
+function parsearEstado(cadena) {
+
+    var resultado = "";
+    switch (cadena) {
+        case "(P)":
+            resultado = "PENDIENTE";
+            break;
+
+        case "(C)":
+            resultado = "CANCELADO";
+            break;
+
+        case "(F)":
+            resultado = "FINALIZADO";
+            break;
+
+        default:
+            resultado = "DESCONOCIDO";
+    }
+
+    return resultado;
+}

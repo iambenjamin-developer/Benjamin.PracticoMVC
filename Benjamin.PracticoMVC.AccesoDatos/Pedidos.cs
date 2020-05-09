@@ -269,23 +269,28 @@ AND CodigoProducto = 1006
             /*
 SELECT 
 NumeroPedido AS ID_PEDIDO,
-Fecha AS FECHA_PEDIDO,
-Observacion AS OBSERVACIONES
+CodigoCliente AS ID_CLIENTE,
+Fecha AS FECHA_PEDIDO, 
+SUBSTRING( Observacion, 4, 90 ) AS OBSERVACIONES,
+SUBSTRING( Observacion, 0, 4 ) AS ESTADO_PEDIDO --PSEUDO COLUMNA CONTENIDA DENTRO DE LA COLUMNA OBSERVACION
 FROM Pedidos
+--WHERE SUBSTRING( Observacion, 0, 4 ) = '(P)'
 WHERE CodigoCliente = 1000
-ORDER BY Fecha DESC
+ORDER BY FECHA_PEDIDO DESC
+
+           
              */
             StringBuilder consultaSQL = new StringBuilder();
             consultaSQL.Append("SELECT ");
             consultaSQL.Append("NumeroPedido AS ID_PEDIDO, ");
+            consultaSQL.Append("CodigoCliente AS ID_CLIENTE, ");
             consultaSQL.Append("Fecha AS FECHA_PEDIDO, ");
-            consultaSQL.Append("Observacion AS OBSERVACIONES ");
+            consultaSQL.Append("SUBSTRING( Observacion, 4, 90 ) AS OBSERVACIONES, ");
+            consultaSQL.Append("SUBSTRING( Observacion, 0, 4 ) AS ESTADO_PEDIDO  ");
             consultaSQL.Append("FROM Pedidos ");
             consultaSQL.Append("WHERE CodigoCliente = @idClienteParametro ");
-            consultaSQL.Append("ORDER BY Fecha DESC ");
-
-
-
+            consultaSQL.Append("ORDER BY FECHA_PEDIDO DESC ");
+           
 
             using (var connection = new SqlConnection(cadenaConexion))
             {
