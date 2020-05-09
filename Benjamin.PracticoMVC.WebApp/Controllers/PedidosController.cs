@@ -118,9 +118,23 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
         public ActionResult DetallesPedidos(int idPedido, int idCliente)
         {
+            ViewBag.idPedido = idPedido;
+            ViewBag.idCliente = idCliente;
+           
             return View();
 
         }
 
+        public JsonResult JsonDetallesPedidos(int idPedido, int idCliente)
+        {
+
+            var metodos = new AccesoDatos.Pedidos();
+
+            var lista = metodos.ListaDetallePedido(idPedido);
+
+
+            return (Json(lista, JsonRequestBehavior.AllowGet));
+
+        }
     }
 }

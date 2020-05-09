@@ -136,7 +136,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
         public string ObtenerIdRol()
         {
-            string idRol = "Que onda";
+            string idRol = string.Empty;
             idRol = Session["ID_ROL"].ToString();
             return idRol;
         }
