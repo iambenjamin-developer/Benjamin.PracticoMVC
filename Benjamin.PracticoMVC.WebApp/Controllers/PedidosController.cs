@@ -116,5 +116,11 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
         }
 
+        public ActionResult DetallesPedidos(int idPedido, int idCliente)
+        {
+            return View();
+
+        }
+
     }
 }

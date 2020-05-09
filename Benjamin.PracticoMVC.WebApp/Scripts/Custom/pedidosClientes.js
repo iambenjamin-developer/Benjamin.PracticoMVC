@@ -5,7 +5,6 @@ function mostrarTabla() {
 
     $.get("/Pedidos/JsonPedidosClientes/", function (data) {
 
-        alert(JSON.stringify(data));
         var contenido = "";
 
         contenido += "<table id='tabla-paginacion' class='table table-striped'>";
@@ -116,4 +115,6 @@ function parsearFecha(fecha) {
 function detalles(idCliente, idPedido) {
 
     alertify.success("idcliente: " + idCliente + " idPedido: " + idPedido);
+
+    location.href = "/Pedidos/DetallesPedidos/?idPedido=" + idPedido + "&idCliente=" + idPedido;
 }
