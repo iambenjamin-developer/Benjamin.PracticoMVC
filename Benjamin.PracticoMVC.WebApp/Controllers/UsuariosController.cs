@@ -213,7 +213,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             //si el ID_USUARIO es cero agregar
             if (obj_Usuario_Cliente.ID_USUARIO == 0)
             {
-                AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
+               AccesoDatos.Usuarios metodos = new AccesoDatos.Usuarios();
 
                 retorno = metodos.Crear(obj_Usuario_Cliente);
 

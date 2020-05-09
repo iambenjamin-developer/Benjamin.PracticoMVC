@@ -329,6 +329,7 @@ function guardar() {
                     success: function (data) {
                         if (data != 0) {
 
+                            //alert(data);
                             mostrarTabla();
 
                             if (id_usuario == 0) {
@@ -417,6 +418,7 @@ function obligatorio() {
     var nombres = document.getElementById("txtNombres").value;
     var apellidos = document.getElementById("txtApellidos").value;
     // var estado = document.getElementById("chkEstado").checked;
+    var razonSocial = document.getElementById("txtRazonSocial").value;
 
     if (validarCampoTexto(usuario) == false) {
         contador = contador + 1;
@@ -426,7 +428,20 @@ function obligatorio() {
     if (idRol <= 0) {
         contador = contador + 1;
         alertify.error("Seleccione Rol");
+    } else {
+        if (document.getElementById("cboRoles").value == "CLI") {
+
+            if (validarCampoTexto(razonSocial) == false) {
+                contador = contador + 1;
+                alertify.error("Ingrese Razon Social");
+            }
+
+        }
+
     }
+
+
+
 
     if (validarCampoTexto(nombres) == false) {
         contador = contador + 1;
