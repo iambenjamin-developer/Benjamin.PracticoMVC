@@ -1,7 +1,12 @@
 ﻿
 var idPedido = document.getElementById("txtIdPedido").value;
+var idCliente = document.getElementById("txtIdCliente").value;
+
+//ocultamos idCliente, ya q solo se trataba de obtener su valor y no mostrarlo
+document.getElementById("txtIdCliente").style.display = "none";
 
 
+rellenarDatos();
 tablaDetallePedido();
 
 function tablaDetallePedido() {
@@ -71,11 +76,49 @@ function tablaDetallePedido() {
 
 }
 
+function rellenarDatos() {
+    //JsonDetallesPedidoCliente(int idPedido, int idCliente)
+
+    var ruta = "/Pedidos/JsonDetallesPedidoCliente/?idPedido=";
+    ruta += idPedido.toString();
+    ruta += "&idCliente=";
+    ruta += idCliente.toString();
+
+    $.get(ruta, function (data) {
+
+
+        //document.getElementById("txtRazonSocial").value = data.RAZON_SOCIAL;
+        //document.getElementById("txtApellidosNombres").value = data.APELLIDO_NOMBRE;
+        document.getElementById("txtFechaPedido").value = parsearFecha(data.FECHA_PEDIDO);
+        //document.getElementById("txtEstado").value = data.ESTADO_PEDIDO;
+        document.getElementById("txtObservaciones").value = data.OBSERVACIONES;
+
+
+    })
+
+}
+
+
 function parsearMoneda(decimal) {
 
     return new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(decimal);
 }
 
+function parsearFecha(fecha) {
+
+
+    if (fecha != null) {
+
+        moment.locale("es");
+
+        return moment(fecha).format('L');
+
+    } else {
+
+        return "No Aplica";
+    }
+
+}
 
 function eliminarItem(codProducto) {
 
@@ -164,3 +207,65 @@ function modificarCantidad(codProducto) {
 
 
 }
+
+
+$(document).ready(function () {
+    $("#btnSeguirComprando").click(function () {
+        location.href = "/Productos/Cards/";
+    });
+
+    $("#btnCompletarPedido").click(function () {
+
+
+
+        var observaciones = document.getElementById("txtObservaciones").value;
+
+        if (observaciones.length > 80) {
+            alertify.error("No puede ingresar mas de 80 caracteres");
+            return;
+        }
+
+        var obj = new FormData();
+
+        //relacionar el valor de cada elemento con la clase que le corresponde
+        obj.append("ID_PEDIDO", idPedido);
+        obj.append("ID_CLIENTE", idCliente);
+        obj.append("OBSERVACIONES", observaciones);
+        obj.append("ESTADO_PEDIDO", "(F)");
+
+
+
+        $.ajax({
+            type: "POST",
+            url: "/Pedidos/FinalizarPedido/",
+            data: obj,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                if (data == 1) {
+                    //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor1
+                    alertify.success("Pedido Finalizado");
+
+                    location.href = "/Pedidos/MisPedidos/";
+
+                } else {
+                    //Declaraciones ejecutadas cuando ninguno de los valores coincide con el valor de la expresión
+
+                    alertify.error("Error");
+
+                }
+            }
+        });// fin ajax
+
+
+
+    });
+});
+
+
+//$(document).ready(function () {
+//    $("#btnLogin").click(function () { });
+
+//    $("#btnLogin").click(function () { });
+//});

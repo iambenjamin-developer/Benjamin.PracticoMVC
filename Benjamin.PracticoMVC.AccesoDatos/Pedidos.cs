@@ -804,7 +804,41 @@ AND Pedidos.NumeroPedido = 1
 
         }
 
+        public int FinalizarPedido(Entidades.Pedidos obj)
+        {
 
+            /*
+UPDATE Pedidos
+SET Fecha = GETDATE(), 
+Observacion = Observacion
+WHERE NumeroPedido = 1
+             */
+            int filasAfectadas = 0;
+
+            StringBuilder consultaSQL = new StringBuilder();
+
+            consultaSQL.Append("UPDATE Pedidos ");
+            consultaSQL.Append("SET Fecha = GETDATE(), ");
+            consultaSQL.Append("Observacion = ");
+            consultaSQL.Append("@estadoPedidoParametro + @observacionesParametro ");
+            consultaSQL.Append("WHERE NumeroPedido = @idPedidoParametro ");
+
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                filasAfectadas = connection.Execute(consultaSQL.ToString(),
+                   new
+                   {
+                       estadoPedidoParametro = obj.ESTADO_PEDIDO,
+                       observacionesParametro = obj.OBSERVACIONES,
+                       idPedidoParametro = obj.ID_PEDIDO
+                   });
+
+
+            }
+
+            return filasAfectadas;
+        }
 
 
 

@@ -33,6 +33,8 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             //numero de pedido
             ViewBag.idPedido = idPedido;
 
+            ViewBag.idCliente = Convert.ToInt32(Session["ID_CLIENTE"]);
+
             return View();
         }
 
@@ -149,6 +151,18 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return (Json(obj, JsonRequestBehavior.AllowGet));
 
         }
+
+
+        public int FinalizarPedido(Entidades.Pedidos obj)
+        {
+
+            var metodos = new AccesoDatos.Pedidos();
+
+            int filasAfectadas= metodos.FinalizarPedido(obj);
+           
+            return filasAfectadas;
+        }
+
 
     }
 }

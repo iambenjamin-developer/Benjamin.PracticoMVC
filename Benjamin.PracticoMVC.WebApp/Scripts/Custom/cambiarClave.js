@@ -45,6 +45,9 @@
 
     }); // fin btnAceptar clic
 
+    $("#btnCancelar").click(function () {
+        location.href = "/Usuarios/Index";
+    });
 }); // fin document ready
 
 
