@@ -1,12 +1,12 @@
 ﻿var cantidadCarrito = 0;
 
-$.get("/Pedidos/VerCantidadProductosEnCarrito/", function (data) {
+//$.get("/Pedidos/VerCantidadProductosEnCarrito/", function (data) {
 
     
-    cantidadCarrito = parseInt(data);
+//    cantidadCarrito = parseInt(data);
 
-    document.getElementById("idCantidadCarrito").innerHTML = "(" + cantidadCarrito + ")";
-});
+//    document.getElementById("idCantidadCarrito").innerHTML = "(" + cantidadCarrito + ")";
+//});
 
 
 

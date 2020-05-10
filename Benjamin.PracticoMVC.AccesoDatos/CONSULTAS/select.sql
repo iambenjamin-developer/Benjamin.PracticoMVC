@@ -1,7 +1,17 @@
-﻿UPDATE Pedidos
-SET Fecha = GETDATE(), 
-Observacion = '(P)'
-WHERE NumeroPedido = 1
+﻿--UPDATE Pedidos
+--SET Observacion = '(P) DEFAULT'
+--WHERE NumeroPedido = 1
+
+ SELECT MAX(NumeroPedido)
+ FROM Pedidos
+
+
+--SELECT * FROM DetallesPedidos
+
+--SELECT COUNT(*)
+--FROM Pedidos
+--WHERE SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(P)'
+--AND CodigoCliente = 1001
 
 --         SELECT 
 --Pedidos.NumeroPedido AS ID_PEDIDO,

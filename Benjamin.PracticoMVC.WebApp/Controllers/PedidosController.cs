@@ -85,7 +85,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
             int cantidadItemsCarrito = metodos.AgregarAlCarrito(idCliente, idProducto);
 
-
+            //cantidad de items, si da -1 es porque el producto ya se encuentra agregado
             return cantidadItemsCarrito;
         }
 
