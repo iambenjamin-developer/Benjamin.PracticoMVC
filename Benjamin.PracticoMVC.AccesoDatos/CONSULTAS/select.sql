@@ -1,6 +1,6 @@
 ﻿UPDATE Pedidos
 SET Fecha = GETDATE(), 
-Observacion = Observacion
+Observacion = '(P)'
 WHERE NumeroPedido = 1
 
 --         SELECT 

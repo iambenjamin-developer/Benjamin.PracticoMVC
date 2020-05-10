@@ -1,4 +1,4 @@
-﻿
+﻿var estadoPedido = "";
 var idPedido = document.getElementById("txtIdPedido").value;
 var idCliente = document.getElementById("txtIdCliente").value;
 
@@ -6,10 +6,11 @@ var idCliente = document.getElementById("txtIdCliente").value;
 document.getElementById("txtIdCliente").style.display = "none";
 
 
-rellenarDatos();
-tablaDetallePedido();
 
-function tablaDetallePedido() {
+rellenarDatos();
+
+
+function tablaDetallePedidoEditable() {
 
 
     $.get("/Pedidos/JsonObtenerDetallesPedido/?idPedido=" + idPedido, function (data) {
@@ -76,6 +77,84 @@ function tablaDetallePedido() {
 
 }
 
+
+function tablaDetallePedido() {
+
+    //dejar como solo lectura el campo observaciones
+    document.getElementById("txtObservaciones").readOnly = true;
+    document.getElementById("btnSeguirComprando").style.display = "none";
+    document.getElementById("btnCompletarPedido").style.display = "none";
+    document.getElementById("divEstado").innerHTML = "<br /> <label>Estado de Pedido: <input type='text'  value='" + estadoPedido + "' readonly class='form-control' /></label>";
+
+
+
+
+    $.get("/Pedidos/JsonObtenerDetallesPedido/?idPedido=" + idPedido, function (data) {
+
+        var total = 0;
+        var contenido = "";
+
+
+        contenido += "<table id='tabla-paginacion-usuarios' class='table table-striped'>";
+        contenido += "<thead>";
+        contenido += "<tr>";
+        contenido += "<th scope='col'>ITEM</th>";
+        contenido += "<th scope='col' class='text-center'>CODIGO</th>";
+        contenido += "<th scope='col' class='text-center'>PRODUCTO</th>";
+        contenido += "<th scope='col' class='text-right' >&nbsp;&nbsp;&nbsp;&nbsp;PRECIO UNITARIO</th>";
+        contenido += "<th scope='col' class='text-center' >&nbsp;&nbsp;&nbsp;&nbsp;CANTIDAD</th>";
+        contenido += "<th scope='col' class='text-right' >&nbsp;&nbsp;&nbsp;&nbsp;SUBTOTAL</th>";
+
+        contenido += "</tr>";
+        contenido += "</thead>";
+        contenido += "<tbody>";
+
+        for (var i = 0; i < data.length; i++) {
+
+            contenido += "<tr>";
+            contenido += "<td>&nbsp;&nbsp;" + data[i].ITEM + "</td>";
+            contenido += "<td class='text-center' >" + data[i].ID_PRODUCTO + "</td>";
+            codProducto = parseInt(data[i].ID_PRODUCTO);
+            contenido += "<td class='text-center' >" + data[i].MARCA + " - " + data[i].PRODUCTO + "</td>";
+            contenido += "<td class='text-right'>" + parsearMoneda(data[i].PRECIO_UNITARIO) + "</td>";
+            contenido += "<td class='text-center'> " + data[i].CANTIDAD + " </td>";
+
+            contenido += "<td class='text-right'>" + parsearMoneda(data[i].SUBTOTAL) + "</td>";
+            //calcular el total con los subtotales
+            total = total + data[i].SUBTOTAL;
+
+
+            contenido += "</tr>";
+        }
+
+        contenido += "</tbody>";
+
+        contenido += "<tfoot>";
+        contenido += "<tr>";
+        contenido += "<th>&nbsp;</th>";
+        contenido += "<th>&nbsp;</th>";
+        contenido += "<th>&nbsp;</th>";
+        contenido += "<th>&nbsp;</th>";
+        contenido += "<th>&nbsp;</th>";
+        contenido += "<th class='text-right' >&nbsp;TOTAL: " + parsearMoneda(total) + "</th>";
+
+        contenido += "</tr>";
+        contenido += "</tfoot>";
+
+        contenido += "</table>";
+
+
+        document.getElementById("tabla-detalle-pedidos").innerHTML = contenido;
+
+
+
+    });
+
+
+
+}
+
+
 function rellenarDatos() {
     //JsonDetallesPedidoCliente(int idPedido, int idCliente)
 
@@ -92,6 +171,15 @@ function rellenarDatos() {
         document.getElementById("txtFechaPedido").value = parsearFecha(data.FECHA_PEDIDO);
         //document.getElementById("txtEstado").value = data.ESTADO_PEDIDO;
         document.getElementById("txtObservaciones").value = data.OBSERVACIONES;
+
+        estadoPedido = data.ESTADO_PEDIDO;
+
+        if (estadoPedido == "PENDIENTE") {
+            //solo si esta pendiente se pueden editar cantidades
+            tablaDetallePedidoEditable();
+        } else {//sino queda la tabla como solo lectura
+            tablaDetallePedido();
+        }
 
 
     })
@@ -169,6 +257,8 @@ function eliminarItem(codProducto) {
 
 
 function modificarCantidad(codProducto) {
+
+
     var cantidad = document.getElementById("txtCantidad" + codProducto.toString()).value;
 
     //alertify.success("Pedido Nro:" + idPedido + " - Item Nro:" + codProducto + " - Cantidad: " + cantidad);
@@ -195,7 +285,16 @@ function modificarCantidad(codProducto) {
             if (filasAfectadas == 1) {
 
                 //refrescar tabla
-                tablaDetallePedido();
+
+
+                if (estadoPedido == "PENDIENTE") {
+                    //solo si esta pendiente se pueden editar cantidades
+                    tablaDetallePedidoEditable();
+                } else {//sino queda la tabla como solo lectura
+                    tablaDetallePedido();
+                }
+
+
             } else {
                 alert("error");
             }
@@ -217,46 +316,64 @@ $(document).ready(function () {
     $("#btnCompletarPedido").click(function () {
 
 
-
-        var observaciones = document.getElementById("txtObservaciones").value;
-
-        if (observaciones.length > 80) {
-            alertify.error("No puede ingresar mas de 80 caracteres");
-            return;
-        }
-
-        var obj = new FormData();
-
-        //relacionar el valor de cada elemento con la clase que le corresponde
-        obj.append("ID_PEDIDO", idPedido);
-        obj.append("ID_CLIENTE", idCliente);
-        obj.append("OBSERVACIONES", observaciones);
-        obj.append("ESTADO_PEDIDO", "(F)");
+        alertify.confirm('Pedidos', //titulo
+            '¿Desea Enviar el Pedido y Finalizarlo?', //mensaje
+            function () { //cuando se presiona OK
 
 
+                //////////////inicio/////////////////
 
-        $.ajax({
-            type: "POST",
-            url: "/Pedidos/FinalizarPedido/",
-            data: obj,
-            contentType: false,
-            processData: false,
-            success: function (data) {
 
-                if (data == 1) {
-                    //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor1
-                    alertify.success("Pedido Finalizado");
+                var observaciones = document.getElementById("txtObservaciones").value;
 
-                    location.href = "/Pedidos/MisPedidos/";
-
-                } else {
-                    //Declaraciones ejecutadas cuando ninguno de los valores coincide con el valor de la expresión
-
-                    alertify.error("Error");
-
+                if (observaciones.length > 80) {
+                    alertify.error("No puede ingresar mas de 80 caracteres");
+                    return;
                 }
-            }
-        });// fin ajax
+
+                var obj = new FormData();
+
+                //relacionar el valor de cada elemento con la clase que le corresponde
+                obj.append("ID_PEDIDO", idPedido);
+                obj.append("ID_CLIENTE", idCliente);
+                obj.append("OBSERVACIONES", observaciones);
+                obj.append("ESTADO_PEDIDO", "(F)");
+
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Pedidos/FinalizarPedido/",
+                    data: obj,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+
+                        if (data == 1) {
+                            //Declaraciones ejecutadas cuando el resultado de expresión coincide con el valor1
+                            alertify.success("Pedido Finalizado");
+
+                            location.href = "/Pedidos/MisPedidos/";
+
+                        } else {
+                            //Declaraciones ejecutadas cuando ninguno de los valores coincide con el valor de la expresión
+
+                            alertify.error("Error");
+
+                        }
+                    }
+                });// fin ajax
+
+
+
+                ///////////////fin//////////////////
+
+
+
+            },
+            function () {/* alertify.error('No se realizó el reset clave') */ }); //cuando se presiona Cancel
+
+
 
 
 
