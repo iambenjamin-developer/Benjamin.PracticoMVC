@@ -114,7 +114,7 @@ function parsearFecha(fecha) {
 
 function detalles(idCliente, idPedido) {
 
-    alertify.success("idcliente: " + idCliente + " idPedido: " + idPedido);
+    //alertify.success("idcliente: " + idCliente + " idPedido: " + idPedido);
 
-    location.href = "/Pedidos/DetallesPedidos/?idPedido=" + idPedido + "&idCliente=" + idPedido;
+    location.href = "/Pedidos/DetallesPedidos/?idPedido=" + idPedido + "&idCliente=" + idCliente;
 }

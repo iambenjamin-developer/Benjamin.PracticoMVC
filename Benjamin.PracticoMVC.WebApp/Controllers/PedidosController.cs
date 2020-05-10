@@ -12,7 +12,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         public ActionResult MisPedidos()
         {
             return View();
-            
+
         }
 
         public JsonResult JsonMisPedidos()
@@ -52,7 +52,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         {
             var metodos = new AccesoDatos.Pedidos();
             //int idPedido, int nroItem, int cantidad
-           
+
             int filasAfectadas = metodos.CalcularPrecioSegunCantidad(obj.ID_PEDIDO, obj.ITEM, obj.CANTIDAD);
 
 
@@ -88,7 +88,8 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         }
 
 
-        public int VerCantidadProductosEnCarrito() {
+        public int VerCantidadProductosEnCarrito()
+        {
 
             int idCliente = Convert.ToInt32(Session["ID_CLIENTE"]);
 
@@ -106,7 +107,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
         public JsonResult JsonPedidosClientes()
         {
-    
+
             var metodos = new AccesoDatos.Pedidos();
 
             var lista = metodos.ListarPedidosClientes();
@@ -120,7 +121,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         {
             ViewBag.idPedido = idPedido;
             ViewBag.idCliente = idCliente;
-           
+
             return View();
 
         }
@@ -136,5 +137,18 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
             return (Json(lista, JsonRequestBehavior.AllowGet));
 
         }
+
+        public JsonResult JsonDetallesPedidoCliente(int idPedido, int idCliente)
+        {
+           
+            var metodos = new AccesoDatos.Pedidos();
+
+            var obj = metodos.ObtenerDetallePedidoCliente(idPedido, idCliente);
+
+
+            return (Json(obj, JsonRequestBehavior.AllowGet));
+
+        }
+
     }
 }
