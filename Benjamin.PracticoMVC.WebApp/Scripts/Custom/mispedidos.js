@@ -1,4 +1,5 @@
 ﻿
+
 //mostramos los pedidos que tiene el cliente logueado
 tablaMisPedidos();
 

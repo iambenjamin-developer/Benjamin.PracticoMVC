@@ -891,5 +891,82 @@ WHERE NumeroPedido = 1
 
 
 
+        public int BuscarPedidoPendientePorCliente(int idCliente)
+        {
+
+            /*
+--VERIFICAR SI EL CLIENTE TIENE UN PEDIDO PENDIENTE
+SELECT COUNT(*)
+FROM Pedidos
+WHERE SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(P)'
+AND CodigoCliente = 1001
+
+
+--VER NUMERO DE PEDIDO DEL PEDIDO PENDIENTE
+SELECT 
+NumeroPedido AS ID_PEDIDO,
+CodigoCliente AS ID_CLIENTE,
+SUBSTRING( Pedidos.Observacion, 0, 4 ) AS ESTADO_PEDIDO
+FROM Pedidos
+WHERE SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(P)'
+AND CodigoCliente = 1001
+             
+             */
+            int pedidosPendientes = 0;
+            int idPedidoPendiente = 0;
+
+            //VERIFICAR SI EL CLIENTE TIENE UN PEDIDO PENDIENTE
+            StringBuilder consultaSQL1 = new StringBuilder();
+            consultaSQL1.Append("SELECT COUNT(*) ");
+            consultaSQL1.Append("FROM Pedidos ");
+            consultaSQL1.Append("WHERE SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(P)' ");
+            consultaSQL1.Append("AND CodigoCliente = @idClienteParametro ");
+
+
+            using (var connection = new SqlConnection(cadenaConexion))
+            {
+                pedidosPendientes = connection.ExecuteScalar<int>(consultaSQL1.ToString(),
+                   new
+                   {
+                       idClienteParametro = idCliente
+                   });
+
+
+            }
+
+            if (pedidosPendientes > 0)
+            {
+                /*
+
+                --VER NUMERO DE PEDIDO DEL PEDIDO PENDIENTE
+                 SELECT NumeroPedido 
+                 FROM Pedidos
+                 WHERE SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(P)'
+                 AND CodigoCliente = 1003
+                                 */
+                StringBuilder consultaSQL2 = new StringBuilder();
+                consultaSQL2.Append("SELECT NumeroPedido  ");
+                consultaSQL2.Append("FROM Pedidos ");
+                consultaSQL2.Append("WHERE SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(P)' ");
+                consultaSQL2.Append("AND CodigoCliente = @idClienteParametro ");
+
+
+                using (var connection = new SqlConnection(cadenaConexion))
+                {
+                    idPedidoPendiente = connection.ExecuteScalar<int>(consultaSQL2.ToString(),
+                       new
+                       {
+                           idClienteParametro = idCliente
+                       });
+
+
+                }
+
+            }
+
+
+            return idPedidoPendiente;
+        }
+
     }
 }

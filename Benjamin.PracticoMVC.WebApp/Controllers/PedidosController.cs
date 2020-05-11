@@ -142,7 +142,7 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
         public JsonResult JsonDetallesPedidoCliente(int idPedido, int idCliente)
         {
-           
+
             var metodos = new AccesoDatos.Pedidos();
 
             var obj = metodos.ObtenerDetallePedidoCliente(idPedido, idCliente);
@@ -158,11 +158,29 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
 
             var metodos = new AccesoDatos.Pedidos();
 
-            int filasAfectadas= metodos.FinalizarPedido(obj);
-           
+            int filasAfectadas = metodos.FinalizarPedido(obj);
+
             return filasAfectadas;
         }
 
+
+        public ActionResult RedireccionarMiPedidoPendiente()
+        {
+
+            return View();
+        }
+
+        public int MiPedidoPendiente()
+        {
+
+            int idCliente = Convert.ToInt32(Session["ID_CLIENTE"]);
+
+            var metodos = new AccesoDatos.Pedidos();
+
+            int idPedidoPendiente = metodos.BuscarPedidoPendientePorCliente(idCliente);
+
+            return idPedidoPendiente;
+        }
 
     }
 }

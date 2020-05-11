@@ -173,6 +173,7 @@
     <Content Include="Scripts\Custom\mispedidos.js" />
     <Content Include="Scripts\Custom\pedidosClientes.js" />
     <Content Include="Scripts\Custom\productos.js" />
+    <Content Include="Scripts\Custom\redireccionar.js" />
     <Content Include="Scripts\Custom\test.js" />
     <Content Include="Scripts\Custom\usuarios.js" />
     <Content Include="Scripts\datatables.min.js" />
@@ -221,6 +222,7 @@
     <Content Include="Views\Pedidos\MisPedidos.cshtml" />
     <Content Include="Views\Pedidos\PedidosClientes.cshtml" />
     <Content Include="Views\Pedidos\DetallesPedidos.cshtml" />
+    <Content Include="Views\Pedidos\RedireccionarMiPedidoPendiente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Benjamin.PracticoMVC.AccesoDatos\Benjamin.PracticoMVC.AccesoDatos.csproj">
