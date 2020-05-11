@@ -3,7 +3,9 @@
     ViewBag.Title = "Index";
 }
 
-<H2>Hola @Session["NOMBRES"] !!!</H2>
-@*<h3> @Session["ROL"]</h3>
-<h3> @Session["ID"]</h3>
-<h3> @Session["USUARIO"]</h3>*@
+    <div id="divSaludo">
+        <h2>@ViewBag.periodo @Session["NOMBRES"] !</h2>
+    </div>
+
+
+    <script src="~/Scripts/Custom/index.js"></script>

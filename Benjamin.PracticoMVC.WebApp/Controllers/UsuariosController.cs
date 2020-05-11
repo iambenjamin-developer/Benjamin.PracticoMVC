@@ -11,6 +11,28 @@ namespace Benjamin.PracticoMVC.WebApp.Controllers
         // pagina principal de Bienvenida
         public ActionResult Index()
         {
+            TimeSpan tiempoActual = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+
+            int horaActual = tiempoActual.Hours;
+
+            string periodo = string.Empty;
+
+            if (horaActual >= 6 && horaActual <= 12)
+            {
+                periodo = "Buenos días";
+            }
+            else if (horaActual >= 13 && horaActual <= 19)
+            {
+                periodo = "Buenas tardes";
+            }
+            else if ((horaActual >= 20 && horaActual <= 24) || (horaActual >= 0 && horaActual <= 5))
+            {
+                periodo = "Buenas noches";
+            }
+
+            ViewBag.periodo = periodo;
+
+
             return View();
         }
 
