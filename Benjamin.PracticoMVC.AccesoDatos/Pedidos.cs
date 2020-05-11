@@ -394,27 +394,21 @@ AND CodigoCliente = 1001
                 /*
 
                 --VER NUMERO DE PEDIDO DEL PEDIDO PENDIENTE
-                SELECT 
-                NumeroPedido AS ID_PEDIDO,
-                CodigoCliente AS ID_CLIENTE,
-                SUBSTRING( Pedidos.Observacion, 0, 4 ) AS ESTADO_PEDIDO
-                FROM Pedidos
-                WHERE SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(P)'
-                AND CodigoCliente = 1001
+                 SELECT NumeroPedido 
+                 FROM Pedidos
+                 WHERE SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(P)'
+                 AND CodigoCliente = 1003
                                  */
                 StringBuilder consultaSQL2 = new StringBuilder();
-                consultaSQL2.Append("SELECT ");
-                consultaSQL2.Append("NumeroPedido AS ID_PEDIDO, ");
-                consultaSQL2.Append("CodigoCliente AS ID_CLIENTE, ");
-                consultaSQL2.Append("SUBSTRING( Pedidos.Observacion, 0, 4 ) AS ESTADO_PEDIDO ");
+                consultaSQL2.Append("SELECT NumeroPedido  ");
                 consultaSQL2.Append("FROM Pedidos ");
                 consultaSQL2.Append("WHERE SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(P)' ");
                 consultaSQL2.Append("AND CodigoCliente = @idClienteParametro ");
-
+           
 
                 using (var connection = new SqlConnection(cadenaConexion))
                 {
-                    idPedidoPendiente = connection.ExecuteScalar<int>(consultaSQL1.ToString(),
+                    idPedidoPendiente = connection.ExecuteScalar<int>(consultaSQL2.ToString(),
                        new
                        {
                            idClienteParametro = idCliente
@@ -433,7 +427,7 @@ AND CodigoCliente = 1001
             }
             else if (idPedidoPendiente > 0)
             {
-                cantidadItemsCarrito = EditarPedido(idCliente, idProducto);
+                cantidadItemsCarrito = EditarPedido(idCliente, idProducto, idPedidoPendiente);
             }
             else
             {
@@ -586,11 +580,10 @@ VALUES 						((SELECT MAX(NumeroPedido) FROM Pedidos),
 
         }
 
-        public int EditarPedido(int idCliente, int idProducto)
+        public int EditarPedido(int idCliente, int idProducto, int idPedidoPendiente)
         {
             int proximoNroItem = 0;
-            int idPedido = 0;
-
+           
             int filasAfectadas = 0;
             int cantidadProductosEnCarrito = 0;
 
@@ -609,44 +602,22 @@ VALUES 						((SELECT MAX(NumeroPedido) FROM Pedidos),
 
             try
             {
-                /*
-                --NUMERO DE PEDIDO  ASIGNADO AL CLIENTE
-                SELECT NumeroPedido 
-                FROM Pedidos
-                WHERE CodigoCliente = 1000
-
-                 */
-
-                StringBuilder consultaSQL1 = new StringBuilder();
-                consultaSQL1.Append("SELECT NumeroPedido ");
-                consultaSQL1.Append("FROM Pedidos ");
-                consultaSQL1.Append("WHERE CodigoCliente = @idClienteParametro ");
-
-
-                idPedido = conexion.ExecuteScalar<int>(consultaSQL1.ToString(),
-                   new { idClienteParametro = idCliente },
-                   transaction: transaccion);
-
+              
                 /*
            --ULTIMO NUMERO DE ITEM DEL PEDIDO DEL CLIENTE
                 SELECT MAX(NumeroItem) 
                 FROM DetallesPedidos
-                WHERE NumeroPedido = (SELECT NumeroPedido 
-                                      FROM Pedidos
-                                      WHERE CodigoCliente = 1000)
+                WHERE NumeroPedido = 1
             */
 
                 StringBuilder consultaSQL2 = new StringBuilder();
                 consultaSQL2.Append("SELECT MAX(NumeroItem)  ");
                 consultaSQL2.Append("FROM DetallesPedidos ");
-                consultaSQL2.Append("WHERE NumeroPedido =  ");
-                consultaSQL2.Append("(SELECT NumeroPedido ");
-                consultaSQL2.Append("FROM Pedidos ");
-                consultaSQL2.Append("WHERE CodigoCliente = @idClienteParametro ) ");
-
+                consultaSQL2.Append("WHERE NumeroPedido = @idPedidoPendienteParametro ");
+  
 
                 proximoNroItem = conexion.ExecuteScalar<int>(consultaSQL2.ToString(),
-                    new { idClienteParametro = idCliente },
+                    new { idPedidoPendienteParametro = idPedidoPendiente },
                     transaction: transaccion);
 
                 proximoNroItem = proximoNroItem + 1;
@@ -673,7 +644,7 @@ VALUES 						((SELECT MAX(NumeroPedido) FROM Pedidos),
                 consultaSQL3.Append("Cantidad,  ");
                 consultaSQL3.Append("PrecioUnitario) ");
                 consultaSQL3.Append("VALUES( ");
-                consultaSQL3.Append("@idPedidoParametro, ");
+                consultaSQL3.Append("@idPedidoPendienteParametro, ");
                 consultaSQL3.Append("@proximoNroItem,  ");
                 consultaSQL3.Append("@idProductoParametro,  ");
                 consultaSQL3.Append("1, ");
@@ -684,7 +655,7 @@ VALUES 						((SELECT MAX(NumeroPedido) FROM Pedidos),
                 filasAfectadas = conexion.Execute(consultaSQL3.ToString(),
                        new
                        {
-                           idPedidoParametro = idPedido,
+                           idPedidoPendienteParametro = idPedidoPendiente,
                            proximoNroItem = proximoNroItem,
                            idProductoParametro = idProducto
                        }
@@ -694,7 +665,7 @@ VALUES 						((SELECT MAX(NumeroPedido) FROM Pedidos),
                 // si las operaciones relacionadas salieron bien, se realiza un commit
                 transaccion.Commit();
 
-                cantidadProductosEnCarrito = VerCantidadProductosEnCarrito(idCliente);
+                cantidadProductosEnCarrito = VerCantidadProductosEnCarrito(idPedidoPendiente);
 
             }
             catch (Exception ex)

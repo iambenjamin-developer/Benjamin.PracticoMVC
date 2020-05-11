@@ -1,18 +1,21 @@
 ﻿--UPDATE Pedidos
 --SET Observacion = '(P) DEFAULT'
 --WHERE NumeroPedido = 1
+--SELECT COUNT(*)
+--FROM Pedidos
+--WHERE SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(P)'
+--AND CodigoCliente = 1000
 
- SELECT MAX(NumeroPedido)
- FROM Pedidos
 
 
 --SELECT * FROM DetallesPedidos
 
---SELECT COUNT(*)
---FROM Pedidos
---WHERE SUBSTRING( Pedidos.Observacion, 0, 4 ) = '(P)'
---AND CodigoCliente = 1001
+select * from DetallesPedidos
+where NumeroPedido = 3
 
+ --SELECT MAX(NumeroItem) 
+ --               FROM DetallesPedidos
+ --               WHERE NumeroPedido = 3
 --         SELECT 
 --Pedidos.NumeroPedido AS ID_PEDIDO,
 --Pedidos.CodigoCliente AS ID_CLIENTE,
