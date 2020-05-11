@@ -207,9 +207,9 @@ INSERT [Roles] ([Id], [Descripcion]) VALUES (N'ADMIN', N'Administrador')
 INSERT [Roles] ([Id], [Descripcion]) VALUES (N'CLI', N'Cliente')
 SET IDENTITY_INSERT [Usuarios] ON 
 
-INSERT [Usuarios] ([Id], [IdRol], [Usuario], [Nombre], [Apellido], [Password], [PasswordSalt], [FechaCreacion], [Activo]) VALUES (1, N'ADMIN', N'admin', N'Lionel', N'Messi', N'123', N'COMPLETAR', CAST(N'2019-06-28T21:58:03.000' AS DateTime), 1)
-INSERT [Usuarios] ([Id], [IdRol], [Usuario], [Nombre], [Apellido], [Password], [PasswordSalt], [FechaCreacion], [Activo]) VALUES (2, N'CLI', N'kun.aguero', N'Sergio', N'Agüero', N'123', N'COMPLETAR', CAST(N'2019-06-28T21:59:48.000' AS DateTime), 1)
-INSERT [Usuarios] ([Id], [IdRol], [Usuario], [Nombre], [Apellido], [Password], [PasswordSalt], [FechaCreacion], [Activo]) VALUES (3, N'CLI', N'lautaro', N'Lautaro', N'Martinez', N'123', N'COMPLETAR', CAST(N'2019-06-28T22:00:34.000' AS DateTime), 1)
+INSERT [Usuarios] ([Id], [IdRol], [Usuario], [Nombre], [Apellido], [Password], [PasswordSalt], [FechaCreacion], [Activo]) VALUES (1, N'ADMIN', N'admin', N'Lionel', N'Messi', N'ebyf2ewZdMiSn7ljP2Es0P0n0dP7sZf4RxZPohqFozs=', N'V+Bx6cZ/o5xp8Z6L/d0JbQ==', CAST(N'2019-06-28T21:58:03.000' AS DateTime), 1)
+INSERT [Usuarios] ([Id], [IdRol], [Usuario], [Nombre], [Apellido], [Password], [PasswordSalt], [FechaCreacion], [Activo]) VALUES (2, N'CLI', N'kun.aguero', N'Sergio', N'Agüero', N'4i7iJEJ2FNjAeICtB2yOBZpnmuvOsjgo9S0cXIAWjmI=', N'ckSAxTcliuJAlgIHIeJdog==', CAST(N'2019-06-28T21:59:48.000' AS DateTime), 1)
+INSERT [Usuarios] ([Id], [IdRol], [Usuario], [Nombre], [Apellido], [Password], [PasswordSalt], [FechaCreacion], [Activo]) VALUES (3, N'CLI', N'lautaro', N'Lautaro', N'Martinez', N'xzMEvsSYHWzCSkFZZX6t9wE8E+Cs0NNeGs2LlcWrJNc=', N'y8ucipBP+ZDKBKP0K5XY8Q==', CAST(N'2019-06-28T22:00:34.000' AS DateTime), 1)
 SET IDENTITY_INSERT [Usuarios] OFF
 /****** Object:  Index [IX_DetallesPedidos]    Script Date: 30/6/2019 02:31:02 ******/
 ALTER TABLE [DetallesPedidos] ADD  CONSTRAINT [IX_DetallesPedidos] UNIQUE NONCLUSTERED 
